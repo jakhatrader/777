@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MUAR Perp DEX Tier List</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --neon-cyan: #00f0ff;
+  --neon-pink: #ff00aa;
+  --neon-green: #39ff14;
+  --neon-yellow: #ffe600;
+  --neon-orange: #ff6a00;
+  --neon-purple: #b026ff;
+  --bg-dark: #0a0a0f;
+  --bg-card: rgba(10, 10, 20, 0.85);
+  --border-glow: rgba(0, 240, 255, 0.15);
+  --text-dim: #5a6a8a;
+  --text-main: #c8d6e5;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ═══════════ ANIMATED BACKGROUND ═══════════ */
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scanline {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 240, 255, 0.008) 2px,
+    rgba(0, 240, 255, 0.008) 4px
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vignette {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ═══════════ MAIN CONTAINER ═══════════ */
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+/* ═══════════ HEADER ═══════════ */
+.header {
+  text-align: center;
+  padding: 40px 0 10px;
+}
+
+.created-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.created-by a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--neon-cyan);
+  text-decoration: none;
+  transition: all 0.3s;
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 4px;
+}
+
+.created-by a:hover {
+  color: #fff;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.05);
+  text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.created-by svg {
+  width: 16px; height: 16px;
+  fill: currentColor;
+}
+
+.site-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(28px, 5vw, 52px);
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink), var(--neon-cyan));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 4s ease infinite;
+  text-shadow: none;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+  margin-bottom: 6px;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.subtitle {
+  font-family: 'Rajdhani', sans-serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: var(--text-dim);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ═══════════ STATS BAR ═══════════ */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0 20px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 12px 24px;
+  border: 1px solid var(--border-glow);
+  border-radius: 8px;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  min-width: 160px;
+}
+
+.stat-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+/* ═══════════ TABLE ═══════════ */
+.table-wrapper {
+  border: 1px solid var(--border-glow);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-card);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.04), 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 16px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+  background: rgba(0, 240, 255, 0.02);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+thead th:first-child { text-align: center; width: 80px; }
+thead th:nth-child(3),
+thead th:nth-child(4) { text-align: right; }
+
+tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: all 0.3s ease;
+}
+
+tbody tr:hover {
+  background: rgba(0, 240, 255, 0.03);
+  box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.02);
+}
+
+tbody td {
+  padding: 14px 16px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+
+tbody td:first-child { text-align: center; }
+tbody td:nth-child(3),
+tbody td:nth-child(4) {
+  text-align: right;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
+}
+
+/* ═══════════ TIER BADGES ═══════════ */
+.tier {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.tier-s {
+  color: var(--neon-yellow);
+  border: 2px solid var(--neon-yellow);
+  background: rgba(255, 230, 0, 0.08);
+  box-shadow: 0 0 15px rgba(255, 230, 0, 0.2), inset 0 0 15px rgba(255, 230, 0, 0.05);
+  text-shadow: 0 0 12px var(--neon-yellow);
+  animation: pulse-s 2s ease-in-out infinite;
+}
+
+@keyframes pulse-s {
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 230, 0, 0.2), inset 0 0 15px rgba(255, 230, 0, 0.05); }
+  50% { box-shadow: 0 0 25px rgba(255, 230, 0, 0.35), inset 0 0 20px rgba(255, 230, 0, 0.1); }
+}
+
+.tier-a {
+  color: var(--neon-cyan);
+  border: 2px solid var(--neon-cyan);
+  background: rgba(0, 240, 255, 0.06);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.15), inset 0 0 12px rgba(0, 240, 255, 0.03);
+  text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.tier-b {
+  color: var(--neon-purple);
+  border: 2px solid var(--neon-purple);
+  background: rgba(176, 38, 255, 0.06);
+  box-shadow: 0 0 12px rgba(176, 38, 255, 0.15), inset 0 0 12px rgba(176, 38, 255, 0.03);
+  text-shadow: 0 0 10px var(--neon-purple);
+}
+
+/* ═══════════ DEX NAME + ICON ═══════════ */
+.dex-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dex-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: #1a1a2e;
+  flex-shrink: 0;
+}
+
+.dex-name {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.dex-name a {
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.dex-name a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 6px var(--neon-cyan);
+  transition: width 0.3s;
+}
+
+.dex-name a:hover {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+.dex-name a:hover::after { width: 100%; }
+
+.dex-chain {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 1px;
+}
+
+/* ═══════════ LOADING ═══════════ */
+.loading-cell {
+  color: var(--text-dim);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ═══════════ RANK NUMBER ═══════════ */
+.rank-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  display: block;
+  margin-top: 4px;
+}
+
+/* ═══════════ FOOTER ═══════════ */
+.footer {
+  text-align: center;
+  padding: 40px 0 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: rgba(90, 106, 138, 0.5);
+  letter-spacing: 2px;
+}
+
+.footer span {
+  color: var(--neon-cyan);
+  opacity: 0.6;
+}
+
+.data-note {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width: 700px) {
+  .container { padding: 16px 10px 40px; }
+  .header { padding: 20px 0 6px; }
+
+  .stats-bar { gap: 10px; }
+  .stat-item { min-width: 120px; padding: 10px 14px; }
+  .stat-value { font-size: 16px; }
+
+  thead th { font-size: 9px; padding: 12px 8px; letter-spacing: 1px; }
+  tbody td { padding: 10px 8px; font-size: 13px; }
+  tbody td:nth-child(3),
+  tbody td:nth-child(4) { font-size: 12px; }
+
+  .tier { width: 36px; height: 36px; font-size: 13px; }
+  .dex-icon { width: 26px; height: 26px; }
+  .dex-name { font-size: 14px; }
+  .dex-cell { gap: 8px; }
+  .rank-num { font-size: 10px; }
+
+  thead th:first-child { width: 55px; }
+}
+
+@media (max-width: 480px) {
+  .site-title { letter-spacing: 1px; }
+  .subtitle { letter-spacing: 2px; font-size: 12px; }
+  thead th { font-size: 8px; padding: 10px 6px; }
+  tbody td { padding: 8px 6px; }
+  .dex-icon { width: 22px; height: 22px; }
+  .dex-name { font-size: 13px; }
+  .tier { width: 32px; height: 32px; font-size: 12px; border-width: 1.5px; }
+  tbody td:nth-child(3),
+  tbody td:nth-child(4) { font-size: 11px; }
+}
+
+/* ═══════════ ERROR STATE ═══════════ */
+.error-msg {
+  color: var(--neon-pink);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="scanline"></div>
+<div class="vignette"></div>
+
+<div class="container">
+  <header class="header">
+    <div class="created-by">
+      created by
+      <a href="https://x.com/muarmemuar" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        muar
+      </a>
+    </div>
+    <h1 class="site-title">PERP DEX TIER LIST</h1>
+    <p class="subtitle">my personal tier list of perpetual DEXes</p>
+  </header>
+
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-label">Protocols Listed</div>
+      <div class="stat-value" id="total-protocols">12</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Total 24h Volume</div>
+      <div class="stat-value" id="total-volume"><span class="loading-cell">loading...</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Total Open Interest</div>
+      <div class="stat-value" id="total-oi"><span class="loading-cell">loading...</span></div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Protocol</th>
+          <th>Perp Volume 24h</th>
+          <th>Open Interest</th>
+        </tr>
+      </thead>
+      <tbody id="dex-table-body">
+        <!-- Rows injected by JS -->
+      </tbody>
+    </table>
+  </div>
+  <div class="data-note">data sourced from defillama.com • auto-refreshes every 5 min</div>
+
+  <div class="footer">
+    <span>⬡</span> MUAR PERP AGGREGATOR <span>⬡</span> 2025
+  </div>
+</div>
+
+<script>
+// ═══════════ CONFIG: DEX LIST ═══════════
+const DEXES = [
+  {
+    name: "EdgeX",
+    slug: "edgex",
+    tier: "S",
+    ref: "https://pro.edgex.exchange/referral/MUAR",
+    icon: "https://icons.llama.fi/edgex.png"
+  },
+  {
+    name: "Extended",
+    slug: "extended-exchange",
+    tier: "A",
+    ref: "https://app.extended.exchange/join/MUAR",
+    icon: "https://icons.llama.fi/extended-exchange.png"
+  },
+  {
+    name: "Paradex",
+    slug: "paradex",
+    tier: "A",
+    ref: "https://app.paradex.trade/r/rektdao",
+    icon: "https://icons.llama.fi/paradex.png"
+  },
+  {
+    name: "Pacifica",
+    slug: "pacifica",
+    tier: "A",
+    ref: "https://app.pacifica.fi/?referral=rektdao",
+    icon: "https://icons.llama.fi/pacifica.png"
+  },
+  {
+    name: "Nado",
+    slug: "nado",
+    tier: "S",
+    ref: "https://app.nado.xyz?join=wVjcU3e",
+    icon: "https://icons.llama.fi/nado.png"
+  },
+  {
+    name: "Tread Fi",
+    slug: "tread-fi",
+    tier: "A",
+    ref: "https://app.tread.fi/referral/39KUWV1L",
+    icon: "https://icons.llama.fi/tread-fi.png"
+  },
+  {
+    name: "Lighter",
+    slug: "lighter-perps",
+    tier: "A",
+    ref: "https://app.lighter.xyz/?referral=GUSTAVO",
+    icon: "https://icons.llama.fi/lighter.png"
+  },
+  {
+    name: "Trade.xyz",
+    slug: "trade-xyz",
+    tier: "A",
+    ref: "https://app.trade.xyz/",
+    icon: "https://icons.llama.fi/trade-xyz.png"
+  },
+  {
+    name: "DreamCash",
+    slug: "dreamcash",
+    tier: "B",
+    ref: "https://trade.dreamcash.xyz/trade?code=TDHUDU",
+    icon: "https://icons.llama.fi/dreamcash.png"
+  },
+  {
+    name: "Variational",
+    slug: "variational",
+    tier: "S",
+    ref: "https://omni.variational.io/?ref=OMNIMUAR",
+    icon: "https://icons.llama.fi/variational.png"
+  },
+  {
+    name: "01",
+    slug: "01-exchange",
+    tier: "B",
+    ref: "https://01.xyz/ref/muar",
+    icon: "https://icons.llama.fi/01-exchange.png"
+  },
+  {
+    name: "Carbon",
+    slug: "carbon-perps",
+    tier: "B",
+    ref: "https://app.carbon.inc/ref/muar",
+    icon: "https://icons.llama.fi/carbon.png"
+  }
+];
+
+// ═══════════ FORMAT HELPERS ═══════════
+function formatUSD(num) {
+  if (num === null || num === undefined || isNaN(num)) return '—';
+  if (num >= 1e9) return '$' + (num / 1e9).toFixed(2) + 'B';
+  if (num >= 1e6) return '$' + (num / 1e6).toFixed(2) + 'M';
+  if (num >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+  return '$' + num.toFixed(0);
+}
+
+function tierClass(t) {
+  return 'tier tier-' + t.toLowerCase();
+}
+
+// ═══════════ RENDER TABLE ═══════════
+function renderTable(dexes) {
+  const tbody = document.getElementById('dex-table-body');
+  // Sort by volume descending
+  const sorted = [...dexes].sort((a, b) => (b.volume24h || 0) - (a.volume24h || 0));
+
+  let totalVol = 0, totalOI = 0;
+
+  tbody.innerHTML = sorted.map((d, i) => {
+    totalVol += (d.volume24h || 0);
+    totalOI += (d.openInterest || 0);
+    return `
+    <tr>
+      <td>
+        <div class="${tierClass(d.tier)}">${d.tier}</div>
+        <span class="rank-num">#${i + 1}</span>
+      </td>
+      <td>
+        <div class="dex-cell">
+          <img class="dex-icon" src="${d.icon}" alt="${d.name}" onerror="this.style.display='none'">
+          <div>
+            <div class="dex-name"><a href="${d.ref}" target="_blank" rel="noopener noreferrer">${d.name}</a></div>
+          </div>
+        </div>
+      </td>
+      <td>${d.volume24h !== null ? formatUSD(d.volume24h) : '<span class="loading-cell">—</span>'}</td>
+      <td>${d.openInterest !== null ? formatUSD(d.openInterest) : '<span class="loading-cell">—</span>'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('total-volume').textContent = formatUSD(totalVol);
+  document.getElementById('total-oi').textContent = formatUSD(totalOI);
+}
+
+// ═══════════ FETCH DATA FROM DEFILLAMA ═══════════
+async function fetchData() {
+  // Render table immediately with loading states
+  const initialDexes = DEXES.map(d => ({ ...d, volume24h: null, openInterest: null }));
+  renderTable(initialDexes);
+
+  try {
+    // Try the public API endpoint (works from browser)
+    const resp = await fetch('https://api.llama.fi/overview/derivatives?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true&dataType=dailyVolume');
+    if (!resp.ok) throw new Error('API returned ' + resp.status);
+    const data = await resp.json();
+
+    const protocols = data.protocols || [];
+
+    // Map slug to data
+    const protoMap = {};
+    protocols.forEach(p => {
+      const slug = (p.defillamaId || p.module || p.name || '').toLowerCase().replace(/\s+/g, '-');
+      const nameLower = (p.name || '').toLowerCase().replace(/\s+/g, '-');
+      protoMap[slug] = p;
+      protoMap[nameLower] = p;
+      // Also store by display name for flexible matching
+      if (p.displayName) {
+        protoMap[p.displayName.toLowerCase().replace(/\s+/g, '-')] = p;
+      }
+    });
+
+    const enriched = DEXES.map(d => {
+      const match = protoMap[d.slug] || protoMap[d.name.toLowerCase().replace(/\s+/g, '-')];
+      return {
+        ...d,
+        volume24h: match ? (match.total24h || match.dailyVolume || match.total1dVolume || 0) : 0,
+        openInterest: match ? (match.openInterest || match.dailyOpenInterest || match.currentOpenInterest || 0) : 0
+      };
+    });
+
+    renderTable(enriched);
+  } catch (err) {
+    console.warn('DeFiLlama API error, trying individual fetches...', err);
+    // Fallback: try fetching each protocol individually via summary endpoint
+    await fetchIndividual();
+  }
+}
+
+async function fetchIndividual() {
+  const results = DEXES.map(d => ({ ...d, volume24h: 0, openInterest: 0 }));
+
+  const fetches = DEXES.map(async (d, i) => {
+    try {
+      const r = await fetch(`https://api.llama.fi/summary/derivatives/${d.slug}?dataType=dailyVolume`);
+      if (!r.ok) return;
+      const data = await r.json();
+      results[i].volume24h = data.total24h || data.totalVolume24h || 0;
+      results[i].openInterest = data.currentOpenInterest || data.openInterest || 0;
+    } catch (e) {
+      console.warn(`Failed to fetch ${d.slug}`, e);
+    }
+  });
+
+  await Promise.allSettled(fetches);
+  renderTable(results);
+}
+
+// ═══════════ INIT + AUTO-REFRESH ═══════════
+fetchData();
+setInterval(fetchData, 5 * 60 * 1000); // refresh every 5 min
+
+// ═══════════ BACKGROUND CANVAS ANIMATION ═══════════
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [], lines = [];
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Create floating particles
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 0.5,
+      color: ['rgba(0,240,255,', 'rgba(255,0,170,', 'rgba(57,255,20,', 'rgba(176,38,255,'][Math.floor(Math.random() * 4)]
+    });
+  }
+
+  // Create horizontal scan lines that drift
+  for (let i = 0; i < 4; i++) {
+    lines.push({
+      y: Math.random() * h,
+      speed: 0.3 + Math.random() * 0.5,
+      alpha: 0.02 + Math.random() * 0.03,
+      width: 1 + Math.random() * 2
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+
+    // Draw connections between nearby particles
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          const alpha = (1 - dist / 150) * 0.08;
+          ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw particles
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = w;
+      if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h;
+      if (p.y > h) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + '0.6)';
+      ctx.fill();
+
+      // Glow
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + '0.08)';
+      ctx.fill();
+    });
+
+    // Drifting horizontal lines
+    lines.forEach(l => {
+      l.y += l.speed;
+      if (l.y > h) l.y = -2;
+      ctx.fillStyle = `rgba(0, 240, 255, ${l.alpha})`;
+      ctx.fillRect(0, l.y, w, l.width);
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+</script>
+
+</body>
+</html>
