@@ -408,6 +408,21 @@ function processArbData(data) {
     return;
   }
 
+  const REF_LINKS = {
+    'extended':    'https://app.extended.exchange/join/MUAR',
+    'nado':        'https://app.nado.xyz/perpetuals?join=wVjcU3e',
+    'pacifica':    'https://app.pacifica.fi/?referral=rektdao',
+    'variational': 'https://omni.variational.io/?ref=OMNIMUAR',
+  };
+
+  function exLink(name) {
+    const key = name.toLowerCase();
+    for (const [k, url] of Object.entries(REF_LINKS)) {
+      if (key.includes(k)) return url;
+    }
+    return '#';
+  }
+
   function fmt(apy) {
     const abs = Math.abs(apy);
     if (abs >= 1000) return apy.toFixed(0) + '%';
@@ -415,7 +430,7 @@ function processArbData(data) {
     return apy.toFixed(2) + '%';
   }
   function exLabel(name) {
-    return name.toUpperCase().replace('VARIATIONAL','VARIATL').slice(0,10);
+    return name.toUpperCase();
   }
   const rankCls = i => i===0 ? 'arb-rank gold' : i===1 ? 'arb-rank silver' : i===2 ? 'arb-rank bronze' : 'arb-rank';
 
@@ -424,9 +439,9 @@ function processArbData(data) {
     <td><span class="arb-symbol">${o.sym}</span></td>
     <td>
       <div class="arb-exchange-pair">
-        <span>LONG <span class="arb-ex-long">${exLabel(o.longEx)}</span></span>
+        <span>LONG <a href="${exLink(o.longEx)}" target="_blank" rel="noopener" class="arb-ex-long arb-ex-link">${exLabel(o.longEx)}</a></span>
         <span class="arb-arrow">&#8644;</span>
-        <span>SHORT <span class="arb-ex-short">${exLabel(o.shortEx)}</span></span>
+        <span>SHORT <a href="${exLink(o.shortEx)}" target="_blank" rel="noopener" class="arb-ex-short arb-ex-link">${exLabel(o.shortEx)}</a></span>
       </div>
     </td>
     <td>
