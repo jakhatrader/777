@@ -333,7 +333,7 @@ async function fetchArbData() {
   el.innerHTML = '<div class="arb-loading">Fetching funding rates...</div>';
 
   try {
-    const r = await fetch('https://api.loris.tools/funding');
+    const r = await fetch('https://loris-proxy.jakhatrader.workers.dev/');
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
     if (!data || !data.funding_rates) throw new Error('Invalid response');
