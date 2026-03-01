@@ -122,6 +122,8 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 .arb-loading { padding: 40px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--text-dim); animation: blink 1.2s infinite; letter-spacing: 2px; }
 .arb-error { padding: 30px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--neon-pink); opacity: 0.7; letter-spacing: 1px; }
 .arb-empty { padding: 40px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text-dim); opacity: 0.6; letter-spacing: 1px; }
+.arb-iframe-wrap { position: relative; width: 100%; height: 620px; }
+.arb-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
 /* TIER LIST SECTION */
 .tierlist-section { }
@@ -232,7 +234,7 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
     <div class="table-wrapper" style="border-color: rgba(255,140,0,0.2); box-shadow: 0 0 40px rgba(255,140,0,0.04), 0 20px 60px rgba(0,0,0,0.5);">
       <div class="arb-intro">
         <p>Discover arbitrage opportunities by comparing funding rates across decentralized exchanges.</p>
-        <p>Data refreshes every 5 minutes.</p>
+        <p>Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; Min APY: 50%</p>
         <p class="arb-refresh-note" id="arb-last-updated"></p>
       </div>
       <div class="arb-title">&#x25B2; Top 10 Funding Rate Opportunities</div>
@@ -240,7 +242,9 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
         <div class="arb-loading">Loading funding rate data...</div>
       </div>
     </div>
-    <div class="data-note" style="color: rgba(255,140,0,0.4);">data sourced from loris.tools &bull; exchanges: extended, nado, pacifica, variational &bull; min APY: 50%</div>
+    <div class="data-note" style="color: rgba(255,140,0,0.35);">
+      data sourced from <a href="https://loris.tools" target="_blank" rel="noopener" style="color:rgba(255,140,0,0.6);text-decoration:none;">loris.tools</a>
+    </div>
   </div>
 
   <div class="footer">
@@ -325,151 +329,140 @@ function rawToApy(raw, exchangeName) {
 }
 
 async function fetchArbData() {
-  const content = document.getElementById('arb-content');
-  content.innerHTML = '<div class="arb-loading">Fetching funding rates from loris.tools...</div>';
-  
-  try {
-    const resp = await fetch('https://api.loris.tools/funding');
-    if (!resp.ok) throw new Error('API response: ' + resp.status);
-    const data = await resp.json();
-    
-    arbDataLoaded = true;
-    processArbData(data);
-    document.getElementById('arb-last-updated').textContent = 
-      'Last updated: ' + new Date().toLocaleTimeString();
-      
-  } catch(err) {
-    console.error('Arb fetch error:', err);
-    content.innerHTML = '<div class="arb-error">Failed to load funding rate data.<br>Error: ' + err.message + '</div>';
+  const el = document.getElementById('arb-content');
+  el.innerHTML = '<div class="arb-loading">Fetching funding rates...</div>';
+
+  // Try multiple CORS proxies in order
+  const PROXIES = [
+    url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+    url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    url => `https://thingproxy.freeboard.io/fetch/${url}`,
+  ];
+  const TARGET = 'https://api.loris.tools/funding';
+
+  let data = null;
+  let lastErr = '';
+
+  for (const proxy of PROXIES) {
+    try {
+      const r = await fetch(proxy(TARGET), { signal: AbortSignal.timeout(8000) });
+      if (!r.ok) { lastErr = 'HTTP ' + r.status; continue; }
+      data = await r.json();
+      if (data && data.funding_rates) break;
+      data = null;
+    } catch(e) { lastErr = e.message; }
   }
+
+  if (!data) {
+    el.innerHTML = `<div class="arb-error">
+      Could not load data from loris.tools API.<br>
+      <span style="opacity:0.6;font-size:11px;">${lastErr}</span><br><br>
+      <a href="https://loris.tools/?exchanges=extended%2Cnado%2Cpacifica%2Cvariational&minApy=50"
+         target="_blank" rel="noopener"
+         style="color:var(--neon-orange);font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;border:1px solid rgba(255,140,0,0.4);padding:8px 18px;border-radius:6px;text-decoration:none;display:inline-block;margin-top:4px;">
+        &#x25BA; Open Loris Tools Directly
+      </a>
+    </div>`;
+    return;
+  }
+
+  arbDataLoaded = true;
+  processArbData(data);
+  document.getElementById('arb-last-updated').textContent =
+    'Last updated: ' + new Date().toLocaleTimeString();
 }
 
 function processArbData(data) {
-  const content = document.getElementById('arb-content');
-  
+  const el = document.getElementById('arb-content');
   const rates = data.funding_rates || {};
   const symbols = data.symbols || [];
-  
-  // Filter to only our exchanges
-  const ourExchanges = Object.keys(rates).filter(ex => 
-    ARB_EXCHANGES.some(target => ex.toLowerCase().includes(target))
+
+  // Filter only our exchanges
+  const ourExchanges = Object.keys(rates).filter(ex =>
+    ARB_EXCHANGES.some(t => ex.toLowerCase().includes(t))
   );
-  
+
   if (ourExchanges.length === 0) {
-    content.innerHTML = '<div class="arb-empty">No data available for selected exchanges.</div>';
+    el.innerHTML = '<div class="arb-empty">No data for selected exchanges.</div>';
     return;
   }
 
-  // Build arbitrage opportunities
-  const opportunities = [];
-  
-  for (const symbol of symbols) {
-    // Collect rates for this symbol across our exchanges
-    const symbolRates = [];
+  // Build arb opportunities
+  const opps = [];
+  for (const sym of symbols) {
+    const pts = [];
     for (const ex of ourExchanges) {
-      const raw = rates[ex] && rates[ex][symbol];
+      const raw = rates[ex]?.[sym];
       if (raw !== undefined && raw !== null) {
-        const apy = rawToApy(raw, ex);
-        symbolRates.push({ exchange: ex, raw, apy });
+        // API: value*10000, already normalized to 8h equivalent
+        const rate8h = raw / 10000;
+        const apy = rate8h / 8 * 24 * 365 * 100;
+        pts.push({ ex, raw, apy });
       }
     }
-    
-    if (symbolRates.length < 2) continue;
-    
-    // Find best long (most negative rate = you receive funding as long)
-    // and best short (most positive rate = you receive funding as short)
-    // Arb: go long on exchange with lowest (most negative) rate,
-    //      go short on exchange with highest (most positive) rate
-    const sorted = [...symbolRates].sort((a, b) => a.raw - b.raw);
-    const longEx = sorted[0];  // most negative = best long
-    const shortEx = sorted[sorted.length - 1];  // most positive = best short
-    
-    if (longEx.exchange === shortEx.exchange) continue;
-    
-    const spread = shortEx.raw - longEx.raw; // in 10000 units
-    if (spread <= 0) continue;
-    
-    // Net APY from spread
-    const spreadApy = rawToApy(spread, 'default');
-    
-    if (spreadApy < MIN_APY) continue;
-    
-    opportunities.push({
-      symbol,
-      longExchange: longEx.exchange,
-      shortExchange: shortEx.exchange,
-      longRate: longEx.apy,
-      shortRate: shortEx.apy,
-      spreadApy,
-      longRaw: longEx.raw,
-      shortRaw: shortEx.raw
-    });
+    if (pts.length < 2) continue;
+    const sorted = [...pts].sort((a,b) => a.raw - b.raw);
+    const longEx  = sorted[0];
+    const shortEx = sorted[sorted.length - 1];
+    if (longEx.ex === shortEx.ex) continue;
+    const spreadRaw = shortEx.raw - longEx.raw;
+    if (spreadRaw <= 0) continue;
+    const netApy = (spreadRaw / 10000) / 8 * 24 * 365 * 100;
+    if (netApy < MIN_APY) continue;
+    opps.push({ sym, longEx: longEx.ex, shortEx: shortEx.ex,
+                longApy: longEx.apy, shortApy: shortEx.apy, netApy });
   }
-  
-  // Sort by spread APY descending
-  opportunities.sort((a, b) => b.spreadApy - a.spreadApy);
-  
-  const top10 = opportunities.slice(0, 10);
-  
-  if (top10.length === 0) {
-    content.innerHTML = '<div class="arb-empty">No arbitrage opportunities found above ' + MIN_APY + '% APY at this time.<br>Try again in a few minutes.</div>';
+
+  opps.sort((a,b) => b.netApy - a.netApy);
+  const top = opps.slice(0, 10);
+
+  if (top.length === 0) {
+    el.innerHTML = `<div class="arb-empty">
+      No opportunities above ${MIN_APY}% APY right now.<br>
+      <span style="opacity:0.5;font-size:11px;">Try again in a few minutes or lower the min APY threshold.</span>
+    </div>`;
     return;
   }
-  
-  function fmtEx(name) {
-    return name.toUpperCase().replace('EXTENDED', 'EXTENDED').replace('VARIATIONAL', 'VARIATIONAL');
-  }
-  
-  function fmtApy(apy) {
-    if (Math.abs(apy) >= 1000) return apy.toFixed(0) + '%';
-    if (Math.abs(apy) >= 100) return apy.toFixed(1) + '%';
+
+  function fmt(apy) {
+    const abs = Math.abs(apy);
+    if (abs >= 1000) return apy.toFixed(0) + '%';
+    if (abs >= 100)  return apy.toFixed(1) + '%';
     return apy.toFixed(2) + '%';
   }
-  
-  function rankClass(i) {
-    if (i === 0) return 'arb-rank gold';
-    if (i === 1) return 'arb-rank silver';
-    if (i === 2) return 'arb-rank bronze';
-    return 'arb-rank';
+  function exLabel(name) {
+    return name.toUpperCase().replace('VARIATIONAL','VARIATL').slice(0,10);
   }
-  
-  const rows = top10.map((op, i) => {
-    const longApyClass = op.longRate < 0 ? 'arb-rate-pos' : 'arb-rate-neg';
-    const shortApyClass = op.shortRate > 0 ? 'arb-rate-pos' : 'arb-rate-neg';
-    return `<tr>
-      <td class="${rankClass(i)}">${i + 1}</td>
-      <td><span class="arb-symbol">${op.symbol}</span></td>
-      <td>
-        <div class="arb-exchange-pair">
-          <span title="Long on this exchange">LONG <span class="arb-ex-long">${fmtEx(op.longExchange)}</span></span>
-          <span class="arb-arrow">&#8644;</span>
-          <span title="Short on this exchange">SHORT <span class="arb-ex-short">${fmtEx(op.shortExchange)}</span></span>
-        </div>
-      </td>
-      <td>
-        <span class="${longApyClass}">${fmtApy(op.longRate)}</span>
-        &nbsp;/&nbsp;
-        <span class="${shortApyClass}">${fmtApy(op.shortRate)}</span>
-      </td>
-      <td><span class="arb-apy">+${fmtApy(op.spreadApy)}</span></td>
-    </tr>`;
-  }).join('');
-  
-  content.innerHTML = `
-    <table class="arb-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Symbol</th>
-          <th>Strategy</th>
-          <th>Long / Short Rate (APY)</th>
-          <th>Net APY</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+  const rankCls = i => i===0 ? 'arb-rank gold' : i===1 ? 'arb-rank silver' : i===2 ? 'arb-rank bronze' : 'arb-rank';
+
+  const rows = top.map((o,i) => `<tr>
+    <td class="${rankCls(i)}">${i+1}</td>
+    <td><span class="arb-symbol">${o.sym}</span></td>
+    <td>
+      <div class="arb-exchange-pair">
+        <span>LONG <span class="arb-ex-long">${exLabel(o.longEx)}</span></span>
+        <span class="arb-arrow">&#8644;</span>
+        <span>SHORT <span class="arb-ex-short">${exLabel(o.shortEx)}</span></span>
+      </div>
+    </td>
+    <td>
+      <span class="${o.longApy<0?'arb-rate-pos':'arb-rate-neg'}">${fmt(o.longApy)}</span>
+      &nbsp;/&nbsp;
+      <span class="${o.shortApy>0?'arb-rate-pos':'arb-rate-neg'}">${fmt(o.shortApy)}</span>
+    </td>
+    <td><span class="arb-apy">+${fmt(o.netApy)}</span></td>
+  </tr>`).join('');
+
+  el.innerHTML = `<table class="arb-table">
+    <thead><tr>
+      <th>#</th><th>Symbol</th><th>Strategy</th>
+      <th>Long / Short APY</th><th>Net APY</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
 }
 
+// ─── TIER LIST ───
 // ─── TIER LIST ───
 function fmtUSD(n) {
   if (!n || isNaN(n) || n === 0) return '<span class="no-data">\u2014</span>';
