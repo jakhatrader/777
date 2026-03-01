@@ -43,8 +43,7 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: 'Rajdha
 .stat-item.tab-tierlist.active { border-color: var(--neon-cyan); background: rgba(0,240,255,0.08); box-shadow: 0 0 25px rgba(0,240,255,0.25), inset 0 0 20px rgba(0,240,255,0.05); }
 .stat-item.tab-tierlist.active .stat-label { color: var(--neon-cyan); }
 .stat-item.tab-tierlist.active .stat-value { color: var(--neon-cyan); }
-.stat-item.tab-volume { border-color: rgba(0,240,255,0.15); cursor: default; }
-.stat-item.tab-volume:hover { border-color: rgba(0,240,255,0.25); box-shadow: none; }
+
 .stat-item.tab-arb { border-color: rgba(255,140,0,0.15); }
 .stat-item.tab-arb:hover { border-color: rgba(255,140,0,0.4); box-shadow: 0 0 18px rgba(255,140,0,0.15), inset 0 0 12px rgba(255,140,0,0.04); }
 .stat-item.tab-arb.active { border-color: var(--neon-orange); background: rgba(255,140,0,0.08); box-shadow: 0 0 25px rgba(255,140,0,0.3), inset 0 0 20px rgba(255,140,0,0.06); }
@@ -301,10 +300,6 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
       <div class="stat-value" id="total-protocols">8</div>
       <span class="tab-arrow">&#x25BC; Tier List</span>
     </div>
-    <div class="stat-item tab-volume">
-      <div class="stat-label">Total 24h Volume</div>
-      <div class="stat-value" id="total-volume"><span class="loading-cell">loading...</span></div>
-    </div>
     <div class="stat-item tab-arb" id="tab-arb" onclick="switchTab('arb')">
       <div class="stat-label">Funding Rate Arbitrage</div>
       <div class="stat-value orange">Top Opportunities</div>
@@ -330,14 +325,11 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
           <tr>
             <th>Tier</th>
             <th>Protocol</th>
-            <th>Perp Volume 24h</th>
           </tr>
         </thead>
         <tbody id="dex-table-body"></tbody>
       </table>
     </div>
-    <div class="data-note">data sourced from defillama.com &bull; auto-refreshes every 5 min</div>
-    <div class="data-status" id="data-status"></div>
   </div>
 
   <!-- ARB SECTION -->
@@ -794,13 +786,20 @@ function tierCls(t) { return 'tier tier-' + t.toLowerCase(); }
 function fallbackIcon(name) {
   return `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%2216%22 fill=%22%231a1a2e%22/><text x=%2216%22 y=%2221%22 text-anchor=%22middle%22 fill=%22%2300f0ff%22 font-size=%2214%22 font-family=%22monospace%22>${name[0]}</text></svg>`;
 }
-function render(dexes, loading) {
+function render(dexes) {
+  const tierOrder = { 'S': 0, 'A': 1, 'B': 2, 'C': 3, 'D': 4 };
+  const nameOrder = {
+    'Variational': 0, 'Nado': 1,
+    'Tread Fi': 0, 'Extended': 1, 'Pacifica': 2,
+    'DreamCash': 0, '01': 1, 'Carbon': 2
+  };
+  const sorted = [...dexes].sort((a, b) => {
+    const t = (tierOrder[a.tier] ?? 99) - (tierOrder[b.tier] ?? 99);
+    if (t !== 0) return t;
+    return (nameOrder[a.name] ?? 99) - (nameOrder[b.name] ?? 99);
+  });
   const tbody = document.getElementById('dex-table-body');
-  const sorted = [...dexes].sort((a, b) => (b.volume24h || 0) - (a.volume24h || 0));
-  let tVol = 0;
   tbody.innerHTML = sorted.map((d, i) => {
-    tVol += (d.volume24h || 0);
-    const v = loading ? '<span class="loading-cell">loading...</span>' : fmtUSD(d.volume24h);
     return `<tr>
       <td><div class="${tierCls(d.tier)}">${d.tier}</div><span class="rank-num">#${i+1}</span></td>
       <td><div class="dex-cell">
@@ -808,65 +807,10 @@ function render(dexes, loading) {
         <div><div class="dex-name"><a href="${d.ref}" target="_blank" rel="noopener">${d.name}</a></div></div>
         <a class="trade-btn" href="${d.ref}" target="_blank" rel="noopener">Trade <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div></td>
-      <td>${v}</td>
     </tr>`;
   }).join('');
-  if (!loading) { document.getElementById('total-volume').textContent = fmtPlain(tVol); }
 }
-function setStatus(msg, ok) {
-  const el = document.getElementById('data-status');
-  el.textContent = msg;
-  el.className = 'data-status ' + (ok ? 'ok' : 'err');
-}
-async function fetchData() {
-  render(DEXES.map(d => ({ ...d, volume24h: 0 })), true);
-  try {
-    const r = await fetch('https://api.llama.fi/overview/derivatives?excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true&dataType=dailyVolume');
-    if (r.ok) {
-      const data = await r.json();
-      const protos = data.protocols || [];
-      if (protos.length > 0) {
-        const map = {};
-        protos.forEach(p => {
-          [p.defillamaId, p.module, p.name, p.displayName, p.slug].filter(Boolean).forEach(k => {
-            map[k.toLowerCase()] = p;
-            map[k.toLowerCase().replace(/\s+/g, '-')] = p;
-            map[k.toLowerCase().replace(/[\s.-]+/g, '')] = p;
-          });
-        });
-        const enriched = DEXES.map(d => {
-          let m = null;
-          for (const s of d.slugs) {
-            m = map[s] || map[s.replace(/[.-]/g, '')] || map[s.replace(/-/g, ' ')];
-            if (m) break;
-          }
-          if (!m) m = map[d.name.toLowerCase()] || map[d.name.toLowerCase().replace(/[\s.]+/g, '')];
-          return { ...d, volume24h: m ? (m.total24h || m.dailyVolume || 0) : 0 };
-        });
-        render(enriched, false);
-        setStatus(`defillama \u2713 \u2022 ${protos.length} protocols \u2022 ${new Date().toLocaleTimeString()}`, true);
-        return;
-      }
-    }
-  } catch (e) { console.warn('Bulk failed:', e); }
-  const results = DEXES.map(d => ({ ...d, volume24h: 0 }));
-  let loaded = 0;
-  await Promise.allSettled(DEXES.map(async (d, i) => {
-    for (const slug of d.slugs) {
-      try {
-        const r = await fetch(`https://api.llama.fi/summary/derivatives/${slug}?dataType=dailyVolume`);
-        if (!r.ok) continue;
-        const data = await r.json();
-        const vol = data.total24h || data.totalVolume24h || 0;
-        if (vol > 0) { results[i].volume24h = vol; loaded++; return; }
-      } catch (e) {}
-    }
-  }));
-  render(results, false);
-  setStatus(`defillama \u2022 ${loaded}/${DEXES.length} loaded \u2022 ${new Date().toLocaleTimeString()}`, loaded > 0);
-}
-fetchData();
-setInterval(fetchData, 5 * 60 * 1000);
+render(DEXES);
 // Refresh arb data every 5 min if visible
 setInterval(() => { if (arbViewActive) fetchArbData(); }, 5 * 60 * 1000);
 
