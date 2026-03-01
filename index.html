@@ -172,6 +172,38 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
   .trade-btn svg { width: 10px; height: 10px; }
 }
 
+/* ─── BEST BOTS SECTION ─── */
+.bots-section { display: none; }
+.bots-section.visible { display: block; }
+.bots-wrapper { display: flex; flex-direction: column; gap: 18px; }
+.bot-card { background: var(--bg-card); border: 1px solid rgba(57,255,20,0.15); border-radius: 16px; overflow: hidden; box-shadow: 0 0 30px rgba(57,255,20,0.04), 0 15px 40px rgba(0,0,0,0.4); transition: all 0.3s ease; }
+.bot-card:hover { border-color: rgba(57,255,20,0.35); box-shadow: 0 0 50px rgba(57,255,20,0.08), 0 20px 60px rgba(0,0,0,0.5); transform: translateY(-2px); }
+.bot-card-header { background: linear-gradient(135deg, rgba(57,255,20,0.08) 0%, rgba(0,240,255,0.04) 100%); border-bottom: 1px solid rgba(57,255,20,0.1); padding: 20px 24px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.bot-name { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: var(--neon-green); letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 0 12px rgba(57,255,20,0.4); }
+.bot-badge { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; border-radius: 4px; }
+.bot-badge.mm { color: var(--neon-cyan); background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.2); }
+.bot-badge.dn { color: var(--neon-orange); background: rgba(255,140,0,0.08); border: 1px solid rgba(255,140,0,0.2); }
+.bot-badge.arb { color: var(--neon-yellow); background: rgba(255,230,0,0.08); border: 1px solid rgba(255,230,0,0.2); }
+.bot-card-body { padding: 18px 24px 20px; }
+.bot-desc { font-family: 'Rajdhani', sans-serif; font-size: 15px; color: var(--text-dim); line-height: 1.7; letter-spacing: 0.3px; margin-bottom: 16px; }
+.bot-desc strong { color: var(--text-main); font-weight: 600; }
+.bot-desc .highlight-cyan { color: var(--neon-cyan); }
+.bot-desc .highlight-orange { color: var(--neon-orange); }
+.bot-desc .highlight-yellow { color: var(--neon-yellow); }
+.bot-link-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 8px; font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; color: var(--neon-green); border: 1px solid rgba(57,255,20,0.3); background: rgba(57,255,20,0.06); transition: all 0.3s ease; cursor: pointer; }
+.bot-link-btn:hover { color: #fff; border-color: var(--neon-green); background: rgba(57,255,20,0.15); box-shadow: 0 0 20px rgba(57,255,20,0.3), inset 0 0 12px rgba(57,255,20,0.05); text-shadow: 0 0 8px var(--neon-green); }
+.bot-link-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; transition: transform 0.3s ease; }
+.bot-link-btn:hover svg { transform: translateX(3px); }
+.bot-promo { display: inline-block; margin-top: 10px; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--neon-orange); letter-spacing: 1px; background: rgba(255,140,0,0.06); border: 1px solid rgba(255,140,0,0.15); border-radius: 4px; padding: 4px 10px; }
+
+@media (max-width: 700px) {
+  .bot-card-header { padding: 16px 16px 12px; }
+  .bot-name { font-size: 13px; }
+  .bot-card-body { padding: 14px 16px 16px; }
+  .bot-desc { font-size: 14px; }
+  .bot-link-btn { padding: 8px 16px; font-size: 11px; }
+}
+
 /* ─── POINTS CALCULATOR ─── */
 .calc-section { display: none; }
 .calc-section.visible { display: block; }
@@ -282,6 +314,11 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
       <div class="stat-label">Points Calculator</div>
       <div class="stat-value" style="color:#c084fc;text-shadow:0 0 15px rgba(168,85,247,0.4);font-size:11px;line-height:1.4;">Airdrop Estimator</div>
       <span class="tab-arrow" style="color:#c084fc;">&#x25BC; Calculate</span>
+    </div>
+    <div class="stat-item" id="tab-bots" onclick="switchTab('bots')" style="border-color:rgba(57,255,20,0.15);cursor:pointer;transition:all 0.3s;">
+      <div class="stat-label">Best Trading Bots</div>
+      <div class="stat-value" style="color:var(--neon-green);text-shadow:0 0 15px rgba(57,255,20,0.4);font-size:11px;line-height:1.4;">Automated Strategies</div>
+      <span class="tab-arrow" style="color:var(--neon-green);">&#x25BC; Explore Bots</span>
     </div>
   </div>
 
@@ -440,6 +477,70 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
     <div class="data-note">Calculator based on publicly available tokenomics data &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a></div>
   </div>
 
+  <!-- BOTS SECTION -->
+  <div class="bots-section" id="bots-section">
+    <div class="bots-wrapper">
+
+      <!-- TREAD FI -->
+      <div class="bot-card">
+        <div class="bot-card-header">
+          <div class="bot-name">&#x2B21; Tread FI</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="bot-badge mm">MM Strategy</span>
+            <span class="bot-badge dn">DN Strategy</span>
+          </div>
+        </div>
+        <div class="bot-card-body">
+          <div class="bot-desc">
+            Best bot for <strong class="highlight-cyan">Market Making</strong> and <strong class="highlight-orange">Delta-Neutral</strong> strategies. Provides advanced automated trading with powerful risk management. Currently has <strong>limited perp DEX support</strong> — but the available integrations are top-tier.
+          </div>
+          <a href="https://app.tread.fi/referral/39KUWV1L" target="_blank" rel="noopener noreferrer" class="bot-link-btn">
+            Launch Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- FLOW BOT -->
+      <div class="bot-card">
+        <div class="bot-card-header">
+          <div class="bot-name">&#x2B21; Flow Bot</div>
+          <span class="bot-badge dn">DN Strategy</span>
+        </div>
+        <div class="bot-card-body">
+          <div class="bot-desc">
+            Specializes in <strong class="highlight-orange">Delta-Neutral</strong> strategy running between <strong>Variational</strong> and <strong>Extended</strong> perp DEXes. Smooth onboarding and clean interface — great entry point for automated DN trading.
+          </div>
+          <a href="https://flowbot.pro/onboarding?ref=MUAR" target="_blank" rel="noopener noreferrer" class="bot-link-btn">
+            Launch Flow Bot <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <div class="bot-promo">&#x1F3AB; Promo Code: MUAR</div>
+        </div>
+      </div>
+
+      <!-- FUNDING PRO -->
+      <div class="bot-card">
+        <div class="bot-card-header">
+          <div class="bot-name">&#x2B21; Funding Pro</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="bot-badge arb">Funding Arbitrage</span>
+            <span class="bot-badge dn">DN Strategy</span>
+          </div>
+        </div>
+        <div class="bot-card-body">
+          <div class="bot-desc">
+            The best <strong class="highlight-yellow">arbitrage funding bot</strong> available. Supports <strong>all perp DEXes</strong> for delta-neutral trading with a primary focus on <strong class="highlight-yellow">funding rate arbitrage</strong>. If you're looking to capture funding spreads across exchanges — this is the one.
+          </div>
+          <a href="https://profunding.pro/?ref=MUAR" target="_blank" rel="noopener noreferrer" class="bot-link-btn">
+            Launch Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <div class="bot-promo">&#x1F3AB; Promo Code: MUAR</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="data-note" style="margin-top:20px;">curated by MUAR &bull; always DYOR before using any bot</div>
+  </div>
+
   <div class="footer">
     <span>&#x2B21;</span> MUAR PERP AGGREGATOR <span>&#x2B21;</span> 2025
   </div>
@@ -467,20 +568,25 @@ function switchTab(tab) {
   const tabTierlist = document.getElementById('tab-tierlist');
   const tabArb = document.getElementById('tab-arb');
   const tabCalc = document.getElementById('tab-calc');
+  const tabBots = document.getElementById('tab-bots');
   const tierlist = document.getElementById('tierlist-section');
   const arbSection = document.getElementById('arb-section');
   const calcSection = document.getElementById('calc-section');
+  const botsSection = document.getElementById('bots-section');
 
   // Reset all
   tabTierlist.classList.remove('active');
   tabArb.classList.remove('active');
   if (tabCalc) tabCalc.classList.remove('active');
+  if (tabBots) tabBots.classList.remove('active');
   tierlist.classList.add('hidden');
   arbSection.classList.remove('visible');
   if (calcSection) calcSection.classList.remove('visible');
+  if (botsSection) botsSection.classList.remove('visible');
   tabArb.querySelector('.tab-arrow').innerHTML = '&#x25BC; Click to Explore';
   tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25BC; Tier List';
   if (tabCalc) tabCalc.querySelector('.tab-arrow').innerHTML = '&#x25BC; Calculate';
+  if (tabBots) tabBots.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore Bots';
 
   if (tab === 'arb') {
     tabArb.classList.add('active');
@@ -491,6 +597,9 @@ function switchTab(tab) {
     if (tabCalc) { tabCalc.classList.add('active'); tabCalc.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
     if (calcSection) calcSection.classList.add('visible');
     switchCalcDex(currentCalcDex);
+  } else if (tab === 'bots') {
+    if (tabBots) { tabBots.classList.add('active'); tabBots.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
+    if (botsSection) botsSection.classList.add('visible');
   } else {
     tabTierlist.classList.add('active');
     tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active';
