@@ -332,35 +332,19 @@ async function fetchArbData() {
   const el = document.getElementById('arb-content');
   el.innerHTML = '<div class="arb-loading">Fetching funding rates...</div>';
 
-  const TARGET = 'https://api.loris.tools/funding';
-
-  // Try: 1) direct (works when hosted), 2) multiple CORS proxies
-  const ATTEMPTS = [
-    () => fetch(TARGET, { mode: 'cors', signal: AbortSignal.timeout(8000) }),
-    () => fetch(`https://corsproxy.io/?url=${encodeURIComponent(TARGET)}`, { signal: AbortSignal.timeout(8000) }),
-    () => fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(TARGET)}`, { signal: AbortSignal.timeout(8000) }),
-    () => fetch(`https://corsproxy.io/?${TARGET}`, { signal: AbortSignal.timeout(8000) }),
-    () => fetch(`https://proxy.cors.sh/${TARGET}`, { signal: AbortSignal.timeout(8000) }),
-  ];
-
-  let data = null;
-  let lastErr = 'All proxies failed';
-
-  for (const attempt of ATTEMPTS) {
-    try {
-      const r = await attempt();
-      if (!r.ok) { lastErr = 'HTTP ' + r.status; continue; }
-      const json = await r.json();
-      if (json && json.funding_rates) { data = json; break; }
-    } catch(e) { lastErr = e.message; }
-  }
-
-  if (!data) {
-    // Show open-in-loris button as fallback
+  try {
+    const r = await fetch('https://api.loris.tools/funding');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    if (!data || !data.funding_rates) throw new Error('Invalid response');
+    arbDataLoaded = true;
+    processArbData(data);
+    document.getElementById('arb-last-updated').textContent =
+      'Last updated: ' + new Date().toLocaleTimeString();
+  } catch(e) {
     el.innerHTML = `<div style="padding:30px;text-align:center;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);letter-spacing:1px;margin-bottom:20px;">
-        Live data requires the page to be hosted online.<br>
-        <span style="opacity:0.5;font-size:10px;">If hosted — check browser console for errors.</span>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:rgba(255,80,120,0.8);letter-spacing:1px;margin-bottom:20px;">
+        Error: ${e.message}
       </div>
       <a href="https://loris.tools/?exchanges=extended%2Cnado%2Cpacifica%2Cvariational&minApy=50&displayUnit=APY"
          target="_blank" rel="noopener"
@@ -368,23 +352,8 @@ async function fetchArbData() {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         View on Loris Tools
       </a>
-      <div style="margin-top:28px;border-top:1px solid rgba(255,140,0,0.1);padding-top:20px;">
-        <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--neon-orange);letter-spacing:2px;margin-bottom:14px;opacity:0.7;">CONFIGURED FILTERS</div>
-        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
-          ${['EXTENDED','NADO','PACIFICA','VARIATIONAL'].map(e => `<span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--neon-cyan);background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);border-radius:4px;padding:4px 10px;">${e}</span>`).join('')}
-        </div>
-        <div style="margin-top:10px;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);opacity:0.6;letter-spacing:1px;">
-          MIN APY: 50% &bull; DISPLAY: APY &bull; LEVERAGE: 10x
-        </div>
-      </div>
     </div>`;
-    return;
   }
-
-  arbDataLoaded = true;
-  processArbData(data);
-  document.getElementById('arb-last-updated').textContent =
-    'Last updated: ' + new Date().toLocaleTimeString();
 }
 
 function processArbData(data) {
