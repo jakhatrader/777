@@ -1389,7 +1389,7 @@ function renderVarSpreadTable(el) {
     if (col === 'funding')  return (Math.abs(b.fundApy) - Math.abs(a.fundApy)) * dir;
     return 0;
   });
-  const filtered = withSlippage.slice(0, 15);
+  const filtered = withSlippage.slice(0, 30);
 
   if (filtered.length === 0) {
     el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No Variational data available.</div>`;
@@ -1414,6 +1414,7 @@ function renderVarSpreadTable(el) {
     const slip100Cls = (m.slip100k ?? baseBps) <= 5 ? 'var-spread-good' : 'var-spread-ok';
     const slip1mCls  = m.slip1m === null ? 'var-fund-neu' : m.slip1m <= 10 ? 'var-spread-good' : 'var-spread-ok';
     const fundPct    = m.fundRateRaw.toFixed(4) + '%';
+    const fundHours  = ((parseInt(m.funding_interval_s) || 28800) / 3600).toFixed(0) + 'h';
     const fundApyStr = (m.fundApy >= 0 ? '+' : '') + m.fundApy.toFixed(1) + '%';
     const fundCls    = m.fundRateRaw > 0.0001 ? 'var-fund-pos' : m.fundRateRaw < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
     const vol24 = parseFloat(m.volume_24h);
@@ -1426,7 +1427,7 @@ function renderVarSpreadTable(el) {
       <td><span class="${slip100Cls}">${slip100Str}</span></td>
       <td><span class="${slip1mCls}">${slip1mStr}</span></td>
       <td><span class="${slip100Cls}">${(baseBps/100).toFixed(4)}%</span></td>
-      <td><span class="${fundCls}">${fundPct}/interval</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
+      <td><span class="${fundCls}">${fundPct} / ${fundHours}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
       <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
       <td><a class="var-trade-btn" href="https://omni.variational.io/?ref=OMNIMUAR#${m.ticker}" target="_blank" rel="noopener">Trade &#x276F;</a></td>
     </tr>`;
