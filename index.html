@@ -180,7 +180,38 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
   .trade-btn svg { width: 12px; height: 12px; }
 }
 
-/* ─── BEST BOTS SECTION ─── */
+/* ─── VARIATIONAL MARKETS SECTION ─── */
+.varmarkets-section { display: none; }
+.varmarkets-section.visible { display: block; }
+.var-filter-btn { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 5px; cursor: pointer; transition: all 0.2s; color: var(--text-dim); background: transparent; border: 1px solid rgba(255,255,255,0.1); }
+.var-filter-btn.active { color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); background: rgba(0,240,255,0.07); }
+.var-filter-btn:hover { color: var(--neon-cyan); border-color: rgba(0,240,255,0.3); }
+.var-tab { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 10px 20px; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; color: var(--text-dim); background: transparent; }
+.var-tab.active { color: var(--neon-cyan); border-bottom-color: var(--neon-cyan); }
+.var-tab:hover { color: var(--neon-cyan); }
+.var-table { width: 100%; border-collapse: collapse; }
+.var-table thead th { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(0,240,255,0.08); background: rgba(0,240,255,0.02); }
+.var-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
+.var-table tbody tr:hover { background: rgba(0,240,255,0.03); }
+.var-table tbody td { padding: 11px 16px; font-size: 13px; vertical-align: middle; }
+.var-ticker { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-main); letter-spacing: 1px; }
+.var-spread-good { color: var(--neon-green); font-family: 'Share Tech Mono', monospace; font-size: 12px; text-shadow: 0 0 6px rgba(57,255,20,0.3); }
+.var-spread-ok { color: var(--neon-yellow); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
+.var-fund-pos { color: var(--neon-pink); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
+.var-fund-neg { color: var(--neon-green); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
+.var-fund-neu { color: var(--text-dim); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
+.var-arb-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 4px; font-family: 'Share Tech Mono', monospace; font-size: 11px; font-weight: 700; }
+.var-arb-long-var { color: var(--neon-green); background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.25); }
+.var-arb-long-hl { color: #60b8f5; background: rgba(96,184,245,0.08); border: 1px solid rgba(96,184,245,0.25); }
+.var-arb-apy { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--neon-orange); text-shadow: 0 0 10px rgba(255,140,0,0.4); }
+.var-trade-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 1px; text-decoration: none; color: var(--neon-cyan); border: 1px solid rgba(0,240,255,0.25); background: rgba(0,240,255,0.04); transition: all 0.25s; white-space: nowrap; }
+.var-trade-btn:hover { color: #fff; border-color: var(--neon-cyan); background: rgba(0,240,255,0.13); box-shadow: 0 0 14px rgba(0,240,255,0.25); }
+@media (max-width: 700px) {
+  .var-table thead th { font-size: 8px; padding: 10px 8px; }
+  .var-table tbody td { padding: 9px 8px; font-size: 12px; }
+  .var-ticker { font-size: 11px; }
+  .var-arb-apy { font-size: 12px; }
+}
 .bots-section { display: none; }
 .bots-section.visible { display: block; }
 .bots-wrapper { display: flex; flex-direction: column; gap: 18px; }
@@ -279,10 +310,39 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 .screenshot-photo-none.selected { border-color: var(--neon-cyan); opacity: 1; }
 .screenshot-photo-none:hover { opacity: 0.75; }
 .photo-row-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; text-align: center; margin-bottom: 6px; }
+/* LANGUAGE BAR */
+.lang-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(6,6,14,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,240,255,0.1); display: flex; align-items: center; justify-content: flex-end; padding: 0 20px; height: 36px; gap: 4px; }
+.lang-btn { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--text-dim); background: none; border: 1px solid transparent; border-radius: 4px; padding: 3px 8px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; white-space: nowrap; }
+.lang-btn:hover { color: var(--neon-cyan); border-color: rgba(0,240,255,0.25); }
+.lang-btn.active { color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); background: rgba(0,240,255,0.07); text-shadow: 0 0 8px rgba(0,240,255,0.4); }
+.lang-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.08); margin: 0 2px; }
+body { padding-top: 36px; }
+/* RTL support for Arabic */
+html[dir="rtl"] .lang-bar { justify-content: flex-start; }
+html[dir="rtl"] .container { direction: rtl; text-align: right; }
+html[dir="rtl"] .stats-bar { direction: rtl; }
+html[dir="rtl"] .dex-cell { flex-direction: row-reverse; }
+html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
 
 </style>
 </head>
 <body>
+<div class="lang-bar" id="lang-bar">
+  <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;letter-spacing:2px;margin-right:8px;">LANG</span>
+  <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+  <div class="lang-divider"></div>
+  <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
+  <div class="lang-divider"></div>
+  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+  <div class="lang-divider"></div>
+  <button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
+  <div class="lang-divider"></div>
+  <button class="lang-btn" onclick="setLang('zh')">🇨🇳 ZH</button>
+  <div class="lang-divider"></div>
+  <button class="lang-btn" onclick="setLang('ko')">🇰🇷 KO</button>
+  <div class="lang-divider"></div>
+  <button class="lang-btn" onclick="setLang('ar')">🇸🇦 AR</button>
+</div>
 <canvas id="bg-canvas"></canvas>
 <div class="scanline"></div>
 <div class="vignette"></div>
@@ -300,29 +360,34 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
       </a>
     </div>
     <h1 class="site-title">PERP DEX TIER LIST</h1>
-    <p class="subtitle">my personal tier list of perpetual DEXes</p>
+    <p class="subtitle" data-i18n="subtitle">my personal tier list of perpetual DEXes</p>
   </header>
 
   <div class="stats-bar">
     <div class="stat-item tab-tierlist active" id="tab-tierlist" onclick="switchTab('tierlist')">
-      <div class="stat-label">Protocols Listed</div>
+      <div class="stat-label" data-i18n="tab_protocols_label">Protocols Listed</div>
       <div class="stat-value" id="total-protocols">7</div>
-      <span class="tab-arrow">&#x25BC; Tier List</span>
+      <span class="tab-arrow" data-i18n="tab_tierlist_arrow">&#x25BC; Tier List</span>
     </div>
     <div class="stat-item tab-arb" id="tab-arb" onclick="switchTab('arb')">
-      <div class="stat-label">Funding Rate Arbitrage</div>
-      <div class="stat-value orange">Top Opportunities</div>
-      <span class="tab-arrow">&#x25BC; Click to Explore</span>
+      <div class="stat-label" data-i18n="tab_arb_label">Funding Rate Arbitrage</div>
+      <div class="stat-value orange" data-i18n="tab_arb_value">Top Opportunities</div>
+      <span class="tab-arrow" data-i18n="tab_arb_arrow">&#x25BC; Click to Explore</span>
     </div>
     <div class="stat-item" id="tab-calc" onclick="switchTab('calc')" style="border-color:rgba(168,85,247,0.15);cursor:pointer;transition:all 0.3s;">
-      <div class="stat-label">Points Calculator</div>
-      <div class="stat-value" style="color:#c084fc;text-shadow:0 0 15px rgba(168,85,247,0.4);font-size:11px;line-height:1.4;">Airdrop Estimator</div>
-      <span class="tab-arrow" style="color:#c084fc;">&#x25BC; Calculate</span>
+      <div class="stat-label" data-i18n="tab_calc_label">Points Calculator</div>
+      <div class="stat-value" style="color:#c084fc;text-shadow:0 0 15px rgba(168,85,247,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_calc_value">Airdrop Estimator</div>
+      <span class="tab-arrow" style="color:#c084fc;" data-i18n="tab_calc_arrow">&#x25BC; Calculate</span>
     </div>
     <div class="stat-item" id="tab-bots" onclick="switchTab('bots')" style="border-color:rgba(57,255,20,0.15);cursor:pointer;transition:all 0.3s;">
-      <div class="stat-label">Best Trading Bots</div>
-      <div class="stat-value" style="color:var(--neon-green);text-shadow:0 0 15px rgba(57,255,20,0.4);font-size:11px;line-height:1.4;">Automated Strategies</div>
-      <span class="tab-arrow" style="color:var(--neon-green);">&#x25BC; Explore Bots</span>
+      <div class="stat-label" data-i18n="tab_bots_label">Best Trading Bots</div>
+      <div class="stat-value" style="color:var(--neon-green);text-shadow:0 0 15px rgba(57,255,20,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_bots_value">Automated Strategies</div>
+      <span class="tab-arrow" style="color:var(--neon-green);" data-i18n="tab_bots_arrow">&#x25BC; Explore Bots</span>
+    </div>
+    <div class="stat-item" id="tab-varmarkets" onclick="switchTab('varmarkets')" style="border-color:rgba(0,240,255,0.15);cursor:pointer;transition:all 0.3s;">
+      <div class="stat-label" data-i18n="tab_varmarkets_label">Variational Markets</div>
+      <div class="stat-value" style="color:var(--neon-cyan);text-shadow:0 0 15px rgba(0,240,255,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_varmarkets_value">Low Spread + Arb</div>
+      <span class="tab-arrow" style="color:var(--neon-cyan);" data-i18n="tab_varmarkets_arrow">&#x25BC; Arb Scanner</span>
     </div>
   </div>
 
@@ -359,6 +424,55 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
     </div>
   </div>
 
+
+  <!-- VARIATIONAL MARKETS SECTION -->
+  <div class="varmarkets-section" id="varmarkets-section">
+    <div class="table-wrapper" style="border-color:rgba(0,240,255,0.2);box-shadow:0 0 40px rgba(0,240,255,0.05),0 20px 60px rgba(0,0,0,0.5);">
+      <div style="padding:24px 28px 0;">
+        <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-cyan);letter-spacing:2px;margin-bottom:8px;text-shadow:0 0 12px rgba(0,240,255,0.4);" data-i18n="arb_scanner_title">&#x25B2; FUNDING ARB SCANNER — 5 PERP DEX</div>
+        <p style="font-family:'Rajdhani',sans-serif;font-size:15px;color:var(--text-dim);line-height:1.6;margin-bottom:2px;" data-i18n="arb_scanner_desc">
+          Funding rate arbitrage across <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. 
+          Net APY accounts for <strong style="color:var(--neon-orange);">spread + slippage</strong> on entry &amp; exit — 
+          showing what you actually keep after all transaction costs.
+        </p>
+        <p style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);opacity:0.5;letter-spacing:1px;" id="var-last-updated"></p>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 28px 0;flex-wrap:wrap;">
+        <div data-i18n="max_spread_label" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">MAX SPREAD:</div>
+        <button class="var-filter-btn active" id="vf-10" onclick="setVarFilter(10)">≤ 0.1%</button>
+        <button class="var-filter-btn" id="vf-20" onclick="setVarFilter(20)">≤ 0.2%</button>
+        <button class="var-filter-btn" id="vf-50" onclick="setVarFilter(50)">≤ 0.5%</button>
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.08);margin:0 4px;"></div>
+        <div data-i18n="min_apy_label" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">MIN REAL APY:</div>
+        <button class="var-filter-btn active" id="va-0" onclick="setVarArbMin(0)">Any</button>
+        <button class="var-filter-btn" id="va-50" onclick="setVarArbMin(50)">50%+</button>
+        <button class="var-filter-btn" id="va-100" onclick="setVarArbMin(100)">100%+</button>
+        <button class="var-filter-btn" id="va-200" onclick="setVarArbMin(200)">200%+</button>
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.08);margin:0 4px;"></div>
+        <div data-i18n="hold_label" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">HOLD:</div>
+        <button class="var-filter-btn active" id="vh-1" onclick="setHoldDays(1)">1d</button>
+        <button class="var-filter-btn" id="vh-7" onclick="setHoldDays(7)">7d</button>
+        <button class="var-filter-btn" id="vh-30" onclick="setHoldDays(30)">30d</button>
+        <span id="var-count" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(0,240,255,0.5);letter-spacing:1px;margin-left:auto;"></span>
+      </div>
+      <div style="padding:8px 28px 0;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.45;letter-spacing:1px;" data-i18n="spread_cost_note">
+        * SPREAD COST = (long leg spread + short leg spread) / hold period — subtracted from funding APY to calculate Real Net APY
+      </div>
+
+      <!-- TABS: unified + spread markets -->
+      <div style="display:flex;gap:0;padding:14px 28px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <button class="var-tab active" id="vtab-arb" onclick="setVarTab('arb')" data-i18n="vtab_arb">&#x25CF; Real Net APY (funding − spread cost)</button>
+        <button class="var-tab" id="vtab-spread" onclick="setVarTab('spread')" data-i18n="vtab_spread">Low Spread Markets (VAR only)</button>
+      </div>
+
+      <div id="var-content">
+        <div style="padding:40px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Fetching data from all exchanges...</div>
+      </div>
+      <div class="data-note" style="color:rgba(0,240,255,0.3);">Live data: Variational · Hyperliquid · Extended · Pacifica · Nado — spread data from Variational API where available</div>
+    </div>
+  </div>
 
   <!-- SCREENSHOT MODAL -->
   <div class="screenshot-modal" id="screenshot-modal">
@@ -529,6 +643,211 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 </div>
 
 <script>
+// ─── I18N ─────────────────────────────────────────────────────────────────
+const TRANSLATIONS = {
+  en: {
+    subtitle: 'my personal tier list of perpetual DEXes',
+    tab_protocols_label: 'Protocols Listed',
+    tab_tierlist_arrow: '▼ Tier List',
+    tab_arb_label: 'Funding Rate Arbitrage',
+    tab_arb_value: 'Top Opportunities',
+    tab_arb_arrow: '▼ Click to Explore',
+    tab_calc_label: 'Points Calculator',
+    tab_calc_value: 'Airdrop Estimator',
+    tab_calc_arrow: '▼ Calculate',
+    tab_bots_label: 'Best Trading Bots',
+    tab_bots_value: 'Automated Strategies',
+    tab_bots_arrow: '▼ Explore Bots',
+    tab_varmarkets_label: 'Variational Markets',
+    tab_varmarkets_value: 'Low Spread + Arb',
+    tab_varmarkets_arrow: '▼ Arb Scanner',
+    arb_scanner_title: '▲ FUNDING ARB SCANNER — 5 PERP DEX',
+    arb_scanner_desc: 'Funding rate arbitrage across <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Net APY accounts for <strong style="color:var(--neon-orange);">spread + slippage</strong> on entry &amp; exit — showing what you actually keep after all transaction costs.',
+    max_spread_label: 'MAX SPREAD:',
+    min_apy_label: 'MIN REAL APY:',
+    hold_label: 'HOLD:',
+    vtab_arb: '● Real Net APY (funding − spread cost)',
+    vtab_spread: 'Low Spread Markets (VAR only)',
+    spread_cost_note: '* SPREAD COST = (long leg spread + short leg spread) / hold period — subtracted from funding APY to calculate Real Net APY',
+  },
+  ru: {
+    subtitle: 'личный тир-лист перп DEX от MUAR',
+    tab_protocols_label: 'Протоколы',
+    tab_tierlist_arrow: '▼ Тир-лист',
+    tab_arb_label: 'Фандинг Арбитраж',
+    tab_arb_value: 'Лучшие связки',
+    tab_arb_arrow: '▼ Смотреть',
+    tab_calc_label: 'Калькулятор поинтов',
+    tab_calc_value: 'Оценка аирдропа',
+    tab_calc_arrow: '▼ Считать',
+    tab_bots_label: 'Лучшие боты',
+    tab_bots_value: 'Авто-стратегии',
+    tab_bots_arrow: '▼ Смотреть',
+    tab_varmarkets_label: 'Рынки Variational',
+    tab_varmarkets_value: 'Низкий спред + Арб',
+    tab_varmarkets_arrow: '▼ Сканер',
+    arb_scanner_title: '▲ СКАНЕР ФАНДИНГ-АРБ — 5 PERP DEX',
+    arb_scanner_desc: 'Арбитраж ставок фандинга между <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Real Net APY учитывает <strong style="color:var(--neon-orange);">спред + слиппедж</strong> на входе и выходе — показывает реальный доход после всех издержек.',
+    max_spread_label: 'МАКС СПРЕД:',
+    min_apy_label: 'МИН REAL APY:',
+    hold_label: 'ПЕРИОД:',
+    vtab_arb: '● Real Net APY (фандинг − стоимость спреда)',
+    vtab_spread: 'Рынки с низким спредом (только VAR)',
+    spread_cost_note: '* СТОИМОСТЬ СПРЕДА = (спред лонг-ноги + спред шорт-ноги) / период удержания — вычитается из APY фандинга для расчёта Real Net APY',
+  },
+  fr: {
+    subtitle: 'mon classement personnel des DEX perpétuels',
+    tab_protocols_label: 'Protocoles listés',
+    tab_tierlist_arrow: '▼ Classement',
+    tab_arb_label: 'Arbitrage de financement',
+    tab_arb_value: 'Meilleures opportunités',
+    tab_arb_arrow: '▼ Explorer',
+    tab_calc_label: 'Calculateur de points',
+    tab_calc_value: 'Estimateur d\'airdrop',
+    tab_calc_arrow: '▼ Calculer',
+    tab_bots_label: 'Meilleurs bots',
+    tab_bots_value: 'Stratégies automatisées',
+    tab_bots_arrow: '▼ Explorer',
+    tab_varmarkets_label: 'Marchés Variational',
+    tab_varmarkets_value: 'Faible spread + Arb',
+    tab_varmarkets_arrow: '▼ Scanner',
+    arb_scanner_title: '▲ SCANNER D\'ARB — 5 PERP DEX',
+    arb_scanner_desc: 'Arbitrage des taux de financement entre <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Le Net APY tient compte du <strong style="color:var(--neon-orange);">spread + slippage</strong> à l\'entrée et à la sortie.',
+    max_spread_label: 'SPREAD MAX:',
+    min_apy_label: 'APY NET MIN:',
+    hold_label: 'DURÉE:',
+    vtab_arb: '● Net APY réel (financement − coût spread)',
+    vtab_spread: 'Marchés faible spread (VAR uniquement)',
+    spread_cost_note: '* COÛT SPREAD = (spread jambe longue + spread jambe courte) / période de détention — soustrait de l\'APY de financement',
+  },
+  pt: {
+    subtitle: 'meu tier list pessoal de DEX perpétuos',
+    tab_protocols_label: 'Protocolos listados',
+    tab_tierlist_arrow: '▼ Tier List',
+    tab_arb_label: 'Arbitragem de Funding',
+    tab_arb_value: 'Melhores oportunidades',
+    tab_arb_arrow: '▼ Explorar',
+    tab_calc_label: 'Calculadora de pontos',
+    tab_calc_value: 'Estimativa de airdrop',
+    tab_calc_arrow: '▼ Calcular',
+    tab_bots_label: 'Melhores bots',
+    tab_bots_value: 'Estratégias automáticas',
+    tab_bots_arrow: '▼ Explorar',
+    tab_varmarkets_label: 'Mercados Variational',
+    tab_varmarkets_value: 'Spread baixo + Arb',
+    tab_varmarkets_arrow: '▼ Scanner',
+    arb_scanner_title: '▲ SCANNER DE ARB — 5 PERP DEX',
+    arb_scanner_desc: 'Arbitragem de taxas de funding entre <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. O Net APY considera <strong style="color:var(--neon-orange);">spread + slippage</strong> na entrada e saída.',
+    max_spread_label: 'SPREAD MÁX:',
+    min_apy_label: 'APY REAL MÍN:',
+    hold_label: 'PERÍODO:',
+    vtab_arb: '● APY Real Líquido (funding − custo spread)',
+    vtab_spread: 'Mercados spread baixo (apenas VAR)',
+    spread_cost_note: '* CUSTO SPREAD = (spread perna longa + spread perna curta) / período de detenção — subtraído do APY de funding',
+  },
+  zh: {
+    subtitle: '我对永续合约 DEX 的个人分级榜单',
+    tab_protocols_label: '已列协议',
+    tab_tierlist_arrow: '▼ 分级列表',
+    tab_arb_label: '资金费率套利',
+    tab_arb_value: '最佳机会',
+    tab_arb_arrow: '▼ 查看',
+    tab_calc_label: '积分计算器',
+    tab_calc_value: '空投估算',
+    tab_calc_arrow: '▼ 计算',
+    tab_bots_label: '最佳交易机器人',
+    tab_bots_value: '自动化策略',
+    tab_bots_arrow: '▼ 探索',
+    tab_varmarkets_label: 'Variational 市场',
+    tab_varmarkets_value: '低价差 + 套利',
+    tab_varmarkets_arrow: '▼ 扫描',
+    arb_scanner_title: '▲ 资金费套利扫描 — 5个PERP DEX',
+    arb_scanner_desc: '对比 <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong> 的资金费率套利机会。Real Net APY 已扣除 <strong style="color:var(--neon-orange);">点差 + 滑点</strong>成本。',
+    max_spread_label: '最大点差:',
+    min_apy_label: '最低净APY:',
+    hold_label: '持仓周期:',
+    vtab_arb: '● 真实净APY（资金费 − 点差成本）',
+    vtab_spread: '低点差市场（仅VAR）',
+    spread_cost_note: '* 点差成本 = (多腿点差 + 空腿点差) / 持仓天数 — 从资金费APY中扣除以计算Real Net APY',
+  },
+  ko: {
+    subtitle: '퍼페추얼 DEX 개인 티어 리스트',
+    tab_protocols_label: '등록된 프로토콜',
+    tab_tierlist_arrow: '▼ 티어 리스트',
+    tab_arb_label: '펀딩 레이트 차익거래',
+    tab_arb_value: '최고 기회',
+    tab_arb_arrow: '▼ 탐색',
+    tab_calc_label: '포인트 계산기',
+    tab_calc_value: '에어드랍 추정',
+    tab_calc_arrow: '▼ 계산',
+    tab_bots_label: '최고 트레이딩 봇',
+    tab_bots_value: '자동화 전략',
+    tab_bots_arrow: '▼ 탐색',
+    tab_varmarkets_label: 'Variational 마켓',
+    tab_varmarkets_value: '낮은 스프레드 + 차익',
+    tab_varmarkets_arrow: '▼ 스캐너',
+    arb_scanner_title: '▲ 펀딩 차익 스캐너 — 5개 PERP DEX',
+    arb_scanner_desc: '<strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong> 간 펀딩 레이트 차익거래. Real Net APY는 <strong style="color:var(--neon-orange);">스프레드 + 슬리피지</strong> 비용을 이미 차감한 실질 수익입니다.',
+    max_spread_label: '최대 스프레드:',
+    min_apy_label: '최소 실질 APY:',
+    hold_label: '보유 기간:',
+    vtab_arb: '● 실질 순 APY (펀딩 − 스프레드 비용)',
+    vtab_spread: '낮은 스프레드 마켓 (VAR 전용)',
+    spread_cost_note: '* 스프레드 비용 = (롱 다리 스프레드 + 숏 다리 스프레드) / 보유 기간 — 펀딩 APY에서 차감하여 Real Net APY 산출',
+  },
+  ar: {
+    subtitle: 'قائمتي الشخصية لـ DEX العقود الدائمة',
+    tab_protocols_label: 'البروتوكولات',
+    tab_tierlist_arrow: '▼ قائمة المستويات',
+    tab_arb_label: 'مراجحة معدل التمويل',
+    tab_arb_value: 'أفضل الفرص',
+    tab_arb_arrow: '▼ استكشاف',
+    tab_calc_label: 'حاسبة النقاط',
+    tab_calc_value: 'تقدير الإيردروب',
+    tab_calc_arrow: '▼ احسب',
+    tab_bots_label: 'أفضل روبوتات التداول',
+    tab_bots_value: 'استراتيجيات آلية',
+    tab_bots_arrow: '▼ استكشاف',
+    tab_varmarkets_label: 'أسواق Variational',
+    tab_varmarkets_value: 'سبريد منخفض + مراجحة',
+    tab_varmarkets_arrow: '▼ الماسح',
+    arb_scanner_title: '▲ ماسح مراجحة التمويل — 5 PERP DEX',
+    arb_scanner_desc: 'مراجحة معدلات التمويل بين <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. يأخذ Real Net APY في الاعتبار <strong style="color:var(--neon-orange);">السبريد + الانزلاق السعري</strong> عند الدخول والخروج.',
+    max_spread_label: 'أقصى سبريد:',
+    min_apy_label: 'أدنى APY حقيقي:',
+    hold_label: 'مدة الاحتفاظ:',
+    vtab_arb: '● صافي APY الحقيقي (تمويل − تكلفة السبريد)',
+    vtab_spread: 'أسواق السبريد المنخفض (VAR فقط)',
+    spread_cost_note: '* تكلفة السبريد = (سبريد الساق الطويلة + سبريد الساق القصيرة) / فترة الاحتفاظ — يُطرح من APY التمويل',
+  },
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
+
+  // Update active button
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  const flags = { en:'🇬🇧 EN', ru:'🇷🇺 RU', fr:'🇫🇷 FR', pt:'🇧🇷 PT', zh:'🇨🇳 ZH', ko:'🇰🇷 KO', ar:'🇸🇦 AR' };
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    if (b.textContent.trim() === flags[lang]) b.classList.add('active');
+  });
+
+  // Apply RTL for Arabic
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  // Translate all elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // Re-render var content if loaded (labels inside rendered tables)
+  if (varDataLoaded) renderVarContent();
+}
+
 const DEXES = [
   { name: "Extended", slugs: ["extended"], tier: "A", ref: "https://app.extended.exchange/join/MUAR", icon: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gKgSUNDX1BST0ZJTEUAAQEAAAKQbGNtcwQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtkZXNjAAABCAAAADhjcHJ0AAABQAAAAE53dHB0AAABkAAAABRjaGFkAAABpAAAACxyWFlaAAAB0AAAABRiWFlaAAAB5AAAABRnWFlaAAAB+AAAABRyVFJDAAACDAAAACBnVFJDAAACLAAAACBiVFJDAAACTAAAACBjaHJtAAACbAAAACRtbHVjAAAAAAAAAAEAAAAMZW5VUwAAABwAAAAcAHMAUgBHAEIAIABiAHUAaQBsAHQALQBpAG4AAG1sdWMAAAAAAAAAAQAAAAxlblVTAAAAMgAAABwATgBvACAAYwBvAHAAeQByAGkAZwBoAHQALAAgAHUAcwBlACAAZgByAGUAZQBsAHkAAAAAWFlaIAAAAAAAAPbWAAEAAAAA0y1zZjMyAAAAAAABDEoAAAXj///zKgAAB5sAAP2H///7ov///aMAAAPYAADAlFhZWiAAAAAAAABvlAAAOO4AAAOQWFlaIAAAAAAAACSdAAAPgwAAtr5YWVogAAAAAAAAYqUAALeQAAAY3nBhcmEAAAAAAAMAAAACZmYAAPKnAAANWQAAE9AAAApbcGFyYQAAAAAAAwAAAAJmZgAA8qcAAA1ZAAAT0AAACltwYXJhAAAAAAADAAAAAmZmAADypwAADVkAABPQAAAKW2Nocm0AAAAAAAMAAAAAo9cAAFR7AABMzQAAmZoAACZmAAAPXP/bAEMABQMEBAQDBQQEBAUFBQYHDAgHBwcHDwsLCQwRDxISEQ8RERMWHBcTFBoVEREYIRgaHR0fHx8TFyIkIh4kHB4fHv/bAEMBBQUFBwYHDggIDh4UERQeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHv/CABEIAZABkAMBIgACEQEDEQH/xAAbAAEBAAIDAQAAAAAAAAAAAAAAAQUGAwQHAv/EABoBAQEAAwEBAAAAAAAAAAAAAAABAgQFBgP/2gAMAwEAAhADEAAAAfGQAAAAAAAAAAFAqFIKSiKCiCoAqpKBSFAJ1A2AAAAAAAAAFEKFEFBUlVAFEKQoFSVSUQoFTpBsgAAAAAAAKIoUIogoKgqAKqSiFBSCgIUFWdETaAAAAAAFARVJRFEKFEKQUFQVJaARQFQUlLFE6Am2AAAAAKAi0CpKIoKIohSFAqKAqSiKUpILQIoY8TbAAAAFARVBUBFUBFEURQLUlEKBUFoJFLCgpBTGibgAAAoCdrhbq1dIZHHz7BclVBUAVUBFUBFBWTYY/k2jUnxhb9wRVJRCkUMYJugACgIqoyOOsw9c1ybRn47yvq+uYKdbQGdw06/wH0VUBFUFQ5cw+WC7235q8jX85y6teZr3UXH1cLaKgpKqAihixN4AChFUFQVO36l5Hv14WfGXmLx8hcPjdps3NI6+/mz53fQjPQuzusnz1nI5aXW+fqy6gJ8eabZp2PpYp11EFRQFQEUMUJvgKIqgqAiqM7g/t8fWnHyZ+CgQAAAAACnAy0XGVh7eUuSqgIUCoKAmJE6CiKpKIoiqCoKnomX1bacvFBdIAAAAAC4POanN7WCz1sqoCKBSKAqCph7LOisqKIoiiUFCKqbJu+gb/fKQZckAAAAABpO76Bj1sYp6QVARQUFEFQow5Z0FEURZRRFEVUFTLeh+e+hZeYC8YAAAAAB576F57Oz0Sz0AqCgqSgoiiFGHpOgKCooiiKJQiqZvfdL3W+Ugy5QAAAAAF0HftKnVwhZ6MUFQVJVARVQDDlnRFRZUWVBUURVBU3HZ8TlcvGBdMAAAAAC6ttOGm5pJZ6wVBUFBUKQUlEw1J0VVBUFFEUShLycedfHePoz8OCAAAAAAOLmMvM/nKYzD2QtyWUFRRBUFJVTC0nSoShKVBUURQb7qHpN4YZecpwMudg8fNza7pHXbG/PPTP0NoPZfPdWrZBr5i8PNdSBjg9Q9J89x9BwUdUUUQUFQVBUwtJ0lEVUFRZRZUVk2Gx7Dxa3l5PZcDqXFOrlMZLOmFzpUFQVFD6yWMT57hmvNue8v0XXmdvN84vc6ePpVLVEFRQFQVMKWdJZUURVBUFT72zV+Jr9rqq+spaoiqgqCosoKgqKDu9NMNo1lyPlxUv2FYqBSCoUYUs6QqLKlCKJS0KgqKIolCUJSgqCooCooiiLKigogqKBSYSrOkKiyooKWUJQlKiyooigolKAxpQVFEUQVFBRCkUFEUTCUnTVUFQVFEUsVQVFEWVFlRQUSlQVFlQUFYqCiCooKqSiKJhLLOmolCUtCosqKIqoKgqKCiKJQlsqCgqKIohSKCiUIoihhLLOmsqLKlFlCWyosqKJQlKCoKiiKqCgJSoKgqKCiKIoigomEE6dKiy2KIoUqKIoiiUoKxWUWVKEURVQpBUWUWVFEURQURRP/xAAsEAABBAIABAMIAwAAAAAAAAADAQIEBQBAERITUBAUIQYVIiQwNDWQICNB/9oACAEBAAEFAv0yBEpVVFausxqucVnTdsNVWqIYbONLhmjLqRIZpCyEFXx9qvkLGkfCRkupG/JEYwF0I8Yx1iVgx49zRjlmU5tuhkc4sciOSRVAJh6uSPHMcxfpMY96hrJBMj1sceIiImXZ/TchmUEhqo5vi9jHoWtivwlOzHVBsWrlpnu6Znu6ZiVctcbUGwdQzBV8VmNa1qeJHowZiKUu7Rm6kXSuzcod6lL05mlZl6szeG5WPG7nHoSH9MH+79O/ng6Fy/hE7B7PP/r0L13xdgoF+Z0LpeMzsFIvCfoWa8Z3YKf8hoT/ALzsFP8AkNCf952ClTjO0LNOE7sFAnzGhcpwl9goGcB6F4317BVM5IWhbs5om+NqvIxvKzQMzqCX0XepRdSXpWY+nL3qcPTi6VwLmDuwg9eQicE8SGEPCWcZuPtlx1nJXFnSlzzcnPNycSdKTG2UhMZarg7GO7GEGT+D2o5pxqI25Sx+mHHvaxJFqNuGnSS/URVTAzpA8BZCfjXNcmXAOLduvj+YkOcwbJVomFIQrtAJSCWNZNXPhIyWFQG2WNVzkMGvBIkFO7UjSCAUjxzgr6LsCI4ewiqmPdzr+mT/xAAvEQACAQIEAwYFBQAAAAAAAAABAgMABQQREjATITEQIjJAQVEVIGFwgTNCUnGx/9oACAEDAQE/Afs5iMRwO83h/wApJFddSnMbTyLGNTGoJ+N3h03ZEV1Kt0NM02AmKqaw96RuUoyqOeOUdw5/NJPHF4jlU95UcohUZlx0wDGlUKMhvXvD6kEo9OwMR0pLhiE6NQvOIHtXxuf2FG8Yg+1Pj8Q/VqJJ69log0R8Q+u/PGJYynvTDI5bCLqbIVGgRAo9PIXBNGIYbFuTXiF8jeRliPxsWcZzE/TyN7/XH9bFm8beRvDZ4j8bFobKYj6eRx768Qx2Le+iceQnk4UZb2onM57CtpOYqN9aBh6795xGSiIdiozchSW7EP8AtoWeY9SK+DP/ACprRMOhFPb509KZSvI9lqn1Jwz6b0jiNSzUY5sdKXAqC0Rpzk50kaIMlGXzPGjjJhnU9qRucfKlWXByhmFKwYahuzwcbk3SlUKMl2mUMMjUUXC5Dp9nf//EAB0RAAIDAAIDAAAAAAAAAAAAAAERADBAIHAQUGD/2gAIAQIBAT8B63VCwDyooouB9SKDhFBwig4RQfghwccfA4HQ+uP/xAA1EAABAgMGBAMFCQEAAAAAAAABAAIDEUASISIxQVFQYXGBEDORICMyUrEEEzBCYnKCkKKh/9oACAEBAAY/Av6ZLLfi0G6k4SNPZaJkqyTfrUzGatOwxm3EhYxd8wpbhJu5VmFfGdrrVh/5cnLRzXBWoBsHbRSisIofdsJ5q1Gxu/4i43NaEYh7VhgON7cunhJwBHNTZ7s8lMAPH6VJzSD+HJjS48lilDHNTd7w81ICQ8B9nHV1a2KNDeg4ZH2JPaHdQvgs9FgjEdQrnsKuaD3Xlf6C8r/QV7Wjur3sCxxXHoF5drqpNaB7DnnICadEdmTXWCb2XUYhDN2fSvAOT7qN2wurw4ZgprxqJ0L37DgLP03UNn5jwGIzYzoYbO/AXjdtDLYDgLRuDQxOAw+/0oYv7uAw+/0oYv7uAg7A0MTgLzs2hnuOAxH7mVDDf24CznfQk/KZ8Aa0alBo0EqFzNwpV9o5Mvo3bOvr7RzffRiIM21zYfqpDL2Mb2hYbTuiwQh3KusjsvNK85/qvOf6rzT6K+yeyxwvQq8lvULA8H2C05FOYdK375wxP+nhN7g0KUJts76L47I2ar/w7ivitDmpRBYKm0gjwEZumdYB+UXuWIhrQpfZx/IqcRxcaGbHEKzGEuYWjmlFmmlUGtEyV903HGOanEd2pcJu2UhhijIKVTNue9RcpnP+mX//xAArEAABAgQEBQQDAQAAAAAAAAABABEhQEFhMVFxgVCRobHwECDB4TCQ8dH/2gAIAQEAAT8h/TIZnELk6BdHJAIEGXBioQABHbhHAKHKZATkAXBCBhC6a5zCx+04BlGT4zvC+1CQCz8AqbIkkuZqu9Asse2oAQny6/hlYZTQ7yMMBmgBumYlqj/Uxg8QoFV9MGQynM1T9IvNWIBwjZfPqHJbm0jyVq5EN+O2bAdNxC4R5JpAeS5ISCBgB6Rxx+gKk44pQZioRwXA4PsZRsnFE3nmbdEVG1OIPvhC6c4oj8ndA3k7rrAiifnCg+2iisTM3+k2k5AN7KyKKtAp7FcfkpJvWivoedJ97UDnpJvEYrdp+AeAQh4QEG8jcjI1RckTjwCLMXH8dJGFjgjbHgLmTA3/AJI6eB5v5wFvwriRdMm+fngNkB0eRetwOg4DB5sUjHrOAg/mxSPXOA32XRpFgXB6DgLvlHEjopPxwG05yf2R26S4DH2Lz3+mkWlofD54BjhiAQMLACRvNBASkGIgZ9gFA5qScFZHf7n2sDH5KSbOs3QzxRDsS5ZCqEITAGA9nKdJiiDbEw6qlW4sUaf+1j+0APSgWMONqBXfmlMG7CLN5ZRdMM+yI+FisRI+c4E4ZAt6L3oJZOZWYgmOHoCJJLkSfxkHICKhQfTRpgKzMQnn1UF/RjUYdOc3VHI5xZPMGVgAgne2OwV0WEyATpb3TS67W6jIgWgYEI4LizCEyTIQwAqoaIhpgDcp5w5UCVdt8WBUDEWStggJSDEUmSJgmGFQ0RiXJeXIORBoQj7nOf6Zf//aAAwDAQACAAMAAAAQ88888888888wIRItkgdcpgUQE8888888888gUhZY5Ek9QJolUZ888888888lEFF4ZJcphURIN0R88888884Egkt0kUYZBgEE4QEl8888884EwB9kkk1QcAI9gBYds888884E4AcoEslhQhUYIFl8RA88884EA/c5BchFgEkgYYdokVA8884E53IAUc5F4AQpwL4ZAoFE888EwBYE8RqgsnUV8Z0gdAJ9k88kgBd4EJ8888888BqkgFc5QF8hgl94AY88888888QA4Ft0gcZoMl11Ec5i8888888iQJdokk9QYBFsk0hB88888888sd5YB8khUBd4gklF4z8888888X5YYcoFpEQYoM9lgAM8888888FIcZYARA81xRYAkEZd8888888we4IYBZYokEcZYl0x8BIg0NEo8tBdgc4YJgkhBIMg4IbEYZ5AW3R3gF9AdZZ9hwQYY7kk4RZIc4AvGE8gV5QYYMF9YZ4gkFdYYYAckFsEF9gVxBJEkFdZNllgAcYZgV9kF1gklhwQ4hlwQAMsk0QRJc9gF9gAllMlUYYskwR5gkkFJY4AE9gEElkIMsFdJNlVYY4hxAcYZ5gEktlkEZJl0AAEkAZIME8wRZIMk1lE1//EACkRAAIBAgQGAwEAAwAAAAAAAAERABAgITAxUUFhcZGx0YGhweFA8PH/2gAIAQMBAT8QzXHHRxxxxx/4Ljq446Ojyna4446OOjo8txx1dXY48p2OOOOOro448p3uOrseQQwNlgSNS9H6gMETiI44aGOw1CAG8MJGtIep58htHY47jANMCMP2CPwRwJHSBAw3GI7aj7jAHoP5cKY+o/msdMHc4Dtr4hi5HHYDihpBUaAwEcdXHeYAAxwHodOx80MskZh5fnHy5rDdR6In/CPuaQnQeyZhpfjDwoVZUeAx09B7NXHHR5BBcBHqFMeoyCC1jhNBAAKuOOjobnE9u++P7kJGxfb+2urtNiQ7gfI/MjkgXkXuPJ+i8nI+l+2Ox3mmAbAPJyOYBeRknIXW67YfmQ174d8Kujo44YYYYajL8BPr7hzFkGDrCD0gANXR2GphozGJxPQaffihFLPKaQQ6oecZpQ+T6nJfc1AfJ9TWjPTGFko0YExxDofR8x0d5hqWJABzVlHXgBwD6RYR9hgPZ/3CIQDkFcpAOYjAjbHEex9xaBdiOOMCysHGOOOw3Ng+HFDiefIbQHEgOAsNxsNg7zHnZ6Db+Vdhhhhhho4cgwmO50MNphhobTDY6uhuNDDaaGGhq44YaGGGw1NzudphhobjQ0OQYbDDDQwww5BqZ//EAB8RAAEEAwADAQAAAAAAAAAAAAEAETAxECFAQVFwIP/aAAgBAgEBPxD44A8YDo6m0Qj6pm/TOh7qhOfjLUxMTEwyU9dVIKcNIKcNelSCnCKgNcA30j5y4TMGpxkJgHWgjACXMC0hL/Hf/8QAJxABAAMAAQIFBAMBAAAAAAAAAQAQETEhQVFhcYGRIDBAobHB8NH/2gAIAQEAAT8Q/HCwmUECFZAsJl5MhWQIH4rz9AUH0BMsIWEywgWEy8gfdOfslZAsIUEIVkCHFBMvIECiZA/FOYUEyghxCgmUQJlhArIEy8mXn4YWF5CwgWFhDm8mQoIECgmTPwgoIEygmUcwIUECwmXkCwmXkD8MKCEKCZWQLCBWQJlZAsJkygmXkPwCiBYWECsgTKCBYXkCZYfQED8ArIFZDiwmUECwmVkC8gWH0ZAvPvBQWQLCZQQoIEKCZYQs+gJl5M+6UEKCBRzCFEKCBYTLCZQVlBAvIH4BAoIUcwsLD6AsIFhCw+jIF59srmgBs6eU/Q7+ua1wULETskxIHWFZAogQ4oJlZAsJkIbF811Er5E42vTp5zunfO9BAvIFhD7ZQQZqlMROEh4mADVnQO5ntiDEJvudZ73Z8mHWggWEOKyZRAsIUa4grq7o89vi9IuJEfTB4PA8fHIiZV6q94ELCBWTJn2ygmQ6MOivRPd8+5yek6VDiCCRp0eSZeo67q9Hn9j0jXqLMd9AdGGz1nTphkLCFBAohnhM3idfCCjY4/Il09uYmQXXJienPu6eU2aMsYAcB/UTxDDTh4/zvsDYFBAsIF5A+wUQKDOsOs1CR1e6ep7L8PlOiecMIeCJ6jGk61nJ9XHsk3BPvp8nX42NAzla+GwhWQKyBPMQBX6hCw77Z9H95FQj36d+Q/vYCQMBgHkQx6rM+y2T2/w/EMjOm0EywmUECB9goIUEKWzosO/09w2DrPN3E0fo8oCoHzFkM92Plp+oq+CR/uJ/ETcvtv8AQjHwy/nJymvRI/7wIa+UX8bFTz7FP4JjqHgZ+VZhYH3f6f8AELk/Zj4PoTPGegESzVLy8D2OlhYQLD6A+o5ohRCggdYnEDbzvr/Y9r5nUv2mX1ra36NzzID6A+rkabsIFhMsIXkPrIUQLJ5zpmPfq6r5M94zn7447O8RNvsnofl194ECsgXkCwgQ+k5rIUQo5hQ9MiyaS8EdJ8UHANh0fv502dcQdB5On7yNaVOq92FBArIH0ZeQPpIEIQ4o5hRApxLX9AO/sPwO3pNvAs+Y/wCgsIFECFBAsJn0ZRRAssomhvBPQj/D5/A7R0L0ePUB/L5oIUQLCBYQ4rKKCFHFHNFFhE3eiOen/SeH3yY7/wBXYBCggUcwIFBMsJkOaIUcQoIUQKCETW/3H6hz9/tO4mfED+rCBQQLCFhMshQQohQQ4oIUtHpgfgLR5X7oLIFhMoIFhCFEKCFZAohRPQG4H4AQPP8Al2BYTKIFhAvIQLOLCiBQQoIE6Tf6D9w+/wBo+Vz8hP7hzQTKyBYQoIH0nFlEKIc0Qrozym+b/wAGPb75zN/PPepv9CghQQs5sJl5QQsoo4hzRAomiHU72K/54R5+/wBmLiOip4YifywLCFBDmwgWFECiZRDijmiFZCdMs+cOn6R2+/4RBGr3o9X8IUEOKCHNhYTLCjmBRCgogUTOhBS31yXIWOemAYfgghnRd7KdP3HlKQeRIECiBRCziBWQIUUQoIUEKOIdXIOoLfTprp/Jfb8HK3oz/oP5WEOaCBYQoJlllECiFHFHJHJdR069o+Nfe3TmGd538I547XTwvpMnTxntRfWzXEek/Dn7mdcgQoIFECwgVkIUQ4oIQIFHEKCzo47PVfH7SBfKBwBwW7BnVDcZ8OYoRTvqfo/qPUP7LN9gMnS/fT+0Q6D/AHdCKuvsIgnp7yYz/gruTHH7G/pJsA7urHsj/MGInvofOoZvQ9w1PbmNhBqn5JjDndpucOz7mMCggUECwmUECFEKIUFECHMGsTMgzfIcfL19AmaKsfmvZiYX7ofLZy/qNIx8j8nV92Lkh1V6tkKCwhAzC0TEjBp4P/Ln9ze19EfznU+Ia4JGH6nLNIUjI57PY9PfynTJ2hQQsLyBRCFEKCH0EHkmPgNcerx8+Ex3EagBwH/J1xPU4X+O78Rx241Z6HAek9Zh4woIUcQoIUB41rOk6n41x6eo4feIgu4BvtcntsEYRU6I6PUmtqnX3OH+nzKZAgUczKIECgoLOaIUcQo+BuaTwQg5mfpHwDw59NjrCvQ6egf5hmedECghQQoIUEOKCE6Z5zS7TvX+of2dYdzNQ96dx/UfErFGI+ECBRzCggWEOYQo5hRQQKI13TBwvPkXjeYlUJdVh1YZ3hAoIFBCiZQQ4oIUB2gQGVuoxHxh8xZhmK8Xz8+8KCBCgsLKCws4hzCFEOKOaCFEKIUEKCFBCgmUUQhDighQUQ5ohQUcwKIFEKCFHFHMKCFBCghZQQogWc2EyjmFFEKIQhRDmiEIcQoKCFBAoIEOYFhCiFnNZMmUQohCFEKCHEOIc0EKOIUFlHEOaIUEIcwIVkCiBCEIFBDmiFHFHMKIUcwhMogUQoohzRCiBRzCghRxDmFBAoIQoKIUUQohQWcUcwohRCiFHFhZDijmwsIWQhAohRQQKIUFHMKCFBCgsLIQmWEKD6CghCjiFBRCghCFBCiFBRDmiFBCghRYWTIQIUEyFEKIUUQohCFEKLCiBRCiFBDigsIUQohRQUcwos5ohRxCHMKIUQoohRzCghQQomUFhAoKIUUQo5hRRCiiFFlFnMKCZRCiBRxZZAo4ohRRDmgohRCghxCBRCjiwsohzRCghQQogV//2Q==" },
   { name: "Pacifica", slugs: ["pacifica"], tier: "A", ref: "https://app.pacifica.fi/?referral=rektdao", icon: "data:image/jpeg;base64,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" },
@@ -555,19 +874,25 @@ function switchTab(tab) {
   const calcSection = document.getElementById('calc-section');
   const botsSection = document.getElementById('bots-section');
 
+  const tabVarmarkets = document.getElementById('tab-varmarkets');
+  const varmarketsSection = document.getElementById('varmarkets-section');
+
   // Reset all
   tabTierlist.classList.remove('active');
   tabArb.classList.remove('active');
   if (tabCalc) tabCalc.classList.remove('active');
   if (tabBots) tabBots.classList.remove('active');
+  if (tabVarmarkets) tabVarmarkets.classList.remove('active');
   tierlist.classList.add('hidden');
   arbSection.classList.remove('visible');
   if (calcSection) calcSection.classList.remove('visible');
   if (botsSection) botsSection.classList.remove('visible');
+  if (varmarketsSection) varmarketsSection.classList.remove('visible');
   tabArb.querySelector('.tab-arrow').innerHTML = '&#x25BC; Click to Explore';
   tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25BC; Tier List';
   if (tabCalc) tabCalc.querySelector('.tab-arrow').innerHTML = '&#x25BC; Calculate';
   if (tabBots) tabBots.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore Bots';
+  if (tabVarmarkets) tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore';
 
   if (tab === 'arb') {
     tabArb.classList.add('active');
@@ -581,6 +906,10 @@ function switchTab(tab) {
   } else if (tab === 'bots') {
     if (tabBots) { tabBots.classList.add('active'); tabBots.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
     if (botsSection) botsSection.classList.add('visible');
+  } else if (tab === 'varmarkets') {
+    if (tabVarmarkets) { tabVarmarkets.classList.add('active'); tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
+    if (varmarketsSection) varmarketsSection.classList.add('visible');
+    if (!varDataLoaded) fetchVarData();
   } else {
     tabTierlist.classList.add('active');
     tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active';
@@ -775,6 +1104,531 @@ function tierCls(t) { return 'tier tier-' + t.toLowerCase(); }
 function fallbackIcon(name) {
   return `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%2216%22 fill=%22%231a1a2e%22/><text x=%2216%22 y=%2221%22 text-anchor=%22middle%22 fill=%22%2300f0ff%22 font-size=%2214%22 font-family=%22monospace%22>${name[0]}</text></svg>`;
 }
+// ─── VARIATIONAL MARKETS DATA ───
+let varDataLoaded = false;
+let varRawData = null;   // listings from Variational API
+let hlFundingData = {};  // symbol -> funding rate from Hyperliquid
+let varSpreadFilter = 10;  // bps
+let varArbMinApy = 0;
+let varCurrentTab = 'arb';
+let varHoldDays = 1; // assumption for spread cost amortization
+
+function setVarFilter(bps) {
+  varSpreadFilter = bps;
+  document.querySelectorAll('.var-filter-btn[id^="vf-"]').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('vf-' + bps);
+  if (btn) btn.classList.add('active');
+  renderVarContent();
+}
+function setVarArbMin(apy) {
+  varArbMinApy = apy;
+  document.querySelectorAll('.var-filter-btn[id^="va-"]').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('va-' + apy);
+  if (btn) btn.classList.add('active');
+  renderVarContent();
+}
+function setHoldDays(days) {
+  varHoldDays = days;
+  document.querySelectorAll('.var-filter-btn[id^="vh-"]').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('vh-' + days);
+  if (btn) btn.classList.add('active');
+  renderVarContent();
+}
+function setVarTab(tab) {
+  varCurrentTab = tab;
+  document.querySelectorAll('.var-tab').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('vtab-' + tab);
+  if (btn) btn.classList.add('active');
+  renderVarContent();
+}
+
+// Multi-exchange funding data: symbol -> { exKey: apyDecimal }
+// All rates stored as APY decimal (e.g. 0.50 = 50% per year)
+let multiExFunding = {}; // { 'BTC': { variational: 0.5, hyperliquid: 0.3, ... } }
+let multiExStatus  = {}; // { variational: 'ok'/'error'/'loading', ... }
+
+const MULTI_EX_CONFIG = {
+  variational: { label: 'Variational', short: 'VAR',  color: '#00f0ff', tradeUrl: t => `https://omni.variational.io/?ref=OMNIMUAR#${t}`, interval: 3600 },
+  hyperliquid:  { label: 'Hyperliquid', short: 'HL',   color: '#60b8f5', tradeUrl: t => `https://app.hyperliquid.xyz/trade/${t}`, interval: 3600 },
+  extended:     { label: 'Extended',    short: 'EXT',  color: '#a78bfa', tradeUrl: t => `https://app.extended.exchange/perp/${t}-USD`, interval: 3600 },
+  pacifica:     { label: 'Pacifica',    short: 'PAC',  color: '#f97316', tradeUrl: t => `https://app.pacifica.fi/?referral=rektdao`, interval: 3600 },
+  nado:         { label: 'Nado',        short: 'NADO', color: '#39ff14', tradeUrl: t => `https://app.nado.xyz/perpetuals?join=wVjcU3e`, interval: 3600 },
+};
+
+async function fetchVarData() {
+  const el = document.getElementById('var-content');
+  el.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Fetching data from all exchanges...</div>';
+
+  // Reset
+  multiExFunding = {};
+
+  const fetches = [
+    fetchVariationalFunding(),
+    fetchHyperliquidFunding(),
+    fetchExtendedFunding(),
+    fetchPacificaFunding(),
+    fetchNadoFunding(),
+  ];
+  await Promise.allSettled(fetches);
+
+  // Variational raw data must load for the spread tab
+  try {
+    const varResp = await fetch('https://omni-client-api.prod.ap-northeast-1.variational.io/metadata/stats');
+    if (varResp.ok) {
+      const varJson = await varResp.json();
+      varRawData = varJson.listings || [];
+    }
+  } catch(e) {}
+
+  varDataLoaded = true;
+  const ts = new Date().toLocaleTimeString();
+  const statusParts = Object.entries(multiExStatus).map(([k, s]) => {
+    const cfg = MULTI_EX_CONFIG[k];
+    const col = s === 'ok' ? cfg.color : 'rgba(255,80,100,0.6)';
+    return `<span style="color:${col}">${cfg.short}:${s === 'ok' ? '✓' : '✗'}</span>`;
+  }).join(' ');
+  const el2 = document.getElementById('var-last-updated');
+  if (el2) el2.innerHTML = `Updated ${ts} &nbsp; ${statusParts}`;
+  renderVarContent();
+}
+
+async function fetchVariationalFunding() {
+  multiExStatus.variational = 'loading';
+  try {
+    const r = await fetch('https://omni-client-api.prod.ap-northeast-1.variational.io/metadata/stats');
+    if (!r.ok) throw new Error();
+    const j = await r.json();
+    (j.listings || []).forEach(m => {
+      const sym = m.ticker.toUpperCase();
+      const rate = parseFloat(m.funding_rate);
+      const interval = parseInt(m.funding_interval_s) || 3600;
+      if (!isNaN(rate)) {
+        if (!multiExFunding[sym]) multiExFunding[sym] = {};
+        multiExFunding[sym].variational = varFundingToApy(rate, interval);
+      }
+    });
+    multiExStatus.variational = 'ok';
+  } catch(e) { multiExStatus.variational = 'error'; }
+}
+
+async function fetchHyperliquidFunding() {
+  multiExStatus.hyperliquid = 'loading';
+  try {
+    const r = await fetch('https://api.hyperliquid.xyz/info', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'metaAndAssetCtxs' })
+    });
+    if (!r.ok) throw new Error();
+    const j = await r.json();
+    const universe = j[0]?.universe || [];
+    const ctxs = j[1] || [];
+    universe.forEach((u, i) => {
+      const ctx = ctxs[i];
+      if (!ctx) return;
+      const sym = u.name.toUpperCase();
+      const rate = parseFloat(ctx.funding); // per 8h
+      if (!isNaN(rate)) {
+        if (!multiExFunding[sym]) multiExFunding[sym] = {};
+        // HL funding is per 1h (pays every 1h, rate already scaled)
+        multiExFunding[sym].hyperliquid = varFundingToApy(rate, 3600);
+      }
+    });
+    multiExStatus.hyperliquid = 'ok';
+  } catch(e) { multiExStatus.hyperliquid = 'error'; }
+}
+
+async function fetchExtendedFunding() {
+  multiExStatus.extended = 'loading';
+  try {
+    const r = await fetch('https://api.starknet.extended.exchange/api/v1/markets');
+    if (!r.ok) throw new Error();
+    const j = await r.json();
+    const markets = j.data || j || [];
+    markets.forEach(m => {
+      const sym = (m.market || m.symbol || '').replace(/-USD$/, '').toUpperCase();
+      if (!sym) return;
+      // Extended: funding_rate is per 1h interval
+      const rate = parseFloat(m.funding_rate || m.current_funding_rate || 0);
+      if (!isNaN(rate) && rate !== 0) {
+        if (!multiExFunding[sym]) multiExFunding[sym] = {};
+        multiExFunding[sym].extended = varFundingToApy(rate, 3600);
+      }
+    });
+    multiExStatus.extended = 'ok';
+  } catch(e) { multiExStatus.extended = 'error'; }
+}
+
+async function fetchPacificaFunding() {
+  multiExStatus.pacifica = 'loading';
+  try {
+    const r = await fetch('https://api.pacifica.fi/api/v1/prices');
+    if (!r.ok) throw new Error();
+    const j = await r.json();
+    const items = j.data || j || [];
+    items.forEach(m => {
+      const sym = (m.symbol || '').toUpperCase();
+      if (!sym) return;
+      // Pacifica funding is per 1h
+      const rate = parseFloat(m.funding || m.funding_rate || 0);
+      if (!isNaN(rate) && rate !== 0) {
+        if (!multiExFunding[sym]) multiExFunding[sym] = {};
+        multiExFunding[sym].pacifica = varFundingToApy(rate, 3600);
+      }
+    });
+    multiExStatus.pacifica = 'ok';
+  } catch(e) { multiExStatus.pacifica = 'error'; }
+}
+
+async function fetchNadoFunding() {
+  multiExStatus.nado = 'loading';
+  try {
+    // Nado: archive indexer market_snapshots returns funding_rate_x18
+    const r = await fetch('https://archive.prod.nado.xyz/v1', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip' },
+      body: JSON.stringify({ type: 'market_snapshots' })
+    });
+    if (!r.ok) throw new Error();
+    const j = await r.json();
+    // Nado returns array of snapshots: { product_id, funding_rate_x18, ... }
+    // Also need product names: use allProducts query
+    const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=allProducts');
+    const jProds = rProds.ok ? await rProds.json() : null;
+
+    // Build product_id -> ticker map
+    const idToTicker = {};
+    if (jProds) {
+      const perps = jProds.perp_products || jProds.products || [];
+      perps.forEach(p => {
+        const id = p.product_id || p.id;
+        const ticker = (p.metadata?.ticker || p.ticker || p.symbol || '').replace(/-PERP$/, '').toUpperCase();
+        if (id !== undefined && ticker) idToTicker[id] = ticker;
+      });
+    }
+
+    const snapshots = j.market_snapshots || j || [];
+    snapshots.forEach(s => {
+      const ticker = idToTicker[s.product_id];
+      if (!ticker) return;
+      // funding_rate_x18: value multiplied by 1e18, per-hour rate
+      const rate = parseFloat(s.funding_rate_x18) / 1e18;
+      if (!isNaN(rate) && rate !== 0) {
+        if (!multiExFunding[ticker]) multiExFunding[ticker] = {};
+        multiExFunding[ticker].nado = varFundingToApy(rate, 3600);
+      }
+    });
+    multiExStatus.nado = 'ok';
+  } catch(e) { multiExStatus.nado = 'error'; }
+}
+
+function varFundingToApy(rateDecimal, intervalSeconds) {
+  // rateDecimal is e.g. 0.0005 per interval
+  // APY = rate * (secondsPerYear / intervalSeconds) * 100
+  const periodsPerYear = (365 * 24 * 3600) / intervalSeconds;
+  return rateDecimal * periodsPerYear * 100;
+}
+
+function renderVarContent() {
+  if (!varRawData && !Object.keys(multiExFunding).length) return;
+  const el = document.getElementById('var-content');
+
+  if (varCurrentTab === 'spread') {
+    renderVarSpreadTable(el);
+  } else {
+    renderVarArbTable(el);
+  }
+}
+
+function renderVarSpreadTable(el) {
+  // Filter by spread
+  const filtered = varRawData.filter(m => {
+    const spread = parseFloat(m.base_spread_bps);
+    return !isNaN(spread) && spread <= varSpreadFilter;
+  }).sort((a, b) => parseFloat(a.base_spread_bps) - parseFloat(b.base_spread_bps));
+
+  const countEl = document.getElementById('var-count');
+  if (countEl) countEl.textContent = filtered.length + ' markets';
+
+  if (filtered.length === 0) {
+    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No markets match current spread filter.</div>`;
+    return;
+  }
+
+  const rows = filtered.map(m => {
+    const spread = parseFloat(m.base_spread_bps);
+    const spreadPct = (spread / 100).toFixed(4) + '%';
+    const spreadCls = spread <= 5 ? 'var-spread-good' : 'var-spread-ok';
+
+    const fundRate = parseFloat(m.funding_rate); // as decimal, e.g. 0.0003 = 0.03%
+    const fundInterval = parseInt(m.funding_interval_s) || 3600;
+    const fundApy = varFundingToApy(fundRate, fundInterval);
+    const fundPct = (fundRate * 100).toFixed(4) + '%';
+    const fundApyStr = fundApy >= 0 ? '+' + fundApy.toFixed(1) + '%' : fundApy.toFixed(1) + '%';
+    const fundCls = fundRate > 0.0001 ? 'var-fund-pos' : fundRate < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
+
+    const vol24 = parseFloat(m.volume_24h);
+    const volStr = vol24 >= 1e9 ? '$' + (vol24/1e9).toFixed(1) + 'B' : vol24 >= 1e6 ? '$' + (vol24/1e6).toFixed(1) + 'M' : vol24 >= 1e3 ? '$' + (vol24/1e3).toFixed(0) + 'K' : vol24 > 0 ? '$' + vol24.toFixed(0) : '—';
+
+    // Quote spread at 100k
+    let quoteStr = '—';
+    const q = m.quotes?.size_100k;
+    if (q?.bid && q?.ask) {
+      const mid = (parseFloat(q.bid) + parseFloat(q.ask)) / 2;
+      const qSpread = mid > 0 ? ((parseFloat(q.ask) - parseFloat(q.bid)) / mid * 100).toFixed(4) + '%' : '—';
+      quoteStr = qSpread;
+    }
+
+    return `<tr>
+      <td><span class="var-ticker">${m.ticker}</span><br><span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.6;">${m.name || ''}</span></td>
+      <td><span class="${spreadCls}">${spreadPct}</span></td>
+      <td><span class="${spreadCls}">${quoteStr}</span></td>
+      <td><span class="${fundCls}">${fundPct}</span><br><span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
+      <td><a class="var-trade-btn" href="https://omni.variational.io/?ref=OMNIMUAR#${m.ticker}" target="_blank" rel="noopener">Trade &#x276F;</a></td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<table class="var-table">
+    <thead><tr>
+      <th>Market</th>
+      <th>Base Spread</th>
+      <th>Spread @$100k</th>
+      <th>Funding (per interval)</th>
+      <th>24h Volume</th>
+      <th></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function renderVarArbTable(el) {
+  // ── Spread cost helper ─────────────────────────────────────────────────────
+  // Assumptions:
+  //   • You pay spread on entry AND exit for EACH leg (long + short)
+  //   • For Variational we have real base_spread_bps from the API
+  //   • For other DEXes we don't have orderbook spread data → use a
+  //     conservative default of 5 bps (0.05%) per leg
+  //   • Slippage is already embedded in the spread figure where available
+  //   • Round-trip cost = (spreadLong + spreadShort) / 2  [per side entry+exit]
+  //     As % of notional: (spreadBps * 2) / 10000 * 100 %
+  //   • Annualised spread cost = roundTripCost% / holdDays * 365
+  // ───────────────────────────────────────────────────────────────────────────
+  const DEFAULT_SPREAD_BPS = 5; // conservative assumption for non-VAR legs
+
+  // Build VAR spread map (bps) from varRawData
+  const varSpreadMap = {}; // symbol → bps (float)
+  if (varRawData) {
+    varRawData.forEach(m => {
+      varSpreadMap[m.ticker.toUpperCase()] = parseFloat(m.base_spread_bps) || DEFAULT_SPREAD_BPS;
+    });
+  }
+
+  function legSpreadBps(exKey, sym) {
+    if (exKey === 'variational') return varSpreadMap[sym] ?? DEFAULT_SPREAD_BPS;
+    return DEFAULT_SPREAD_BPS; // fallback for EXT/PAC/NADO/HL
+  }
+
+  function spreadCostApy(longEx, shortEx, sym) {
+    // round-trip cost of both legs as % of notional, annualised over holdDays
+    const longBps  = legSpreadBps(longEx,  sym);
+    const shortBps = legSpreadBps(shortEx, sym);
+    // entry + exit for each side = 2× per leg, but we open both simultaneously
+    // total cost = (longBps + shortBps) * 2 / 10000 * 100  [in %]
+    const totalCostPct = (longBps + shortBps) * 2 / 10000 * 100;
+    // annualise over hold period
+    return totalCostPct / varHoldDays * 365;
+  }
+
+  // ── Build opportunities ────────────────────────────────────────────────────
+  const opps = [];
+
+  Object.entries(multiExFunding).forEach(([sym, exMap]) => {
+    const available = Object.entries(exMap).filter(([, v]) => !isNaN(v) && v !== null);
+    if (available.length < 2) return;
+
+    for (let i = 0; i < available.length; i++) {
+      for (let j = i + 1; j < available.length; j++) {
+        const [exA, apyA] = available[i];
+        const [exB, apyB] = available[j];
+        const diff = apyA - apyB;
+        if (diff === 0) continue;
+
+        const longEx  = diff < 0 ? exA : exB;
+        const shortEx = diff < 0 ? exB : exA;
+        const longApy  = diff < 0 ? apyA : apyB;
+        const shortApy = diff < 0 ? apyB : apyA;
+        const grossApy = Math.abs(diff);
+
+        // Spread filter: skip if VAR leg spread exceeds filter
+        const longSpreadBps  = legSpreadBps(longEx, sym);
+        const shortSpreadBps = legSpreadBps(shortEx, sym);
+        const maxLegSpread   = Math.max(longSpreadBps, shortSpreadBps);
+        if (maxLegSpread > varSpreadFilter) continue;
+
+        const costApy   = spreadCostApy(longEx, shortEx, sym);
+        const realNetApy = grossApy - costApy;
+        if (realNetApy < varArbMinApy) continue;
+
+        opps.push({
+          sym, longEx, shortEx, longApy, shortApy,
+          grossApy, costApy, realNetApy,
+          longSpreadBps, shortSpreadBps,
+          varSpreadBps: varSpreadMap[sym] ?? null,
+        });
+      }
+    }
+  });
+
+  // Deduplicate: keep best pair per symbol
+  const bestBySym = {};
+  opps.forEach(o => {
+    if (!bestBySym[o.sym] || o.realNetApy > bestBySym[o.sym].realNetApy) {
+      bestBySym[o.sym] = o;
+    }
+  });
+
+  const sorted = Object.values(bestBySym).sort((a, b) => b.realNetApy - a.realNetApy);
+
+  const countEl = document.getElementById('var-count');
+  if (countEl) countEl.textContent = sorted.length + ' opportunities';
+
+  if (sorted.length === 0) {
+    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;letter-spacing:1px;">
+      No real arb above ${varArbMinApy}% APY after spread cost.<br>
+      <span style="opacity:0.5;font-size:10px;">Try increasing MAX SPREAD or lowering MIN REAL APY.</span>
+    </div>`;
+    return;
+  }
+
+  // ── Formatting helpers ─────────────────────────────────────────────────────
+  function fmtApy(v, showSign = true) {
+    const abs = Math.abs(v);
+    const sign = showSign ? (v >= 0 ? '+' : '') : '';
+    if (abs >= 1000) return sign + v.toFixed(0) + '%';
+    if (abs >= 100)  return sign + v.toFixed(1) + '%';
+    return sign + v.toFixed(2) + '%';
+  }
+
+  function exBadge(key) {
+    const cfg = MULTI_EX_CONFIG[key];
+    if (!cfg) return `<span style="font-family:'Share Tech Mono',monospace;font-size:10px;">${key}</span>`;
+    return `<span style="font-family:'Orbitron',monospace;font-size:9px;font-weight:700;color:${cfg.color};border:1px solid ${cfg.color}30;background:${cfg.color}0d;padding:1px 5px;border-radius:3px;letter-spacing:1px;">${cfg.short}</span>`;
+  }
+
+  function exTradeBtn(key, sym) {
+    const cfg = MULTI_EX_CONFIG[key];
+    if (!cfg) return '';
+    return `<a href="${cfg.tradeUrl(sym)}" target="_blank" rel="noopener"
+      style="display:inline-flex;align-items:center;gap:3px;font-family:'Share Tech Mono',monospace;font-size:9px;color:${cfg.color};border:1px solid ${cfg.color}35;background:${cfg.color}0a;padding:3px 7px;border-radius:3px;text-decoration:none;white-space:nowrap;letter-spacing:1px;transition:all 0.2s;"
+      onmouseover="this.style.background='${cfg.color}20'" onmouseout="this.style.background='${cfg.color}0a'">
+      ${cfg.short} &#x276F;
+    </a>`;
+  }
+
+  function realNetColor(v) {
+    if (v >= 200) return '#ff8c00';
+    if (v >= 100) return '#39ff14';
+    if (v >= 50)  return '#00f0ff';
+    if (v > 0)    return '#c8d6e5';
+    return 'rgba(255,80,100,0.7)';
+  }
+
+  function spreadBpsDisplay(bps, isDefault) {
+    const pct = (bps / 100).toFixed(3) + '%';
+    const col = bps <= 5 ? '#39ff14' : bps <= 15 ? '#ffe600' : 'rgba(255,80,100,0.8)';
+    const note = isDefault ? '<span style="opacity:0.4;font-size:8px;"> est.</span>' : '';
+    return `<span style="color:${col};font-family:'Share Tech Mono',monospace;font-size:10px;">${pct}${note}</span>`;
+  }
+
+  const rankCls = i => i===0 ? 'arb-rank gold' : i===1 ? 'arb-rank silver' : i===2 ? 'arb-rank bronze' : 'arb-rank';
+
+  // Status pills
+  const statusPills = Object.entries(multiExStatus).map(([k, s]) => {
+    const cfg = MULTI_EX_CONFIG[k];
+    const col = s === 'ok' ? cfg.color : 'rgba(255,80,100,0.5)';
+    const icon = s === 'ok' ? '●' : s === 'loading' ? '○' : '✗';
+    return `<span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:${col};border:1px solid ${col}40;padding:2px 6px;border-radius:3px;letter-spacing:1px;">${cfg.short} ${icon}</span>`;
+  }).join(' ');
+
+  const rows = sorted.slice(0, 35).map((o, i) => {
+    const longCfg  = MULTI_EX_CONFIG[o.longEx];
+    const shortCfg = MULTI_EX_CONFIG[o.shortEx];
+    const longSpreadIsEst  = o.longEx  !== 'variational';
+    const shortSpreadIsEst = o.shortEx !== 'variational';
+    const rnetColor = realNetColor(o.realNetApy);
+
+    return `<tr>
+      <td class="${rankCls(i)}">${i+1}</td>
+      <td>
+        <span class="var-ticker">${o.sym}</span>
+      </td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:1px;">
+            LONG&nbsp; ${exBadge(o.longEx)}
+          </span>
+          <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:1px;">
+            SHORT ${exBadge(o.shortEx)}
+          </span>
+        </div>
+      </td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:10px;line-height:1.8;">
+        <span style="color:${longCfg?.color||'#aaa'}">${fmtApy(o.longApy)}</span>
+        <span style="color:rgba(255,255,255,0.2);font-size:9px;"> long</span><br>
+        <span style="color:${shortCfg?.color||'#aaa'}">${fmtApy(o.shortApy)}</span>
+        <span style="color:rgba(255,255,255,0.2);font-size:9px;"> short</span>
+      </td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:10px;line-height:1.8;">
+        <span style="color:rgba(57,255,20,0.7);">${fmtApy(o.grossApy, false)}</span>
+        <span style="color:rgba(255,255,255,0.2);font-size:8px;"> gross</span><br>
+        <span style="color:rgba(255,100,80,0.7);">−${fmtApy(o.costApy, false)}</span>
+        <span style="color:rgba(255,255,255,0.2);font-size:8px;"> spread cost</span>
+      </td>
+      <td>
+        <span style="font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:${rnetColor};text-shadow:0 0 10px ${rnetColor}60;">
+          ${fmtApy(o.realNetApy)}
+        </span>
+      </td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:10px;line-height:1.8;">
+        ${spreadBpsDisplay(o.longSpreadBps, longSpreadIsEst)}
+        <span style="color:rgba(255,255,255,0.15);font-size:8px;"> L</span><br>
+        ${spreadBpsDisplay(o.shortSpreadBps, shortSpreadIsEst)}
+        <span style="color:rgba(255,255,255,0.15);font-size:8px;"> S</span>
+      </td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          ${exTradeBtn(o.longEx, o.sym)}
+          ${exTradeBtn(o.shortEx, o.sym)}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div style="padding:8px 16px 6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-bottom:1px solid rgba(255,255,255,0.03);">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;letter-spacing:1px;margin-right:2px;">LIVE:</span>
+      ${statusPills}
+      <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,140,0,0.4);margin-left:auto;letter-spacing:1px;">
+        spread cost @ ${varHoldDays}d hold
+      </span>
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="var-table" style="min-width:700px;">
+      <thead><tr>
+        <th>#</th>
+        <th>Coin</th>
+        <th>Strategy</th>
+        <th>Funding APY<br><span style="font-weight:400;font-size:9px;opacity:0.5;">(long / short leg)</span></th>
+        <th>Gross → Cost<br><span style="font-weight:400;font-size:9px;opacity:0.5;">(funding − spread)</span></th>
+        <th>Real Net APY</th>
+        <th>Spread<br><span style="font-weight:400;font-size:9px;opacity:0.5;">(L / S leg)</span></th>
+        <th>Trade</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    </div>`;
+}
+
 function render(dexes) {
   const tierOrder = { 'S': 0, 'A': 1, 'B': 2, 'C': 3, 'D': 4 };
   const nameOrder = {
