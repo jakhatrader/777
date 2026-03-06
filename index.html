@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MUAR Perp DEX Tier List</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -190,21 +190,21 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 .var-tab.active { color: var(--neon-cyan); border-bottom-color: var(--neon-cyan); }
 .var-tab:hover { color: var(--neon-cyan); }
 .var-table { width: 100%; border-collapse: collapse; }
-.var-table thead th { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(0,240,255,0.08); background: rgba(0,240,255,0.02); }
+.var-table thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); padding: 12px 16px; text-align: left; border-bottom: 1px solid rgba(0,240,255,0.08); background: rgba(0,240,255,0.02); }
 .var-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
 .var-table tbody tr:hover { background: rgba(0,240,255,0.03); }
 .var-table tbody td { padding: 11px 16px; font-size: 13px; vertical-align: middle; }
 .var-ticker { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-main); letter-spacing: 1px; }
-.var-spread-good { color: var(--neon-green); font-family: 'Share Tech Mono', monospace; font-size: 12px; text-shadow: 0 0 6px rgba(57,255,20,0.3); }
-.var-spread-ok { color: var(--neon-yellow); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
-.var-fund-pos { color: var(--neon-pink); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
-.var-fund-neg { color: var(--neon-green); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
-.var-fund-neu { color: var(--text-dim); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
-.var-arb-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 4px; font-family: 'Share Tech Mono', monospace; font-size: 11px; font-weight: 700; }
+.var-spread-good { color: var(--neon-green); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; text-shadow: 0 0 6px rgba(57,255,20,0.3); }
+.var-spread-ok { color: var(--neon-yellow); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+.var-fund-pos { color: var(--neon-pink); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+.var-fund-neg { color: var(--neon-green); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+.var-fund-neu { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+.var-arb-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; }
 .var-arb-long-var { color: var(--neon-green); background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.25); }
 .var-arb-long-hl { color: #60b8f5; background: rgba(96,184,245,0.08); border: 1px solid rgba(96,184,245,0.25); }
 .var-arb-apy { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--neon-orange); text-shadow: 0 0 10px rgba(255,140,0,0.4); }
-.var-trade-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 1px; text-decoration: none; color: var(--neon-cyan); border: 1px solid rgba(0,240,255,0.25); background: rgba(0,240,255,0.04); transition: all 0.25s; white-space: nowrap; }
+.var-trade-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-decoration: none; color: var(--neon-cyan); border: 1px solid rgba(0,240,255,0.25); background: rgba(0,240,255,0.04); transition: all 0.25s; white-space: nowrap; }
 .var-trade-btn:hover { color: #fff; border-color: var(--neon-cyan); background: rgba(0,240,255,0.13); box-shadow: 0 0 14px rgba(0,240,255,0.25); }
 @media (max-width: 700px) {
   .var-table thead th { font-size: 8px; padding: 10px 8px; }
@@ -432,7 +432,7 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
         <div>
           <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-cyan);letter-spacing:2px;margin-bottom:6px;text-shadow:0 0 12px rgba(0,240,255,0.4);">VARIATIONAL PAIRS</div>
           <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:4px;">Top Low Slippage</div>
-          <p style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;">ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> position size</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;">ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> position size</p>
         </div>
         <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;padding-top:4px;" id="var-last-updated"></span>
       </div>
@@ -1367,58 +1367,61 @@ function renderVarSpreadTable(el) {
     if (q?.bid && q?.ask) {
       const bid = parseFloat(q.bid), ask = parseFloat(q.ask);
       const mid = (bid + ask) / 2;
-      if (mid > 0) quoteBps = (ask - bid) / mid * 10000; // in bps
+      if (mid > 0) quoteBps = (ask - bid) / mid * 10000;
     }
     const slippageBps = quoteBps !== null ? quoteBps : baseBps;
-    return { ...m, slippageBps, quoteBps };
-  });
+    const fundRateRaw = parseFloat(m.funding_rate) || 0;
+    const fundInterval = parseInt(m.funding_interval_s) || 28800;
+    const fundApy = varFundingToApy(fundRateRaw / 100, fundInterval);
+    return { ...m, slippageBps, quoteBps, fundRateRaw, fundApy };
+  }).filter(m => m.slippageBps < 9999);
 
-  // Sort all markets by slippage ascending, take top 15
-  const filtered = withSlippage
-    .filter(m => m.slippageBps < 9999)
-    .sort((a, b) => a.slippageBps - b.slippageBps)
-    .slice(0, 15);
+  // Sort
+  const col = window._varSortCol || 'slippage';
+  const dir = window._varSortDir || 1;
+  withSlippage.sort((a, b) => {
+    if (col === 'slippage') return (a.slippageBps - b.slippageBps) * dir;
+    if (col === 'spread')   return (parseFloat(a.base_spread_bps) - parseFloat(b.base_spread_bps)) * dir;
+    if (col === 'funding')  return (Math.abs(b.fundApy) - Math.abs(a.fundApy)) * dir;
+    return 0;
+  });
+  const filtered = withSlippage.slice(0, 15);
 
   if (filtered.length === 0) {
     el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No Variational data available.</div>`;
     return;
   }
 
+  function sortArrow(c) {
+    if (col !== c) return `<span style="opacity:0.2;margin-left:4px;">⇅</span>`;
+    return dir === 1
+      ? `<span style="color:var(--neon-cyan);margin-left:4px;">↑</span>`
+      : `<span style="color:var(--neon-cyan);margin-left:4px;">↓</span>`;
+  }
+
+  function thSort(c, label) {
+    const active = col === c ? 'color:var(--neon-cyan);' : '';
+    return `<th style="cursor:pointer;user-select:none;${active}" onclick="window._varSortDir=(window._varSortCol==='${c}'?(window._varSortDir||1)*-1:1);window._varSortCol='${c}';renderVarContent();">${label}${sortArrow(c)}</th>`;
+  }
+
   const rows = filtered.map((m, i) => {
     const baseBps = parseFloat(m.base_spread_bps);
     const slipStr = (m.slippageBps / 100).toFixed(4) + '%';
     const slipCls = m.slippageBps <= 5 ? 'var-spread-good' : 'var-spread-ok';
-
-    // VAR funding_rate is in % — e.g. 0.037 means 0.037% per interval
-    const fundRateRaw = parseFloat(m.funding_rate);
-    const fundInterval = parseInt(m.funding_interval_s) || 28800;
-    const fundRateDecimal = fundRateRaw / 100;
-    const fundApy = varFundingToApy(fundRateDecimal, fundInterval);
-    const fundPct = fundRateRaw.toFixed(4) + '%';
-    const fundApyStr = (fundApy >= 0 ? '+' : '') + fundApy.toFixed(1) + '%';
-    const fundCls = fundRateDecimal > 0.0001 ? 'var-fund-pos' : fundRateDecimal < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
-
+    const fundPct = m.fundRateRaw.toFixed(4) + '%';
+    const fundApyStr = (m.fundApy >= 0 ? '+' : '') + m.fundApy.toFixed(1) + '%';
+    const fundCls = m.fundRateRaw > 0.0001 ? 'var-fund-pos' : m.fundRateRaw < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
     const vol24 = parseFloat(m.volume_24h);
-    const volStr = vol24 >= 1e9 ? '$' + (vol24/1e9).toFixed(1) + 'B'
-                 : vol24 >= 1e6 ? '$' + (vol24/1e6).toFixed(1) + 'M'
-                 : vol24 >= 1e3 ? '$' + (vol24/1e3).toFixed(0) + 'K'
-                 : vol24 > 0   ? '$' + vol24.toFixed(0) : '—';
-
+    const volStr = vol24 >= 1e9 ? '$'+(vol24/1e9).toFixed(1)+'B' : vol24 >= 1e6 ? '$'+(vol24/1e6).toFixed(1)+'M' : vol24 >= 1e3 ? '$'+(vol24/1e3).toFixed(0)+'K' : vol24 > 0 ? '$'+vol24.toFixed(0) : '—';
     const rankCls = i === 0 ? 'arb-rank gold' : i === 1 ? 'arb-rank silver' : i === 2 ? 'arb-rank bronze' : 'arb-rank';
 
     return `<tr>
       <td class="${rankCls}">${i+1}</td>
-      <td><span class="var-ticker">${m.ticker}</span><br><span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.5;">${m.name || ''}</span></td>
-      <td>
-        <span class="${slipCls}">${slipStr}</span>
-        ${m.quoteBps !== null ? '' : '<span style="opacity:0.35;font-size:9px;"> base</span>'}
-      </td>
+      <td><span class="var-ticker">${m.ticker}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.5;">${m.name || ''}</span></td>
+      <td><span class="${slipCls}">${slipStr}</span>${m.quoteBps !== null ? '' : '<span style="opacity:0.3;font-size:9px;"> base</span>'}</td>
       <td><span class="${slipCls}">${(baseBps/100).toFixed(4)}%</span></td>
-      <td>
-        <span class="${fundCls}">${fundPct}/interval</span><br>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span>
-      </td>
-      <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
+      <td><span class="${fundCls}">${fundPct}/interval</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
       <td><a class="var-trade-btn" href="https://omni.variational.io/?ref=OMNIMUAR#${m.ticker}" target="_blank" rel="noopener">Trade &#x276F;</a></td>
     </tr>`;
   }).join('');
@@ -1427,9 +1430,9 @@ function renderVarSpreadTable(el) {
     <thead><tr>
       <th>#</th>
       <th>Market</th>
-      <th>Slippage @$100k</th>
-      <th>Base Spread</th>
-      <th>Funding (per interval)</th>
+      ${thSort('slippage','Slippage @$100k')}
+      ${thSort('spread','Base Spread')}
+      ${thSort('funding','Funding (APY)')}
       <th>24h Volume</th>
       <th></th>
     </tr></thead>
