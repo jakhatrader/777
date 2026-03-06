@@ -183,7 +183,6 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 /* ─── VARIATIONAL MARKETS SECTION ─── */
 .varmarkets-section { display: none; }
 .varmarkets-section.visible { display: block; }
-.nadomarkets-section.visible { display: block !important; }
 .var-filter-btn { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 5px; cursor: pointer; transition: all 0.2s; color: var(--text-dim); background: transparent; border: 1px solid rgba(255,255,255,0.1); }
 .var-filter-btn.active { color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); background: rgba(0,240,255,0.07); }
 .var-filter-btn:hover { color: var(--neon-cyan); border-color: rgba(0,240,255,0.3); }
@@ -207,8 +206,6 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 .var-arb-apy { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--neon-orange); text-shadow: 0 0 10px rgba(255,140,0,0.4); }
 .var-trade-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-decoration: none; color: var(--neon-cyan); border: 1px solid rgba(0,240,255,0.25); background: rgba(0,240,255,0.04); transition: all 0.25s; white-space: nowrap; }
 .var-trade-btn:hover { color: #fff; border-color: var(--neon-cyan); background: rgba(0,240,255,0.13); box-shadow: 0 0 14px rgba(0,240,255,0.25); }
-.nado-trade-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-decoration: none; color: var(--neon-orange); border: 1px solid rgba(255,140,0,0.25); background: rgba(255,140,0,0.04); transition: all 0.25s; white-space: nowrap; }
-.nado-trade-btn:hover { color: #fff; border-color: var(--neon-orange); background: rgba(255,140,0,0.13); box-shadow: 0 0 14px rgba(255,140,0,0.25); }
 @media (max-width: 700px) {
   .var-table thead th { font-size: 8px; padding: 10px 8px; }
   .var-table tbody td { padding: 9px 8px; font-size: 12px; }
@@ -392,11 +389,6 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       <div class="stat-value" style="color:var(--neon-cyan);text-shadow:0 0 15px rgba(0,240,255,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_varmarkets_value">Top Low Slippage</div>
       <span class="tab-arrow" style="color:var(--neon-cyan);" data-i18n="tab_varmarkets_arrow">▼ Top 30 Pairs</span>
     </div>
-    <div class="stat-item" id="tab-nadomarkets" onclick="switchTab('nadomarkets')" style="border-color:rgba(255,140,0,0.15);cursor:pointer;transition:all 0.3s;">
-      <div class="stat-label">Nado Markets</div>
-      <div class="stat-value" style="color:var(--neon-orange);text-shadow:0 0 15px rgba(255,140,0,0.4);font-size:11px;line-height:1.4;">Top Low Slippage</div>
-      <span class="tab-arrow" style="color:var(--neon-orange);">▼ Top 15 Pairs</span>
-    </div>
   </div>
 
   <!-- TIER LIST -->
@@ -451,33 +443,6 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
     </div>
   </div>
 
-  <!-- NADO MARKETS SECTION -->
-  <div class="nadomarkets-section" id="nadomarkets-section" style="display:none;">
-    <div class="table-wrapper" style="border-color:rgba(255,140,0,0.2);box-shadow:0 0 40px rgba(255,140,0,0.05),0 20px 60px rgba(0,0,0,0.5);">
-      <div style="padding:24px 28px 16px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-        <div>
-          <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-orange);letter-spacing:2px;margin-bottom:6px;text-shadow:0 0 12px rgba(255,140,0,0.4);">NADO PAIRS</div>
-          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:4px;">Top Low Slippage</div>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;">ranked by spread · taker fee <span style="color:var(--neon-orange);">3.5 bps</span> entry tier · <span style="color:var(--neon-orange);">1.5 bps</span> elite</p>
-        </div>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;padding-top:4px;" id="nado-last-updated"></span>
-      </div>
-
-      <!-- Fee tier selector -->
-      <div style="display:flex;align-items:center;gap:8px;padding:0 28px 14px;flex-wrap:wrap;">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">TAKER FEE TIER:</span>
-        <button class="var-filter-btn active" id="nf-entry" onclick="setNadoFeeTier(3.5,'entry')">Entry 3.5 bps</button>
-        <button class="var-filter-btn" id="nf-mid" onclick="setNadoFeeTier(3,'mid')">Mid 3 bps</button>
-        <button class="var-filter-btn" id="nf-high" onclick="setNadoFeeTier(2.5,'high')">High 2.5 bps</button>
-        <button class="var-filter-btn" id="nf-elite" onclick="setNadoFeeTier(1.5,'elite')">Elite 1.5 bps</button>
-      </div>
-
-      <div id="nado-content" style="padding-bottom:4px;">
-        <div style="padding:40px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Nado markets...</div>
-      </div>
-      <div class="data-note" style="color:rgba(255,140,0,0.3);">Live data · Nado API · funding 24h rate · round-trip fee = taker×2 (entry+exit)</div>
-    </div>
-  </div>
   <div class="screenshot-modal" id="screenshot-modal">
     <div class="screenshot-card" id="screenshot-card">
       <div class="screenshot-card-bg" id="sc-bg-div"></div>
@@ -878,8 +843,6 @@ function switchTab(tab) {
   const botsSection = document.getElementById('bots-section');
   const tabVarmarkets = document.getElementById('tab-varmarkets');
   const varmarketsSection = document.getElementById('varmarkets-section');
-  const tabNadomarkets = document.getElementById('tab-nadomarkets');
-  const nadomarketsSection = document.getElementById('nadomarkets-section');
 
   // Reset all
   tabTierlist.classList.remove('active');
@@ -887,19 +850,16 @@ function switchTab(tab) {
   if (tabCalc) tabCalc.classList.remove('active');
   if (tabBots) tabBots.classList.remove('active');
   if (tabVarmarkets) tabVarmarkets.classList.remove('active');
-  if (tabNadomarkets) tabNadomarkets.classList.remove('active');
   tierlist.classList.add('hidden');
   arbSection.classList.remove('visible');
   if (calcSection) calcSection.classList.remove('visible');
   if (botsSection) botsSection.classList.remove('visible');
   if (varmarketsSection) varmarketsSection.classList.remove('visible');
-  if (nadomarketsSection) nadomarketsSection.classList.remove('visible');
   tabArb.querySelector('.tab-arrow').innerHTML = '&#x25BC; Click to Explore';
   tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25BC; Tier List';
   if (tabCalc) tabCalc.querySelector('.tab-arrow').innerHTML = '&#x25BC; Calculate';
   if (tabBots) tabBots.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore Bots';
   if (tabVarmarkets) tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25BC; Top 30 Pairs';
-  if (tabNadomarkets) tabNadomarkets.querySelector('.tab-arrow').innerHTML = '&#x25BC; Top 15 Pairs';
 
   if (tab === 'arb') {
     tabArb.classList.add('active');
@@ -917,10 +877,6 @@ function switchTab(tab) {
     if (tabVarmarkets) { tabVarmarkets.classList.add('active'); tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
     if (varmarketsSection) varmarketsSection.classList.add('visible');
     if (!varDataLoaded) fetchVarData();
-  } else if (tab === 'nadomarkets') {
-    if (tabNadomarkets) { tabNadomarkets.classList.add('active'); tabNadomarkets.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
-    if (nadomarketsSection) nadomarketsSection.classList.add('visible');
-    if (!nadoDataLoaded) fetchNadoMarketsData();
   } else {
     tabTierlist.classList.add('active');
     tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active';
@@ -1330,56 +1286,6 @@ async function fetchPacificaFunding() {
   }
 }
 
-async function fetchNadoFunding() {
-  multiExStatus.nado = 'loading';
-  try {
-    // Step 1: get all products to build id→ticker map
-    const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=allProducts', {
-      headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
-    });
-    if (!rProds.ok) throw new Error('products HTTP ' + rProds.status);
-    const jProds = await rProds.json();
-
-    const idToTicker = {};
-    // Nado uses Vertex-style: perp products have odd product_ids (1, 3, 5, ...)
-    const allProds = jProds.perp_products || jProds.spot_products || [];
-    // Try to find all perp product entries
-    const allEntries = Object.values(jProds).flat ? Object.values(jProds).flat() : [];
-    const tryList = allProds.length ? allProds : allEntries;
-    tryList.forEach(p => {
-      if (!p || typeof p !== 'object') return;
-      const id = p.product_id ?? p.id;
-      const meta = p.metadata || p;
-      const ticker = (meta.ticker || meta.symbol || meta.name || '').replace(/-PERP$/i, '').replace(/-USD$/i, '').toUpperCase();
-      if (id != null && ticker) idToTicker[String(id)] = ticker;
-    });
-
-    // Step 2: fetch funding rates — Nado archive returns 24h rate, x18 format
-    const rFund = await fetch('https://archive.prod.nado.xyz/v1', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'identity' },
-      body: JSON.stringify({ type: 'funding_rate' })
-    });
-    if (!rFund.ok) throw new Error('funding HTTP ' + rFund.status);
-    const jFund = await rFund.json();
-
-    // Response: { product_id: { funding_rate_x18, update_time } } or array
-    const fundMap = jFund.funding_rates || jFund;
-    Object.entries(fundMap).forEach(([pid, v]) => {
-      const ticker = idToTicker[String(pid)];
-      if (!ticker) return;
-      const val = v?.funding_rate_x18 ?? v;
-      // funding_rate_x18 is 24h rate * 1e18
-      const rate24h = parseFloat(val) / 1e18;
-      if (!isNaN(rate24h) && rate24h !== 0) {
-        if (!multiExFunding[ticker]) multiExFunding[ticker] = {};
-        // 24h rate → annualise over 365 days
-        multiExFunding[ticker].nado = rate24h * 365 * 100;
-      }
-    });
-    multiExStatus.nado = 'ok';
-  } catch(e) { multiExStatus.nado = 'error'; }
-}
 
 function varFundingToApy(rateDecimal, intervalSeconds) {
   // rateDecimal: decimal fraction per interval (e.g. 0.0001 = 0.01% per interval)
@@ -1388,238 +1294,6 @@ function varFundingToApy(rateDecimal, intervalSeconds) {
   return rateDecimal * periodsPerYear * 100;
 }
 
-// ─── NADO MARKETS ───────────────────────────────────────────────────────────
-let nadoDataLoaded = false;
-let nadoRawData = null; // array of { ticker, name, fundRate24h, volume24h, openInterest }
-let nadoTakerFeeBps = 3.5;
-let nadoSortCol = 'spread';
-let nadoSortDir = 1;
-
-function setNadoFeeTier(bps, id) {
-  nadoTakerFeeBps = bps;
-  ['entry','mid','high','elite'].forEach(t => {
-    const b = document.getElementById('nf-' + t);
-    if (b) b.classList.toggle('active', t === id);
-  });
-  renderNadoTable();
-}
-
-async function fetchNadoMarketsData() {
-  const el = document.getElementById('nado-content');
-  el.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'JetBrains Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Nado markets...</div>';
-
-  try {
-    // Step 1: product id → ticker map, correct type is "all_products"
-    const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=all_products', {
-      headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
-    });
-    const prodsText = await rProds.text();
-    if (!rProds.ok) throw new Error(`products ${rProds.status}: ${prodsText.slice(0,200)}`);
-    const jProds = JSON.parse(prodsText);
-
-    const idToMeta = {};
-    const tryList = [];
-    // Response: { data: { perp_products: [...], spot_products: [...] } }
-    const data = jProds.data || jProds;
-    ['perp_products','spot_products'].forEach(key => {
-      if (Array.isArray(data[key])) tryList.push(...data[key]);
-    });
-    if (!tryList.length) Object.values(data).forEach(v => { if (Array.isArray(v)) tryList.push(...v); });
-    tryList.forEach(p => {
-      if (!p || typeof p !== 'object') return;
-      const id = String(p.product_id ?? p.id ?? '');
-      const meta = p.metadata || p;
-      const ticker = (meta.ticker || meta.symbol || meta.name || '').replace(/-PERP$/i,'').replace(/-USD[TC]?$/i,'').toUpperCase();
-      const name = typeof meta.name === 'string' ? meta.name : ticker;
-      if (id && ticker) idToMeta[id] = { ticker, name };
-    });
-
-    // Step 2: funding rates via gateway market_prices
-    let fundByPid = {};
-    let fundDebug = '';
-    try {
-      const rFund = await fetch('https://gateway.prod.nado.xyz/v1/query?type=market_prices', {
-        headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
-      });
-      const fundText = await rFund.text();
-      fundDebug = `market_prices ${rFund.status}: ${fundText.slice(0,300)}`;
-      if (rFund.ok) {
-        const jFund = JSON.parse(fundText);
-        const d = jFund.data || jFund;
-        const arr = d.perp_prices || d.prices || (Array.isArray(d) ? d : Object.values(d));
-        arr.forEach(p => {
-          const pid = String(p.product_id ?? p.id ?? '');
-          const fr = p.funding_rate_x18 ?? p.funding_rate;
-          if (pid && fr != null) fundByPid[pid] = parseFloat(fr) / 1e18;
-        });
-      }
-    } catch(e) { fundDebug = 'market_prices error: ' + e.message; }
-
-    // Fallback: archive POST
-    if (!Object.keys(fundByPid).length) {
-      try {
-        const rFund2 = await fetch('https://archive.prod.nado.xyz/v1', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'identity' },
-          body: JSON.stringify({ funding_rate: {} })
-        });
-        const fund2Text = await rFund2.text();
-        fundDebug += ` | archive ${rFund2.status}: ${fund2Text.slice(0,300)}`;
-        if (rFund2.ok) {
-          const jFund2 = JSON.parse(fund2Text);
-          const fundMap = jFund2.funding_rates || jFund2.data || jFund2;
-          Object.entries(fundMap).forEach(([pid, v]) => {
-            const val = v?.funding_rate_x18 ?? v;
-            const r = parseFloat(val) / 1e18;
-            if (!isNaN(r)) fundByPid[String(pid)] = r;
-          });
-        }
-      } catch(e2) { fundDebug += ' | archive error: ' + e2.message; }
-    }
-
-    if (!Object.keys(fundByPid).length) throw new Error('No funding data. Debug: ' + fundDebug);
-
-    // Step 3: 24h stats via v2 archive tickers
-    let statsMap = {};
-    try {
-      const rStats = await fetch('https://archive.prod.nado.xyz/v2/tickers', {
-        headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
-      });
-      if (rStats.ok) {
-        const jStats = await rStats.json();
-        // v2 tickers: array or object keyed by ticker symbol
-        const arr = Array.isArray(jStats) ? jStats : (jStats.data ? (Array.isArray(jStats.data) ? jStats.data : Object.values(jStats.data)) : Object.values(jStats));
-        arr.forEach(m => {
-          const id = String(m.product_id ?? m.id ?? '');
-          const sym = (m.ticker_id || m.base_currency || m.symbol || '').replace(/-PERP$/i,'').replace(/_USDT0?$/i,'').toUpperCase();
-          if (id) statsMap[id] = m;
-          if (sym) statsMap[sym] = m;
-        });
-      }
-    } catch(e) {}
-
-    // Build result array
-    const results = [];
-    Object.entries(fundByPid).forEach(([pid, rate24h]) => {
-      const meta = idToMeta[String(pid)];
-      if (!meta) return;
-      if (isNaN(rate24h)) return;
-
-      const stats = statsMap[String(pid)] || statsMap[meta.ticker] || {};
-      const vol24 = parseFloat(stats.target_volume ?? stats.base_volume ?? stats.volume_24h ?? stats.daily_volume ?? stats.volume ?? 0);
-      const oi = parseFloat(stats.open_interest ?? stats.openInterest ?? 0);
-
-      // Nado spread: use best_bid_offer or base spread — estimate from stats if available
-      // Nado doesn't expose direct bid/ask spread in allMarkets; use mark_price if available
-      // We'll note spread as N/A from API and focus on fee + funding
-      const spreadBps = parseFloat(stats.spread_bps ?? stats.base_spread_bps ?? stats.spread ?? 0);
-
-      results.push({
-        pid,
-        ticker: meta.ticker,
-        name: meta.name,
-        rate24h,       // 24h funding rate as decimal
-        fundApy: rate24h * 365 * 100, // annualised %
-        vol24,
-        oi,
-        spreadBps: spreadBps || null
-      });
-    });
-
-    nadoRawData = results;
-    nadoDataLoaded = true;
-    const ts = new Date().toLocaleTimeString();
-    const el2 = document.getElementById('nado-last-updated');
-    if (el2) el2.textContent = 'Updated ' + ts;
-    renderNadoTable();
-  } catch(e) {
-    const el = document.getElementById('nado-content');
-    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--neon-pink);opacity:0.7;">Failed to load Nado data: ${e.message}</div>`;
-  }
-}
-
-function renderNadoTable() {
-  const el = document.getElementById('nado-content');
-  if (!nadoRawData) return;
-
-  const col = nadoSortCol;
-  const dir = nadoSortDir;
-  const feeBps = nadoTakerFeeBps;
-  // round-trip fee: taker on entry + taker on exit = 2× taker fee
-  const roundTripFeeBps = feeBps * 2;
-
-  const sorted = [...nadoRawData].sort((a, b) => {
-    if (col === 'funding') return (Math.abs(b.fundApy) - Math.abs(a.fundApy)) * dir;
-    if (col === 'volume')  return (b.vol24 - a.vol24) * dir;
-    if (col === 'apy')     return (Math.abs(b.fundApy) - Math.abs(a.fundApy)) * dir;
-    return 0; // default: original order (by pid)
-  }).slice(0, 15);
-
-  if (sorted.length === 0) {
-    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No Nado data available.</div>`;
-    return;
-  }
-
-  function sortArrow(c) {
-    if (col !== c) return `<span style="opacity:0.2;margin-left:4px;">⇅</span>`;
-    return dir === 1
-      ? `<span style="color:var(--neon-orange);margin-left:4px;">↑</span>`
-      : `<span style="color:var(--neon-orange);margin-left:4px;">↓</span>`;
-  }
-  function thSort(c, label) {
-    const active = col === c ? 'color:var(--neon-orange);' : '';
-    return `<th style="cursor:pointer;user-select:none;${active}" onclick="nadoSortDir=(nadoSortCol==='${c}'?nadoSortDir*-1:1);nadoSortCol='${c}';renderNadoTable();">${label}${sortArrow(c)}</th>`;
-  }
-
-  const rows = sorted.map((m, i) => {
-    // funding
-    const rate24Pct = (m.rate24h * 100).toFixed(4) + '%';
-    const fundApyStr = (m.fundApy >= 0 ? '+' : '') + m.fundApy.toFixed(1) + '%';
-    const fundCls = m.rate24h > 0.0001 ? 'var-fund-pos' : m.rate24h < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
-
-    // fee columns
-    const takerPct = feeBps.toFixed(1) + ' bps';
-    const rtPct = roundTripFeeBps.toFixed(1) + ' bps';
-    const feeColor = feeBps <= 1.5 ? 'var(--neon-green)' : feeBps <= 2.5 ? 'var(--neon-yellow)' : 'rgba(255,140,0,0.9)';
-
-    // volume
-    const vol24 = m.vol24;
-    const volStr = vol24 >= 1e9 ? '$'+(vol24/1e9).toFixed(1)+'B'
-                 : vol24 >= 1e6 ? '$'+(vol24/1e6).toFixed(1)+'M'
-                 : vol24 >= 1e3 ? '$'+(vol24/1e3).toFixed(0)+'K'
-                 : vol24 > 0   ? '$'+vol24.toFixed(0) : '—';
-
-    // OI
-    const oiStr = m.oi >= 1e6 ? '$'+(m.oi/1e6).toFixed(1)+'M'
-                : m.oi >= 1e3 ? '$'+(m.oi/1e3).toFixed(0)+'K'
-                : m.oi > 0   ? '$'+m.oi.toFixed(0) : '—';
-
-    const rankCls = i === 0 ? 'arb-rank gold' : i === 1 ? 'arb-rank silver' : i === 2 ? 'arb-rank bronze' : 'arb-rank';
-
-    return `<tr>
-      <td class="${rankCls}">${i+1}</td>
-      <td><span class="var-ticker">${m.ticker}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.5;">${m.name}</span></td>
-      <td><span class="${fundCls}">${rate24Pct} / 24h</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:${feeColor};">${takerPct}<br><span style="font-size:9px;color:rgba(255,255,255,0.25);">×2 = ${rtPct} RT</span></td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">${oiStr}</td>
-      <td><a class="nado-trade-btn" href="https://trade.nado.xyz/trade/${m.ticker}-PERP" target="_blank" rel="noopener">Trade &#x276F;</a></td>
-    </tr>`;
-  }).join('');
-
-  el.innerHTML = `<div style="overflow-x:auto;"><table class="var-table" style="min-width:680px;">
-    <thead><tr>
-      <th>#</th>
-      <th>Market</th>
-      ${thSort('funding','Funding (24h / APY)')}
-      <th>Taker Fee <span style="opacity:0.4;font-size:8px;">/ Round-trip</span></th>
-      ${thSort('volume','24h Volume')}
-      <th>Open Interest</th>
-      <th></th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table></div>`;
-}
 
 function renderVarContent() {
   if (!varRawData) return;
