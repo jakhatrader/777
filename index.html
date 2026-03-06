@@ -1200,11 +1200,14 @@ async function fetchVariationalFunding() {
     const j = await r.json();
     (j.listings || []).forEach(m => {
       const sym = m.ticker.toUpperCase();
-      const rate = parseFloat(m.funding_rate);
-      const interval = parseInt(m.funding_interval_s) || 3600;
-      if (!isNaN(rate)) {
+      // VAR docs: "funding rates are decimals (multiply by 100 for percentage)"
+      // So 0.037347 = 3.7347% per interval — treat as already-percentage, divide by 100 for decimal
+      const rateRaw = parseFloat(m.funding_rate);
+      const interval = parseInt(m.funding_interval_s) || 28800; // default 8h
+      if (!isNaN(rateRaw)) {
         if (!multiExFunding[sym]) multiExFunding[sym] = {};
-        multiExFunding[sym].variational = varFundingToApy(rate, interval);
+        const rateDecimal = rateRaw / 100; // convert % → decimal
+        multiExFunding[sym].variational = varFundingToApy(rateDecimal, interval);
       }
     });
     multiExStatus.variational = 'ok';
@@ -1226,10 +1229,10 @@ async function fetchHyperliquidFunding() {
       const ctx = ctxs[i];
       if (!ctx) return;
       const sym = u.name.toUpperCase();
-      const rate = parseFloat(ctx.funding); // per 8h
+      const rate = parseFloat(ctx.funding); // hourly rate as decimal, e.g. 0.0000125 = 0.00125%/hr
       if (!isNaN(rate)) {
         if (!multiExFunding[sym]) multiExFunding[sym] = {};
-        // HL funding is per 1h (pays every 1h, rate already scaled)
+        // HL funding is paid every hour — ctx.funding is the per-hour rate
         multiExFunding[sym].hyperliquid = varFundingToApy(rate, 3600);
       }
     });
@@ -1322,8 +1325,8 @@ async function fetchNadoFunding() {
 }
 
 function varFundingToApy(rateDecimal, intervalSeconds) {
-  // rateDecimal is e.g. 0.0005 per interval
-  // APY = rate * (secondsPerYear / intervalSeconds) * 100
+  // rateDecimal: decimal fraction per interval (e.g. 0.0001 = 0.01% per interval)
+  // intervalSeconds: e.g. 3600 = 1h, 28800 = 8h
   const periodsPerYear = (365 * 24 * 3600) / intervalSeconds;
   return rateDecimal * periodsPerYear * 100;
 }
@@ -1359,12 +1362,14 @@ function renderVarSpreadTable(el) {
     const spreadPct = (spread / 100).toFixed(4) + '%';
     const spreadCls = spread <= 5 ? 'var-spread-good' : 'var-spread-ok';
 
-    const fundRate = parseFloat(m.funding_rate); // as decimal, e.g. 0.0003 = 0.03%
-    const fundInterval = parseInt(m.funding_interval_s) || 3600;
-    const fundApy = varFundingToApy(fundRate, fundInterval);
-    const fundPct = (fundRate * 100).toFixed(4) + '%';
+    // VAR funding_rate is already in % (e.g. 0.037347 = 3.7347% per interval)
+    const fundRateRaw = parseFloat(m.funding_rate);
+    const fundInterval = parseInt(m.funding_interval_s) || 28800;
+    const fundRateDecimal = fundRateRaw / 100; // % → decimal
+    const fundApy = varFundingToApy(fundRateDecimal, fundInterval);
+    const fundPct = fundRateRaw.toFixed(4) + '%';
     const fundApyStr = fundApy >= 0 ? '+' + fundApy.toFixed(1) + '%' : fundApy.toFixed(1) + '%';
-    const fundCls = fundRate > 0.0001 ? 'var-fund-pos' : fundRate < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
+    const fundCls = fundRateDecimal > 0.0001 ? 'var-fund-pos' : fundRateDecimal < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
 
     const vol24 = parseFloat(m.volume_24h);
     const volStr = vol24 >= 1e9 ? '$' + (vol24/1e9).toFixed(1) + 'B' : vol24 >= 1e6 ? '$' + (vol24/1e6).toFixed(1) + 'M' : vol24 >= 1e3 ? '$' + (vol24/1e3).toFixed(0) + 'K' : vol24 > 0 ? '$' + vol24.toFixed(0) : '—';
