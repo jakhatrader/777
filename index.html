@@ -1409,8 +1409,8 @@ async function fetchNadoMarketsData() {
   el.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'JetBrains Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Nado markets...</div>';
 
   try {
-    // Step 1: product id → ticker map
-    const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=allProducts', {
+    // Step 1: product id → ticker map, correct type is "all_products"
+    const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=all_products', {
       headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
     });
     if (!rProds.ok) throw new Error('products ' + rProds.status);
@@ -1418,14 +1418,19 @@ async function fetchNadoMarketsData() {
 
     const idToMeta = {};
     const tryList = [];
-    Object.values(jProds).forEach(v => { if (Array.isArray(v)) tryList.push(...v); });
+    // Response: { data: { perp_products: [...], spot_products: [...] } }
+    const data = jProds.data || jProds;
+    ['perp_products','spot_products'].forEach(key => {
+      if (Array.isArray(data[key])) tryList.push(...data[key]);
+    });
+    if (!tryList.length) Object.values(data).forEach(v => { if (Array.isArray(v)) tryList.push(...v); });
     tryList.forEach(p => {
       if (!p || typeof p !== 'object') return;
       const id = String(p.product_id ?? p.id ?? '');
       const meta = p.metadata || p;
       const ticker = (meta.ticker || meta.symbol || meta.name || '').replace(/-PERP$/i,'').replace(/-USD[TC]?$/i,'').toUpperCase();
-      const name = meta.name || meta.symbol || ticker;
-      if (id && ticker) idToMeta[id] = { ticker, name: typeof name === 'string' ? name : ticker };
+      const name = typeof meta.name === 'string' ? meta.name : ticker;
+      if (id && ticker) idToMeta[id] = { ticker, name };
     });
 
     // Step 2: funding rates (24h, x18)
@@ -1438,18 +1443,21 @@ async function fetchNadoMarketsData() {
     const jFund = await rFund.json();
     const fundMap = jFund.funding_rates || jFund;
 
-    // Step 3: market stats for volume/OI — try allMarkets or marketStats
+    // Step 3: 24h stats via v2 archive tickers
     let statsMap = {};
     try {
-      const rStats = await fetch('https://gateway.prod.nado.xyz/v1/query?type=allMarkets', {
+      const rStats = await fetch('https://archive.prod.nado.xyz/v2/tickers', {
         headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
       });
       if (rStats.ok) {
         const jStats = await rStats.json();
-        const arr = jStats.markets || jStats.data || (Array.isArray(jStats) ? jStats : Object.values(jStats));
+        // v2 tickers: array or object keyed by ticker symbol
+        const arr = Array.isArray(jStats) ? jStats : (jStats.data ? (Array.isArray(jStats.data) ? jStats.data : Object.values(jStats.data)) : Object.values(jStats));
         arr.forEach(m => {
           const id = String(m.product_id ?? m.id ?? '');
+          const sym = (m.ticker_id || m.base_currency || m.symbol || '').replace(/-PERP$/i,'').replace(/_USDT0?$/i,'').toUpperCase();
           if (id) statsMap[id] = m;
+          if (sym) statsMap[sym] = m;
         });
       }
     } catch(e) {}
@@ -1463,8 +1471,8 @@ async function fetchNadoMarketsData() {
       const rate24h = parseFloat(val) / 1e18; // 24h rate as decimal
       if (isNaN(rate24h)) return;
 
-      const stats = statsMap[String(pid)] || {};
-      const vol24 = parseFloat(stats.volume_24h ?? stats.daily_volume ?? stats.volume ?? 0);
+      const stats = statsMap[String(pid)] || statsMap[meta.ticker] || {};
+      const vol24 = parseFloat(stats.target_volume ?? stats.base_volume ?? stats.volume_24h ?? stats.daily_volume ?? stats.volume ?? 0);
       const oi = parseFloat(stats.open_interest ?? stats.openInterest ?? 0);
 
       // Nado spread: use best_bid_offer or base spread — estimate from stats if available
