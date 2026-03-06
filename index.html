@@ -1433,15 +1433,42 @@ async function fetchNadoMarketsData() {
       if (id && ticker) idToMeta[id] = { ticker, name };
     });
 
-    // Step 2: funding rates (24h, x18)
-    const rFund = await fetch('https://archive.prod.nado.xyz/v1', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'identity' },
-      body: JSON.stringify({ type: 'funding_rate' })
-    });
-    if (!rFund.ok) throw new Error('funding ' + rFund.status);
-    const jFund = await rFund.json();
-    const fundMap = jFund.funding_rates || jFund;
+    // Step 2: funding rates — correct archive body format is { "funding_rate": { "product_ids": [...] } }
+    // First try gateway market_prices which includes funding_rate_x18 per product
+    let fundByPid = {};
+    try {
+      const rFund = await fetch('https://gateway.prod.nado.xyz/v1/query?type=market_prices', {
+        headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
+      });
+      if (rFund.ok) {
+        const jFund = await rFund.json();
+        const d = jFund.data || jFund;
+        // market_prices returns { perp_prices: [ { product_id, index_price_x18, mark_price_x18, funding_rate_x18 } ] }
+        const arr = d.perp_prices || d.prices || (Array.isArray(d) ? d : Object.values(d));
+        arr.forEach(p => {
+          const pid = String(p.product_id ?? p.id ?? '');
+          const fr = p.funding_rate_x18 ?? p.funding_rate;
+          if (pid && fr != null) fundByPid[pid] = parseFloat(fr) / 1e18;
+        });
+      }
+    } catch(e) {}
+
+    // Fallback: archive POST with correct body format
+    if (!Object.keys(fundByPid).length) {
+      const rFund2 = await fetch('https://archive.prod.nado.xyz/v1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'identity' },
+        body: JSON.stringify({ funding_rate: {} })
+      });
+      if (!rFund2.ok) throw new Error('funding ' + rFund2.status);
+      const jFund2 = await rFund2.json();
+      const fundMap = jFund2.funding_rates || jFund2.data || jFund2;
+      Object.entries(fundMap).forEach(([pid, v]) => {
+        const val = v?.funding_rate_x18 ?? v;
+        const r = parseFloat(val) / 1e18;
+        if (!isNaN(r)) fundByPid[String(pid)] = r;
+      });
+    }
 
     // Step 3: 24h stats via v2 archive tickers
     let statsMap = {};
@@ -1464,11 +1491,9 @@ async function fetchNadoMarketsData() {
 
     // Build result array
     const results = [];
-    Object.entries(fundMap).forEach(([pid, v]) => {
+    Object.entries(fundByPid).forEach(([pid, rate24h]) => {
       const meta = idToMeta[String(pid)];
       if (!meta) return;
-      const val = v?.funding_rate_x18 ?? v;
-      const rate24h = parseFloat(val) / 1e18; // 24h rate as decimal
       if (isNaN(rate24h)) return;
 
       const stats = statsMap[String(pid)] || statsMap[meta.ticker] || {};
