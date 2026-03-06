@@ -1413,8 +1413,9 @@ async function fetchNadoMarketsData() {
     const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=all_products', {
       headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
     });
-    if (!rProds.ok) throw new Error('products ' + rProds.status);
-    const jProds = await rProds.json();
+    const prodsText = await rProds.text();
+    if (!rProds.ok) throw new Error(`products ${rProds.status}: ${prodsText.slice(0,200)}`);
+    const jProds = JSON.parse(prodsText);
 
     const idToMeta = {};
     const tryList = [];
@@ -1433,17 +1434,18 @@ async function fetchNadoMarketsData() {
       if (id && ticker) idToMeta[id] = { ticker, name };
     });
 
-    // Step 2: funding rates — correct archive body format is { "funding_rate": { "product_ids": [...] } }
-    // First try gateway market_prices which includes funding_rate_x18 per product
+    // Step 2: funding rates via gateway market_prices
     let fundByPid = {};
+    let fundDebug = '';
     try {
       const rFund = await fetch('https://gateway.prod.nado.xyz/v1/query?type=market_prices', {
         headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
       });
+      const fundText = await rFund.text();
+      fundDebug = `market_prices ${rFund.status}: ${fundText.slice(0,300)}`;
       if (rFund.ok) {
-        const jFund = await rFund.json();
+        const jFund = JSON.parse(fundText);
         const d = jFund.data || jFund;
-        // market_prices returns { perp_prices: [ { product_id, index_price_x18, mark_price_x18, funding_rate_x18 } ] }
         const arr = d.perp_prices || d.prices || (Array.isArray(d) ? d : Object.values(d));
         arr.forEach(p => {
           const pid = String(p.product_id ?? p.id ?? '');
@@ -1451,24 +1453,31 @@ async function fetchNadoMarketsData() {
           if (pid && fr != null) fundByPid[pid] = parseFloat(fr) / 1e18;
         });
       }
-    } catch(e) {}
+    } catch(e) { fundDebug = 'market_prices error: ' + e.message; }
 
-    // Fallback: archive POST with correct body format
+    // Fallback: archive POST
     if (!Object.keys(fundByPid).length) {
-      const rFund2 = await fetch('https://archive.prod.nado.xyz/v1', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'identity' },
-        body: JSON.stringify({ funding_rate: {} })
-      });
-      if (!rFund2.ok) throw new Error('funding ' + rFund2.status);
-      const jFund2 = await rFund2.json();
-      const fundMap = jFund2.funding_rates || jFund2.data || jFund2;
-      Object.entries(fundMap).forEach(([pid, v]) => {
-        const val = v?.funding_rate_x18 ?? v;
-        const r = parseFloat(val) / 1e18;
-        if (!isNaN(r)) fundByPid[String(pid)] = r;
-      });
+      try {
+        const rFund2 = await fetch('https://archive.prod.nado.xyz/v1', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'identity' },
+          body: JSON.stringify({ funding_rate: {} })
+        });
+        const fund2Text = await rFund2.text();
+        fundDebug += ` | archive ${rFund2.status}: ${fund2Text.slice(0,300)}`;
+        if (rFund2.ok) {
+          const jFund2 = JSON.parse(fund2Text);
+          const fundMap = jFund2.funding_rates || jFund2.data || jFund2;
+          Object.entries(fundMap).forEach(([pid, v]) => {
+            const val = v?.funding_rate_x18 ?? v;
+            const r = parseFloat(val) / 1e18;
+            if (!isNaN(r)) fundByPid[String(pid)] = r;
+          });
+        }
+      } catch(e2) { fundDebug += ' | archive error: ' + e2.message; }
     }
+
+    if (!Object.keys(fundByPid).length) throw new Error('No funding data. Debug: ' + fundDebug);
 
     // Step 3: 24h stats via v2 archive tickers
     let statsMap = {};
