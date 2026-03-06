@@ -49,14 +49,14 @@ body { background: var(--bg-dark); color: var(--text-main); font-family: 'Rajdha
 .stat-item.tab-arb.active { border-color: var(--neon-orange); background: rgba(255,140,0,0.08); box-shadow: 0 0 25px rgba(255,140,0,0.3), inset 0 0 20px rgba(255,140,0,0.06); }
 .stat-item.tab-arb.active .stat-label { color: var(--neon-orange); }
 .stat-item.tab-arb.active .stat-value { color: var(--neon-orange); text-shadow: 0 0 15px rgba(255,140,0,0.5); }
-.stat-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+.stat-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.75); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
 .stat-value { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: var(--neon-cyan); text-shadow: 0 0 15px rgba(0,240,255,0.4); }
 .stat-value.orange { color: var(--neon-orange); text-shadow: 0 0 15px rgba(255,140,0,0.4); font-size: 12px; line-height: 1.4; }
-.tab-arrow { display: block; font-size: 10px; margin-top: 6px; opacity: 0.4; transition: all 0.3s; letter-spacing: 1px; font-family: 'Share Tech Mono', monospace; }
+.tab-arrow { display: block; font-size: 11px; margin-top: 6px; opacity: 0.65; transition: all 0.3s; letter-spacing: 1px; font-family: 'Share Tech Mono', monospace; font-weight: 600; }
 .stat-item.active .tab-arrow { opacity: 1; }
 .stat-item.tab-tierlist .tab-arrow { color: var(--neon-cyan); }
 .stat-item.tab-arb .tab-arrow { color: var(--neon-orange); }
-.stat-item:hover .tab-arrow { opacity: 0.8; transform: translateY(1px); }
+.stat-item:hover .tab-arrow { opacity: 0.9; transform: translateY(1px); }
 
 /* TABLE */
 .table-wrapper { border: 1px solid var(--border-glow); border-radius: 12px; overflow: hidden; background: var(--bg-card); backdrop-filter: blur(15px); box-shadow: 0 0 40px rgba(0,240,255,0.04), 0 20px 60px rgba(0,0,0,0.5); }
@@ -386,8 +386,8 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
     </div>
     <div class="stat-item" id="tab-varmarkets" onclick="switchTab('varmarkets')" style="border-color:rgba(0,240,255,0.15);cursor:pointer;transition:all 0.3s;">
       <div class="stat-label" data-i18n="tab_varmarkets_label">Variational Markets</div>
-      <div class="stat-value" style="color:var(--neon-cyan);text-shadow:0 0 15px rgba(0,240,255,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_varmarkets_value">Low Spread + Arb</div>
-      <span class="tab-arrow" style="color:var(--neon-cyan);" data-i18n="tab_varmarkets_arrow">&#x25BC; Arb Scanner</span>
+      <div class="stat-value" style="color:var(--neon-cyan);text-shadow:0 0 15px rgba(0,240,255,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_varmarkets_value">Top Low Slippage</div>
+      <span class="tab-arrow" style="color:var(--neon-cyan);" data-i18n="tab_varmarkets_arrow">▼ Top 15 Pairs</span>
     </div>
   </div>
 
@@ -428,49 +428,18 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
   <!-- VARIATIONAL MARKETS SECTION -->
   <div class="varmarkets-section" id="varmarkets-section">
     <div class="table-wrapper" style="border-color:rgba(0,240,255,0.2);box-shadow:0 0 40px rgba(0,240,255,0.05),0 20px 60px rgba(0,0,0,0.5);">
-      <div style="padding:24px 28px 0;">
-        <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-cyan);letter-spacing:2px;margin-bottom:8px;text-shadow:0 0 12px rgba(0,240,255,0.4);" data-i18n="arb_scanner_title">&#x25B2; FUNDING ARB SCANNER — 5 PERP DEX</div>
-        <p style="font-family:'Rajdhani',sans-serif;font-size:15px;color:var(--text-dim);line-height:1.6;margin-bottom:2px;" data-i18n="arb_scanner_desc">
-          Funding rate arbitrage across <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. 
-          Net APY accounts for <strong style="color:var(--neon-orange);">spread + slippage</strong> on entry &amp; exit — 
-          showing what you actually keep after all transaction costs.
-        </p>
-        <p style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);opacity:0.5;letter-spacing:1px;" id="var-last-updated"></p>
+      <div style="padding:24px 28px 16px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-cyan);letter-spacing:2px;margin-bottom:6px;text-shadow:0 0 12px rgba(0,240,255,0.4);">VARIATIONAL PAIRS</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:4px;">Top Low Slippage</div>
+          <p style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;">ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> position size</p>
+        </div>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;padding-top:4px;" id="var-last-updated"></span>
       </div>
-
-      <!-- FILTER BAR -->
-      <div style="display:flex;align-items:center;gap:10px;padding:14px 28px 0;flex-wrap:wrap;">
-        <div data-i18n="max_spread_label" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">MAX SPREAD:</div>
-        <button class="var-filter-btn active" id="vf-10" onclick="setVarFilter(10)">≤ 0.1%</button>
-        <button class="var-filter-btn" id="vf-20" onclick="setVarFilter(20)">≤ 0.2%</button>
-        <button class="var-filter-btn" id="vf-50" onclick="setVarFilter(50)">≤ 0.5%</button>
-        <div style="width:1px;height:20px;background:rgba(255,255,255,0.08);margin:0 4px;"></div>
-        <div data-i18n="min_apy_label" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">MIN REAL APY:</div>
-        <button class="var-filter-btn active" id="va-0" onclick="setVarArbMin(0)">Any</button>
-        <button class="var-filter-btn" id="va-50" onclick="setVarArbMin(50)">50%+</button>
-        <button class="var-filter-btn" id="va-100" onclick="setVarArbMin(100)">100%+</button>
-        <button class="var-filter-btn" id="va-200" onclick="setVarArbMin(200)">200%+</button>
-        <div style="width:1px;height:20px;background:rgba(255,255,255,0.08);margin:0 4px;"></div>
-        <div data-i18n="hold_label" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;">HOLD:</div>
-        <button class="var-filter-btn active" id="vh-1" onclick="setHoldDays(1)">1d</button>
-        <button class="var-filter-btn" id="vh-7" onclick="setHoldDays(7)">7d</button>
-        <button class="var-filter-btn" id="vh-30" onclick="setHoldDays(30)">30d</button>
-        <span id="var-count" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(0,240,255,0.5);letter-spacing:1px;margin-left:auto;"></span>
+      <div id="var-content" style="padding-bottom:4px;">
+        <div style="padding:40px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Variational markets...</div>
       </div>
-      <div style="padding:8px 28px 0;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.45;letter-spacing:1px;" data-i18n="spread_cost_note">
-        * SPREAD COST = (long leg spread + short leg spread) / hold period — subtracted from funding APY to calculate Real Net APY
-      </div>
-
-      <!-- TABS: unified + spread markets -->
-      <div style="display:flex;gap:0;padding:14px 28px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
-        <button class="var-tab active" id="vtab-arb" onclick="setVarTab('arb')" data-i18n="vtab_arb">&#x25CF; Real Net APY (funding − spread cost)</button>
-        <button class="var-tab" id="vtab-spread" onclick="setVarTab('spread')" data-i18n="vtab_spread">Low Spread Markets (VAR only)</button>
-      </div>
-
-      <div id="var-content">
-        <div style="padding:40px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Fetching data from all exchanges...</div>
-      </div>
-      <div class="data-note" style="color:rgba(0,240,255,0.3);">Live data: Variational · Hyperliquid · Extended · Pacifica · Nado — spread data from Variational API where available</div>
+      <div class="data-note" style="color:rgba(0,240,255,0.3);">Live data · Variational API · slippage measured at $100k size</div>
     </div>
   </div>
 
@@ -659,8 +628,8 @@ const TRANSLATIONS = {
     tab_bots_value: 'Automated Strategies',
     tab_bots_arrow: '▼ Explore Bots',
     tab_varmarkets_label: 'Variational Markets',
-    tab_varmarkets_value: 'Low Spread + Arb',
-    tab_varmarkets_arrow: '▼ Arb Scanner',
+    tab_varmarkets_value: 'Top Low Slippage',
+    tab_varmarkets_arrow: '▼ Top 15 Pairs',
     arb_scanner_title: '▲ FUNDING ARB SCANNER — 5 PERP DEX',
     arb_scanner_desc: 'Funding rate arbitrage across <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Net APY accounts for <strong style="color:var(--neon-orange);">spread + slippage</strong> on entry &amp; exit — showing what you actually keep after all transaction costs.',
     max_spread_label: 'MAX SPREAD:',
@@ -684,8 +653,8 @@ const TRANSLATIONS = {
     tab_bots_value: 'Авто-стратегии',
     tab_bots_arrow: '▼ Смотреть',
     tab_varmarkets_label: 'Рынки Variational',
-    tab_varmarkets_value: 'Низкий спред + Арб',
-    tab_varmarkets_arrow: '▼ Сканер',
+    tab_varmarkets_value: 'Топ низкий слиппедж',
+    tab_varmarkets_arrow: '▼ Топ 15 пар',
     arb_scanner_title: '▲ СКАНЕР ФАНДИНГ-АРБ — 5 PERP DEX',
     arb_scanner_desc: 'Арбитраж ставок фандинга между <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Real Net APY учитывает <strong style="color:var(--neon-orange);">спред + слиппедж</strong> на входе и выходе — показывает реальный доход после всех издержек.',
     max_spread_label: 'МАКС СПРЕД:',
@@ -709,7 +678,7 @@ const TRANSLATIONS = {
     tab_bots_value: 'Stratégies automatisées',
     tab_bots_arrow: '▼ Explorer',
     tab_varmarkets_label: 'Marchés Variational',
-    tab_varmarkets_value: 'Faible spread + Arb',
+    tab_varmarkets_value: 'Top faible slippage',
     tab_varmarkets_arrow: '▼ Scanner',
     arb_scanner_title: '▲ SCANNER D\'ARB — 5 PERP DEX',
     arb_scanner_desc: 'Arbitrage des taux de financement entre <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Le Net APY tient compte du <strong style="color:var(--neon-orange);">spread + slippage</strong> à l\'entrée et à la sortie.',
@@ -734,7 +703,7 @@ const TRANSLATIONS = {
     tab_bots_value: 'Estratégias automáticas',
     tab_bots_arrow: '▼ Explorar',
     tab_varmarkets_label: 'Mercados Variational',
-    tab_varmarkets_value: 'Spread baixo + Arb',
+    tab_varmarkets_value: 'Top baixo slippage',
     tab_varmarkets_arrow: '▼ Scanner',
     arb_scanner_title: '▲ SCANNER DE ARB — 5 PERP DEX',
     arb_scanner_desc: 'Arbitragem de taxas de funding entre <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. O Net APY considera <strong style="color:var(--neon-orange);">spread + slippage</strong> na entrada e saída.',
@@ -759,7 +728,7 @@ const TRANSLATIONS = {
     tab_bots_value: '自动化策略',
     tab_bots_arrow: '▼ 探索',
     tab_varmarkets_label: 'Variational 市场',
-    tab_varmarkets_value: '低价差 + 套利',
+    tab_varmarkets_value: '最低滑点 Top 15',
     tab_varmarkets_arrow: '▼ 扫描',
     arb_scanner_title: '▲ 资金费套利扫描 — 5个PERP DEX',
     arb_scanner_desc: '对比 <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong> 的资金费率套利机会。Real Net APY 已扣除 <strong style="color:var(--neon-orange);">点差 + 滑点</strong>成本。',
@@ -784,7 +753,7 @@ const TRANSLATIONS = {
     tab_bots_value: '자동화 전략',
     tab_bots_arrow: '▼ 탐색',
     tab_varmarkets_label: 'Variational 마켓',
-    tab_varmarkets_value: '낮은 스프레드 + 차익',
+    tab_varmarkets_value: '낮은 슬리피지 Top 15',
     tab_varmarkets_arrow: '▼ 스캐너',
     arb_scanner_title: '▲ 펀딩 차익 스캐너 — 5개 PERP DEX',
     arb_scanner_desc: '<strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong> 간 펀딩 레이트 차익거래. Real Net APY는 <strong style="color:var(--neon-orange);">스프레드 + 슬리피지</strong> 비용을 이미 차감한 실질 수익입니다.',
@@ -809,7 +778,7 @@ const TRANSLATIONS = {
     tab_bots_value: 'استراتيجيات آلية',
     tab_bots_arrow: '▼ استكشاف',
     tab_varmarkets_label: 'أسواق Variational',
-    tab_varmarkets_value: 'سبريد منخفض + مراجحة',
+    tab_varmarkets_value: 'أدنى انزلاق Top 15',
     tab_varmarkets_arrow: '▼ الماسح',
     arb_scanner_title: '▲ ماسح مراجحة التمويل — 5 PERP DEX',
     arb_scanner_desc: 'مراجحة معدلات التمويل بين <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. يأخذ Real Net APY في الاعتبار <strong style="color:var(--neon-orange);">السبريد + الانزلاق السعري</strong> عند الدخول والخروج.',
@@ -1157,38 +1126,20 @@ const MULTI_EX_CONFIG = {
 
 async function fetchVarData() {
   const el = document.getElementById('var-content');
-  el.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Fetching data from all exchanges...</div>';
+  el.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Variational markets...</div>';
 
-  // Reset
-  multiExFunding = {};
-
-  const fetches = [
-    fetchVariationalFunding(),
-    fetchHyperliquidFunding(),
-    fetchExtendedFunding(),
-    fetchPacificaFunding(),
-    fetchNadoFunding(),
-  ];
-  await Promise.allSettled(fetches);
-
-  // Variational raw data must load for the spread tab
   try {
-    const varResp = await fetch('https://omni-client-api.prod.ap-northeast-1.variational.io/metadata/stats');
-    if (varResp.ok) {
-      const varJson = await varResp.json();
-      varRawData = varJson.listings || [];
+    const r = await fetch('https://omni-client-api.prod.ap-northeast-1.variational.io/metadata/stats');
+    if (r.ok) {
+      const j = await r.json();
+      varRawData = j.listings || [];
     }
   } catch(e) {}
 
   varDataLoaded = true;
   const ts = new Date().toLocaleTimeString();
-  const statusParts = Object.entries(multiExStatus).map(([k, s]) => {
-    const cfg = MULTI_EX_CONFIG[k];
-    const col = s === 'ok' ? cfg.color : 'rgba(255,80,100,0.6)';
-    return `<span style="color:${col}">${cfg.short}:${s === 'ok' ? '✓' : '✗'}</span>`;
-  }).join(' ');
   const el2 = document.getElementById('var-last-updated');
-  if (el2) el2.innerHTML = `Updated ${ts} &nbsp; ${statusParts}`;
+  if (el2) el2.textContent = `Updated ${ts}`;
   renderVarContent();
 }
 
@@ -1396,14 +1347,9 @@ function varFundingToApy(rateDecimal, intervalSeconds) {
 }
 
 function renderVarContent() {
-  if (!varRawData && !Object.keys(multiExFunding).length) return;
+  if (!varRawData) return;
   const el = document.getElementById('var-content');
-
-  if (varCurrentTab === 'spread') {
-    renderVarSpreadTable(el);
-  } else {
-    renderVarArbTable(el);
-  }
+  renderVarSpreadTable(el);
 }
 
 function renderVarSpreadTable(el) {
@@ -1427,17 +1373,14 @@ function renderVarSpreadTable(el) {
     return { ...m, slippageBps, quoteBps };
   });
 
-  // Filter by spread filter, sort by slippage ascending, take top 15
+  // Sort all markets by slippage ascending, take top 15
   const filtered = withSlippage
-    .filter(m => m.slippageBps <= varSpreadFilter)
+    .filter(m => m.slippageBps < 9999)
     .sort((a, b) => a.slippageBps - b.slippageBps)
     .slice(0, 15);
 
-  const countEl = document.getElementById('var-count');
-  if (countEl) countEl.textContent = `top 15 of ${withSlippage.filter(m => m.slippageBps <= varSpreadFilter).length}`;
-
   if (filtered.length === 0) {
-    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No markets match current spread filter.</div>`;
+    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No Variational data available.</div>`;
     return;
   }
 
