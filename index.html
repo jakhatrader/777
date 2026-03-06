@@ -432,7 +432,7 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
         <div>
           <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-cyan);letter-spacing:2px;margin-bottom:6px;text-shadow:0 0 12px rgba(0,240,255,0.4);">VARIATIONAL PAIRS</div>
           <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:4px;">Top Low Slippage</div>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;">ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> position size</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;">ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> position size</p>
         </div>
         <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;padding-top:4px;" id="var-last-updated"></span>
       </div>
@@ -1358,22 +1358,25 @@ function renderVarSpreadTable(el) {
     return;
   }
 
-  // Calculate real slippage = quote spread at $100k size
-  // Fall back to base_spread_bps if quote not available
+  // Calculate real slippage at $100k and $1M
   const withSlippage = varRawData.map(m => {
     const baseBps = parseFloat(m.base_spread_bps) || 9999;
-    let quoteBps = null;
-    const q = m.quotes?.size_100k;
-    if (q?.bid && q?.ask) {
-      const bid = parseFloat(q.bid), ask = parseFloat(q.ask);
-      const mid = (bid + ask) / 2;
-      if (mid > 0) quoteBps = (ask - bid) / mid * 10000;
+    function quoteBpsAt(sizeKey) {
+      const q = m.quotes?.[sizeKey];
+      if (q?.bid && q?.ask) {
+        const bid = parseFloat(q.bid), ask = parseFloat(q.ask);
+        const mid = (bid + ask) / 2;
+        if (mid > 0) return (ask - bid) / mid * 10000;
+      }
+      return null;
     }
-    const slippageBps = quoteBps !== null ? quoteBps : baseBps;
+    const slip100k = quoteBpsAt('size_100k');
+    const slip1m   = quoteBpsAt('size_1m');
+    const slippageBps = slip100k !== null ? slip100k : baseBps;
     const fundRateRaw = parseFloat(m.funding_rate) || 0;
     const fundInterval = parseInt(m.funding_interval_s) || 28800;
     const fundApy = varFundingToApy(fundRateRaw / 100, fundInterval);
-    return { ...m, slippageBps, quoteBps, fundRateRaw, fundApy };
+    return { ...m, slippageBps, slip100k, slip1m, fundRateRaw, fundApy };
   }).filter(m => m.slippageBps < 9999);
 
   // Sort
@@ -1381,6 +1384,7 @@ function renderVarSpreadTable(el) {
   const dir = window._varSortDir || 1;
   withSlippage.sort((a, b) => {
     if (col === 'slippage') return (a.slippageBps - b.slippageBps) * dir;
+    if (col === 'slip1m')   return ((a.slip1m ?? 9999) - (b.slip1m ?? 9999)) * dir;
     if (col === 'spread')   return (parseFloat(a.base_spread_bps) - parseFloat(b.base_spread_bps)) * dir;
     if (col === 'funding')  return (Math.abs(b.fundApy) - Math.abs(a.fundApy)) * dir;
     return 0;
@@ -1398,7 +1402,6 @@ function renderVarSpreadTable(el) {
       ? `<span style="color:var(--neon-cyan);margin-left:4px;">↑</span>`
       : `<span style="color:var(--neon-cyan);margin-left:4px;">↓</span>`;
   }
-
   function thSort(c, label) {
     const active = col === c ? 'color:var(--neon-cyan);' : '';
     return `<th style="cursor:pointer;user-select:none;${active}" onclick="window._varSortDir=(window._varSortCol==='${c}'?(window._varSortDir||1)*-1:1);window._varSortCol='${c}';renderVarContent();">${label}${sortArrow(c)}</th>`;
@@ -1406,11 +1409,13 @@ function renderVarSpreadTable(el) {
 
   const rows = filtered.map((m, i) => {
     const baseBps = parseFloat(m.base_spread_bps);
-    const slipStr = (m.slippageBps / 100).toFixed(4) + '%';
-    const slipCls = m.slippageBps <= 5 ? 'var-spread-good' : 'var-spread-ok';
-    const fundPct = m.fundRateRaw.toFixed(4) + '%';
+    const slip100Str = m.slip100k !== null ? (m.slip100k / 100).toFixed(4) + '%' : (baseBps/100).toFixed(4) + '%*';
+    const slip1mStr  = m.slip1m   !== null ? (m.slip1m   / 100).toFixed(4) + '%' : '—';
+    const slip100Cls = (m.slip100k ?? baseBps) <= 5 ? 'var-spread-good' : 'var-spread-ok';
+    const slip1mCls  = m.slip1m === null ? 'var-fund-neu' : m.slip1m <= 10 ? 'var-spread-good' : 'var-spread-ok';
+    const fundPct    = m.fundRateRaw.toFixed(4) + '%';
     const fundApyStr = (m.fundApy >= 0 ? '+' : '') + m.fundApy.toFixed(1) + '%';
-    const fundCls = m.fundRateRaw > 0.0001 ? 'var-fund-pos' : m.fundRateRaw < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
+    const fundCls    = m.fundRateRaw > 0.0001 ? 'var-fund-pos' : m.fundRateRaw < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
     const vol24 = parseFloat(m.volume_24h);
     const volStr = vol24 >= 1e9 ? '$'+(vol24/1e9).toFixed(1)+'B' : vol24 >= 1e6 ? '$'+(vol24/1e6).toFixed(1)+'M' : vol24 >= 1e3 ? '$'+(vol24/1e3).toFixed(0)+'K' : vol24 > 0 ? '$'+vol24.toFixed(0) : '—';
     const rankCls = i === 0 ? 'arb-rank gold' : i === 1 ? 'arb-rank silver' : i === 2 ? 'arb-rank bronze' : 'arb-rank';
@@ -1418,19 +1423,21 @@ function renderVarSpreadTable(el) {
     return `<tr>
       <td class="${rankCls}">${i+1}</td>
       <td><span class="var-ticker">${m.ticker}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.5;">${m.name || ''}</span></td>
-      <td><span class="${slipCls}">${slipStr}</span>${m.quoteBps !== null ? '' : '<span style="opacity:0.3;font-size:9px;"> base</span>'}</td>
-      <td><span class="${slipCls}">${(baseBps/100).toFixed(4)}%</span></td>
+      <td><span class="${slip100Cls}">${slip100Str}</span></td>
+      <td><span class="${slip1mCls}">${slip1mStr}</span></td>
+      <td><span class="${slip100Cls}">${(baseBps/100).toFixed(4)}%</span></td>
       <td><span class="${fundCls}">${fundPct}/interval</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
       <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
       <td><a class="var-trade-btn" href="https://omni.variational.io/?ref=OMNIMUAR#${m.ticker}" target="_blank" rel="noopener">Trade &#x276F;</a></td>
     </tr>`;
   }).join('');
 
-  el.innerHTML = `<div style="overflow-x:auto;"><table class="var-table" style="min-width:600px;">
+  el.innerHTML = `<div style="overflow-x:auto;"><table class="var-table" style="min-width:700px;">
     <thead><tr>
       <th>#</th>
       <th>Market</th>
-      ${thSort('slippage','Slippage @$100k')}
+      ${thSort('slippage','Slip @$100k')}
+      ${thSort('slip1m','Slip @$1M')}
       ${thSort('spread','Base Spread')}
       ${thSort('funding','Funding (APY)')}
       <th>24h Volume</th>
