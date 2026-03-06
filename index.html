@@ -1243,81 +1243,145 @@ async function fetchHyperliquidFunding() {
 async function fetchExtendedFunding() {
   multiExStatus.extended = 'loading';
   try {
-    const r = await fetch('https://api.starknet.extended.exchange/api/v1/markets');
-    if (!r.ok) throw new Error();
+    // Extended market stats endpoint - try public stats
+    const r = await fetch('https://api.starknet.extended.exchange/api/v1/market_stats', {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     const j = await r.json();
-    const markets = j.data || j || [];
-    markets.forEach(m => {
-      const sym = (m.market || m.symbol || '').replace(/-USD$/, '').toUpperCase();
+    const markets = j.data || j.market_stats || j || [];
+    const arr = Array.isArray(markets) ? markets : Object.values(markets);
+    arr.forEach(m => {
+      const sym = (m.market || m.symbol || m.name || '').replace(/-USD$/, '').replace(/-USDC$/, '').toUpperCase();
       if (!sym) return;
-      // Extended: funding_rate is per 1h interval
-      const rate = parseFloat(m.funding_rate || m.current_funding_rate || 0);
+      // Extended: funding_rate per 1h, decimal
+      const rate = parseFloat(m.funding_rate || m.current_funding_rate || m.last_funding_rate || 0);
       if (!isNaN(rate) && rate !== 0) {
         if (!multiExFunding[sym]) multiExFunding[sym] = {};
         multiExFunding[sym].extended = varFundingToApy(rate, 3600);
       }
     });
-    multiExStatus.extended = 'ok';
-  } catch(e) { multiExStatus.extended = 'error'; }
+    if (Object.keys(multiExFunding).some(s => multiExFunding[s].extended !== undefined)) {
+      multiExStatus.extended = 'ok';
+    } else {
+      throw new Error('no data');
+    }
+  } catch(e) {
+    // Fallback: try /markets endpoint
+    try {
+      const r2 = await fetch('https://api.starknet.extended.exchange/api/v1/markets', {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!r2.ok) throw new Error();
+      const j2 = await r2.json();
+      const arr2 = j2.data || j2 || [];
+      (Array.isArray(arr2) ? arr2 : Object.values(arr2)).forEach(m => {
+        const sym = (m.market || m.symbol || '').replace(/-USD$/, '').replace(/-USDC$/, '').toUpperCase();
+        if (!sym) return;
+        const rate = parseFloat(m.funding_rate || m.current_funding_rate || 0);
+        if (!isNaN(rate) && rate !== 0) {
+          if (!multiExFunding[sym]) multiExFunding[sym] = {};
+          multiExFunding[sym].extended = varFundingToApy(rate, 3600);
+        }
+      });
+      multiExStatus.extended = 'ok';
+    } catch(e2) { multiExStatus.extended = 'error'; }
+  }
 }
 
 async function fetchPacificaFunding() {
   multiExStatus.pacifica = 'loading';
   try {
-    const r = await fetch('https://api.pacifica.fi/api/v1/prices');
-    if (!r.ok) throw new Error();
+    // Try market info endpoint which includes funding_rate
+    const r = await fetch('https://api.pacifica.fi/api/v1/market_info', {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     const j = await r.json();
     const items = j.data || j || [];
-    items.forEach(m => {
-      const sym = (m.symbol || '').toUpperCase();
+    (Array.isArray(items) ? items : Object.values(items)).forEach(m => {
+      const sym = (m.symbol || m.market || '').toUpperCase();
       if (!sym) return;
-      // Pacifica funding is per 1h
-      const rate = parseFloat(m.funding || m.funding_rate || 0);
+      // Pacifica funding per 1h, decimal
+      const rate = parseFloat(m.funding_rate || m.next_funding_rate || m.funding || 0);
       if (!isNaN(rate) && rate !== 0) {
         if (!multiExFunding[sym]) multiExFunding[sym] = {};
         multiExFunding[sym].pacifica = varFundingToApy(rate, 3600);
       }
     });
-    multiExStatus.pacifica = 'ok';
-  } catch(e) { multiExStatus.pacifica = 'error'; }
+    if (Object.keys(multiExFunding).some(s => multiExFunding[s].pacifica !== undefined)) {
+      multiExStatus.pacifica = 'ok';
+    } else {
+      throw new Error('no data');
+    }
+  } catch(e) {
+    // Fallback: /prices endpoint
+    try {
+      const r2 = await fetch('https://api.pacifica.fi/api/v1/prices', {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!r2.ok) throw new Error();
+      const j2 = await r2.json();
+      const items2 = j2.data || j2 || [];
+      (Array.isArray(items2) ? items2 : Object.values(items2)).forEach(m => {
+        const sym = (m.symbol || '').toUpperCase();
+        if (!sym) return;
+        const rate = parseFloat(m.funding || m.funding_rate || m.next_funding || 0);
+        if (!isNaN(rate) && rate !== 0) {
+          if (!multiExFunding[sym]) multiExFunding[sym] = {};
+          multiExFunding[sym].pacifica = varFundingToApy(rate, 3600);
+        }
+      });
+      multiExStatus.pacifica = 'ok';
+    } catch(e2) { multiExStatus.pacifica = 'error'; }
+  }
 }
 
 async function fetchNadoFunding() {
   multiExStatus.nado = 'loading';
   try {
-    // Nado: archive indexer market_snapshots returns funding_rate_x18
-    const r = await fetch('https://archive.prod.nado.xyz/v1', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip' },
-      body: JSON.stringify({ type: 'market_snapshots' })
+    // Step 1: get all products to build id→ticker map
+    const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=allProducts', {
+      headers: { 'Accept': 'application/json', 'Accept-Encoding': 'identity' }
     });
-    if (!r.ok) throw new Error();
-    const j = await r.json();
-    // Nado returns array of snapshots: { product_id, funding_rate_x18, ... }
-    // Also need product names: use allProducts query
-    const rProds = await fetch('https://gateway.prod.nado.xyz/v1/query?type=allProducts');
-    const jProds = rProds.ok ? await rProds.json() : null;
+    if (!rProds.ok) throw new Error('products HTTP ' + rProds.status);
+    const jProds = await rProds.json();
 
-    // Build product_id -> ticker map
     const idToTicker = {};
-    if (jProds) {
-      const perps = jProds.perp_products || jProds.products || [];
-      perps.forEach(p => {
-        const id = p.product_id || p.id;
-        const ticker = (p.metadata?.ticker || p.ticker || p.symbol || '').replace(/-PERP$/, '').toUpperCase();
-        if (id !== undefined && ticker) idToTicker[id] = ticker;
-      });
-    }
+    // Nado uses Vertex-style: perp products have odd product_ids (1, 3, 5, ...)
+    const allProds = jProds.perp_products || jProds.spot_products || [];
+    // Try to find all perp product entries
+    const allEntries = Object.values(jProds).flat ? Object.values(jProds).flat() : [];
+    const tryList = allProds.length ? allProds : allEntries;
+    tryList.forEach(p => {
+      if (!p || typeof p !== 'object') return;
+      const id = p.product_id ?? p.id;
+      const meta = p.metadata || p;
+      const ticker = (meta.ticker || meta.symbol || meta.name || '').replace(/-PERP$/i, '').replace(/-USD$/i, '').toUpperCase();
+      if (id != null && ticker) idToTicker[String(id)] = ticker;
+    });
 
-    const snapshots = j.market_snapshots || j || [];
-    snapshots.forEach(s => {
-      const ticker = idToTicker[s.product_id];
+    // Step 2: fetch funding rates — Nado archive returns 24h rate, x18 format
+    const rFund = await fetch('https://archive.prod.nado.xyz/v1', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept-Encoding': 'identity' },
+      body: JSON.stringify({ type: 'funding_rate' })
+    });
+    if (!rFund.ok) throw new Error('funding HTTP ' + rFund.status);
+    const jFund = await rFund.json();
+
+    // Response: { product_id: { funding_rate_x18, update_time } } or array
+    const fundMap = jFund.funding_rates || jFund;
+    Object.entries(fundMap).forEach(([pid, v]) => {
+      const ticker = idToTicker[String(pid)];
       if (!ticker) return;
-      // funding_rate_x18: value multiplied by 1e18, per-hour rate
-      const rate = parseFloat(s.funding_rate_x18) / 1e18;
-      if (!isNaN(rate) && rate !== 0) {
+      const val = v?.funding_rate_x18 ?? v;
+      // funding_rate_x18 is 24h rate * 1e18
+      const rate24h = parseFloat(val) / 1e18;
+      if (!isNaN(rate24h) && rate24h !== 0) {
         if (!multiExFunding[ticker]) multiExFunding[ticker] = {};
-        multiExFunding[ticker].nado = varFundingToApy(rate, 3600);
+        // 24h rate → annualise over 365 days
+        multiExFunding[ticker].nado = rate24h * 365 * 100;
       }
     });
     multiExStatus.nado = 'ok';
@@ -1343,67 +1407,91 @@ function renderVarContent() {
 }
 
 function renderVarSpreadTable(el) {
-  // Filter by spread
-  const filtered = varRawData.filter(m => {
-    const spread = parseFloat(m.base_spread_bps);
-    return !isNaN(spread) && spread <= varSpreadFilter;
-  }).sort((a, b) => parseFloat(a.base_spread_bps) - parseFloat(b.base_spread_bps));
+  if (!varRawData) {
+    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No Variational data loaded.</div>`;
+    return;
+  }
+
+  // Calculate real slippage = quote spread at $100k size
+  // Fall back to base_spread_bps if quote not available
+  const withSlippage = varRawData.map(m => {
+    const baseBps = parseFloat(m.base_spread_bps) || 9999;
+    let quoteBps = null;
+    const q = m.quotes?.size_100k;
+    if (q?.bid && q?.ask) {
+      const bid = parseFloat(q.bid), ask = parseFloat(q.ask);
+      const mid = (bid + ask) / 2;
+      if (mid > 0) quoteBps = (ask - bid) / mid * 10000; // in bps
+    }
+    const slippageBps = quoteBps !== null ? quoteBps : baseBps;
+    return { ...m, slippageBps, quoteBps };
+  });
+
+  // Filter by spread filter, sort by slippage ascending, take top 15
+  const filtered = withSlippage
+    .filter(m => m.slippageBps <= varSpreadFilter)
+    .sort((a, b) => a.slippageBps - b.slippageBps)
+    .slice(0, 15);
 
   const countEl = document.getElementById('var-count');
-  if (countEl) countEl.textContent = filtered.length + ' markets';
+  if (countEl) countEl.textContent = `top 15 of ${withSlippage.filter(m => m.slippageBps <= varSpreadFilter).length}`;
 
   if (filtered.length === 0) {
     el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;">No markets match current spread filter.</div>`;
     return;
   }
 
-  const rows = filtered.map(m => {
-    const spread = parseFloat(m.base_spread_bps);
-    const spreadPct = (spread / 100).toFixed(4) + '%';
-    const spreadCls = spread <= 5 ? 'var-spread-good' : 'var-spread-ok';
+  const rows = filtered.map((m, i) => {
+    const baseBps = parseFloat(m.base_spread_bps);
+    const slipStr = (m.slippageBps / 100).toFixed(4) + '%';
+    const slipCls = m.slippageBps <= 5 ? 'var-spread-good' : 'var-spread-ok';
 
-    // VAR funding_rate is already in % (e.g. 0.037347 = 3.7347% per interval)
+    // VAR funding_rate is in % — e.g. 0.037 means 0.037% per interval
     const fundRateRaw = parseFloat(m.funding_rate);
     const fundInterval = parseInt(m.funding_interval_s) || 28800;
-    const fundRateDecimal = fundRateRaw / 100; // % → decimal
+    const fundRateDecimal = fundRateRaw / 100;
     const fundApy = varFundingToApy(fundRateDecimal, fundInterval);
     const fundPct = fundRateRaw.toFixed(4) + '%';
-    const fundApyStr = fundApy >= 0 ? '+' + fundApy.toFixed(1) + '%' : fundApy.toFixed(1) + '%';
+    const fundApyStr = (fundApy >= 0 ? '+' : '') + fundApy.toFixed(1) + '%';
     const fundCls = fundRateDecimal > 0.0001 ? 'var-fund-pos' : fundRateDecimal < -0.0001 ? 'var-fund-neg' : 'var-fund-neu';
 
     const vol24 = parseFloat(m.volume_24h);
-    const volStr = vol24 >= 1e9 ? '$' + (vol24/1e9).toFixed(1) + 'B' : vol24 >= 1e6 ? '$' + (vol24/1e6).toFixed(1) + 'M' : vol24 >= 1e3 ? '$' + (vol24/1e3).toFixed(0) + 'K' : vol24 > 0 ? '$' + vol24.toFixed(0) : '—';
+    const volStr = vol24 >= 1e9 ? '$' + (vol24/1e9).toFixed(1) + 'B'
+                 : vol24 >= 1e6 ? '$' + (vol24/1e6).toFixed(1) + 'M'
+                 : vol24 >= 1e3 ? '$' + (vol24/1e3).toFixed(0) + 'K'
+                 : vol24 > 0   ? '$' + vol24.toFixed(0) : '—';
 
-    // Quote spread at 100k
-    let quoteStr = '—';
-    const q = m.quotes?.size_100k;
-    if (q?.bid && q?.ask) {
-      const mid = (parseFloat(q.bid) + parseFloat(q.ask)) / 2;
-      const qSpread = mid > 0 ? ((parseFloat(q.ask) - parseFloat(q.bid)) / mid * 100).toFixed(4) + '%' : '—';
-      quoteStr = qSpread;
-    }
+    const rankCls = i === 0 ? 'arb-rank gold' : i === 1 ? 'arb-rank silver' : i === 2 ? 'arb-rank bronze' : 'arb-rank';
 
     return `<tr>
-      <td><span class="var-ticker">${m.ticker}</span><br><span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.6;">${m.name || ''}</span></td>
-      <td><span class="${spreadCls}">${spreadPct}</span></td>
-      <td><span class="${spreadCls}">${quoteStr}</span></td>
-      <td><span class="${fundCls}">${fundPct}</span><br><span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
+      <td class="${rankCls}">${i+1}</td>
+      <td><span class="var-ticker">${m.ticker}</span><br><span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.5;">${m.name || ''}</span></td>
+      <td>
+        <span class="${slipCls}">${slipStr}</span>
+        ${m.quoteBps !== null ? '' : '<span style="opacity:0.35;font-size:9px;"> base</span>'}
+      </td>
+      <td><span class="${slipCls}">${(baseBps/100).toFixed(4)}%</span></td>
+      <td>
+        <span class="${fundCls}">${fundPct}/interval</span><br>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span>
+      </td>
       <td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
       <td><a class="var-trade-btn" href="https://omni.variational.io/?ref=OMNIMUAR#${m.ticker}" target="_blank" rel="noopener">Trade &#x276F;</a></td>
     </tr>`;
   }).join('');
 
-  el.innerHTML = `<table class="var-table">
+  el.innerHTML = `<div style="overflow-x:auto;"><table class="var-table" style="min-width:600px;">
     <thead><tr>
+      <th>#</th>
       <th>Market</th>
+      <th>Slippage @$100k</th>
       <th>Base Spread</th>
-      <th>Spread @$100k</th>
       <th>Funding (per interval)</th>
       <th>24h Volume</th>
       <th></th>
     </tr></thead>
     <tbody>${rows}</tbody>
-  </table>`;
+  </table></div>`;
 }
 
 function renderVarArbTable(el) {
