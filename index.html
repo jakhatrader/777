@@ -311,12 +311,62 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 .screenshot-photo-none:hover { opacity: 0.75; }
 .photo-row-label { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--text-dim); letter-spacing: 2px; text-align: center; margin-bottom: 6px; }
 /* LANGUAGE BAR */
-.lang-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: rgba(6,6,14,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,240,255,0.1); display: flex; align-items: center; justify-content: flex-end; padding: 0 20px; height: 36px; gap: 4px; }
-.lang-btn { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--text-dim); background: none; border: 1px solid transparent; border-radius: 4px; padding: 3px 8px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; white-space: nowrap; }
-.lang-btn:hover { color: var(--neon-cyan); border-color: rgba(0,240,255,0.25); }
-.lang-btn.active { color: var(--neon-cyan); border-color: rgba(0,240,255,0.4); background: rgba(0,240,255,0.07); text-shadow: 0 0 8px rgba(0,240,255,0.4); }
-.lang-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.08); margin: 0 2px; }
-body { padding-top: 36px; }
+.lang-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(6,6,14,0.97); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0,240,255,0.12);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 0 16px; height: 44px; gap: 4px;
+}
+.lang-bar-label {
+  font-family: 'Share Tech Mono', monospace; font-size: 9px;
+  color: var(--text-dim); opacity: 0.45; letter-spacing: 2px;
+  margin-right: 10px; text-transform: uppercase; flex-shrink: 0;
+}
+.lang-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; letter-spacing: 0.5px;
+  color: rgba(200,214,229,0.55);
+  background: none; border: 1px solid transparent;
+  border-radius: 6px; padding: 5px 10px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px;
+  white-space: nowrap; flex-shrink: 0;
+  line-height: 1;
+}
+.lang-btn .lang-flag { font-size: 16px; line-height: 1; }
+.lang-btn .lang-code {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 600;
+}
+.lang-btn:hover {
+  color: #fff;
+  border-color: rgba(0,240,255,0.2);
+  background: rgba(0,240,255,0.05);
+}
+.lang-btn.active {
+  color: var(--neon-cyan);
+  border-color: rgba(0,240,255,0.45);
+  background: rgba(0,240,255,0.09);
+  text-shadow: 0 0 8px rgba(0,240,255,0.4);
+  box-shadow: 0 0 10px rgba(0,240,255,0.1), inset 0 0 8px rgba(0,240,255,0.04);
+}
+.lang-btn.active .lang-code { color: var(--neon-cyan); }
+.lang-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.07); margin: 0 1px; flex-shrink: 0; }
+
+/* Mobile lang bar */
+@media (max-width: 600px) {
+  .lang-bar { height: 48px; padding: 0 10px; gap: 2px; overflow-x: auto; justify-content: flex-start; scrollbar-width: none; }
+  .lang-bar::-webkit-scrollbar { display: none; }
+  .lang-bar-label { display: none; }
+  .lang-btn { padding: 6px 9px; border-radius: 8px; flex-direction: column; gap: 2px; min-width: 44px; align-items: center; }
+  .lang-btn .lang-flag { font-size: 18px; }
+  .lang-btn .lang-code { font-size: 8px; letter-spacing: 1px; }
+  .lang-divider { display: none; }
+}
+
+body { padding-top: 44px; }
 /* RTL support for Arabic */
 html[dir="rtl"] .lang-bar { justify-content: flex-start; }
 html[dir="rtl"] .container { direction: rtl; text-align: right; }
@@ -328,20 +378,20 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
 </head>
 <body>
 <div class="lang-bar" id="lang-bar">
-  <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;letter-spacing:2px;margin-right:8px;">LANG</span>
-  <button class="lang-btn active" onclick="setLang('en')">🇬🇧 EN</button>
+  <span class="lang-bar-label">Lang</span>
+  <button class="lang-btn active" onclick="setLang('en')"><span class="lang-flag">🇬🇧</span><span class="lang-code">EN</span></button>
   <div class="lang-divider"></div>
-  <button class="lang-btn" onclick="setLang('ru')">🇷🇺 RU</button>
+  <button class="lang-btn" onclick="setLang('ru')"><span class="lang-flag">🇷🇺</span><span class="lang-code">RU</span></button>
   <div class="lang-divider"></div>
-  <button class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+  <button class="lang-btn" onclick="setLang('fr')"><span class="lang-flag">🇫🇷</span><span class="lang-code">FR</span></button>
   <div class="lang-divider"></div>
-  <button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
+  <button class="lang-btn" onclick="setLang('pt')"><span class="lang-flag">🇵🇹</span><span class="lang-code">PT</span></button>
   <div class="lang-divider"></div>
-  <button class="lang-btn" onclick="setLang('zh')">🇨🇳 ZH</button>
+  <button class="lang-btn" onclick="setLang('zh')"><span class="lang-flag">🇨🇳</span><span class="lang-code">ZH</span></button>
   <div class="lang-divider"></div>
-  <button class="lang-btn" onclick="setLang('ko')">🇰🇷 KO</button>
+  <button class="lang-btn" onclick="setLang('ko')"><span class="lang-flag">🇰🇷</span><span class="lang-code">KO</span></button>
   <div class="lang-divider"></div>
-  <button class="lang-btn" onclick="setLang('ar')">🇸🇦 AR</button>
+  <button class="lang-btn" onclick="setLang('ar')"><span class="lang-flag">🇸🇦</span><span class="lang-code">AR</span></button>
 </div>
 <canvas id="bg-canvas"></canvas>
 <div class="scanline"></div>
