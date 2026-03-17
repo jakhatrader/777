@@ -370,56 +370,6 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
   .lang-divider { display: none; }
 }
 
-/* ─── COINGLASS SECTIONS ─── */
-.cg-section { display: none; }
-.cg-section.visible { display: block; }
-.cg-heatmap-wrap { position: relative; width: 100%; min-height: 480px; background: var(--bg-card); border: 1px solid rgba(255,0,170,0.2); border-radius: 12px; overflow: hidden; box-shadow: 0 0 40px rgba(255,0,170,0.04), 0 20px 60px rgba(0,0,0,0.5); }
-.cg-heatmap-title { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 700; color: var(--neon-pink); letter-spacing: 2px; text-transform: uppercase; padding: 20px 28px 6px; text-shadow: 0 0 12px rgba(255,0,170,0.4); }
-.cg-heatmap-sub { font-family: 'Rajdhani', sans-serif; font-size: 14px; color: var(--text-dim); padding: 0 28px 16px; }
-.cg-heatmap-legend { display: flex; align-items: center; gap: 16px; padding: 12px 28px; border-top: 1px solid rgba(255,0,170,0.1); font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; flex-wrap: wrap; }
-.cg-legend-grad { width: 120px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, #0a0a1f, #3d0066, #aa00aa, #ff0066, #ff8800, #ffee00); }
-.cg-live-wrap { background: var(--bg-card); border: 1px solid rgba(255,230,0,0.2); border-radius: 12px; overflow: hidden; box-shadow: 0 0 40px rgba(255,230,0,0.04), 0 20px 60px rgba(0,0,0,0.5); }
-.cg-live-header { background: linear-gradient(135deg, rgba(255,230,0,0.06) 0%, rgba(255,0,170,0.04) 100%); border-bottom: 1px solid rgba(255,230,0,0.12); padding: 20px 28px 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-.cg-live-title { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 700; color: var(--neon-yellow); letter-spacing: 2px; text-shadow: 0 0 12px rgba(255,230,0,0.4); }
-.cg-live-status { display: flex; align-items: center; gap: 6px; font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 2px; }
-.cg-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--neon-green); box-shadow: 0 0 8px rgba(57,255,20,0.6); animation: pulse-dot 1.5s ease-in-out infinite; }
-@keyframes pulse-dot { 0%,100%{ box-shadow:0 0 8px rgba(57,255,20,0.4); } 50%{ box-shadow:0 0 16px rgba(57,255,20,0.8); } }
-.cg-live-dot.off { background: var(--neon-pink); box-shadow: 0 0 8px rgba(255,0,170,0.4); animation: none; }
-.cg-live-feed { max-height: 500px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,230,0,0.2) transparent; }
-.cg-live-feed::-webkit-scrollbar { width: 4px; }
-.cg-live-feed::-webkit-scrollbar-thumb { background: rgba(255,230,0,0.25); border-radius: 2px; }
-.cg-liq-row { display: flex; align-items: center; gap: 14px; padding: 10px 28px; border-bottom: 1px solid rgba(255,255,255,0.025); transition: background 0.2s; animation: liq-flash 0.4s ease-out; }
-@keyframes liq-flash { 0%{ background: rgba(255,230,0,0.08); } 100%{ background: transparent; } }
-.cg-liq-row:hover { background: rgba(255,230,0,0.03); }
-.cg-liq-side { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 3px 8px; border-radius: 4px; min-width: 50px; text-align: center; }
-.cg-liq-long { color: var(--neon-green); background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.25); }
-.cg-liq-short { color: var(--neon-pink); background: rgba(255,0,170,0.08); border: 1px solid rgba(255,0,170,0.25); }
-.cg-liq-sym { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-main); letter-spacing: 1px; min-width: 55px; }
-.cg-liq-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; min-width: 80px; text-align: right; }
-.cg-liq-val.big { color: var(--neon-yellow); text-shadow: 0 0 8px rgba(255,230,0,0.4); }
-.cg-liq-val.normal { color: var(--text-main); }
-.cg-liq-ex { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-dim); letter-spacing: 1px; min-width: 60px; }
-.cg-liq-time { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.25); margin-left: auto; }
-.cg-liq-price { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); }
-.stat-item.tab-heatmap { border-color: rgba(255,0,170,0.15); }
-.stat-item.tab-heatmap:hover { border-color: rgba(255,0,170,0.4); box-shadow: 0 0 18px rgba(255,0,170,0.15), inset 0 0 12px rgba(255,0,170,0.04); }
-.stat-item.tab-heatmap.active { border-color: var(--neon-pink); background: rgba(255,0,170,0.08); box-shadow: 0 0 25px rgba(255,0,170,0.3), inset 0 0 20px rgba(255,0,170,0.06); }
-.stat-item.tab-heatmap.active .stat-label { color: var(--neon-pink); }
-.stat-item.tab-heatmap.active .stat-value { color: var(--neon-pink); text-shadow: 0 0 15px rgba(255,0,170,0.5); }
-.stat-item.tab-heatmap .tab-arrow { color: var(--neon-pink); }
-.stat-item.tab-liveliq { border-color: rgba(255,230,0,0.15); }
-.stat-item.tab-liveliq:hover { border-color: rgba(255,230,0,0.4); box-shadow: 0 0 18px rgba(255,230,0,0.15), inset 0 0 12px rgba(255,230,0,0.04); }
-.stat-item.tab-liveliq.active { border-color: var(--neon-yellow); background: rgba(255,230,0,0.08); box-shadow: 0 0 25px rgba(255,230,0,0.3), inset 0 0 20px rgba(255,230,0,0.06); }
-.stat-item.tab-liveliq.active .stat-label { color: var(--neon-yellow); }
-.stat-item.tab-liveliq.active .stat-value { color: var(--neon-yellow); text-shadow: 0 0 15px rgba(255,230,0,0.5); }
-.stat-item.tab-liveliq .tab-arrow { color: var(--neon-yellow); }
-@media (max-width: 700px) {
-  .cg-liq-row { gap: 8px; padding: 8px 16px; flex-wrap: wrap; }
-  .cg-liq-sym { font-size: 11px; min-width: 50px; }
-  .cg-liq-val { font-size: 11px; min-width: 60px; }
-  .cg-heatmap-title, .cg-live-title { font-size: 13px; }
-}
-
 body { padding-top: 44px; }
 /* RTL support for Arabic */
 html[dir="rtl"] .lang-bar { justify-content: flex-start; }
@@ -493,16 +443,6 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       <div class="stat-value" style="color:var(--neon-cyan);text-shadow:0 0 15px rgba(0,240,255,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_varmarkets_value">Top Low Slippage</div>
       <span class="tab-arrow" style="color:var(--neon-cyan);" data-i18n="tab_varmarkets_arrow">▼ Top 30 Pairs</span>
     </div>
-    <div class="stat-item tab-heatmap" id="tab-heatmap" onclick="switchTab('heatmap')">
-      <div class="stat-label">Liquidation Heatmap</div>
-      <div class="stat-value" style="color:var(--neon-pink);text-shadow:0 0 15px rgba(255,0,170,0.4);font-size:11px;line-height:1.4;">CoinGlass + DEX</div>
-      <span class="tab-arrow">▼ Heatmap</span>
-    </div>
-    <div class="stat-item tab-liveliq" id="tab-liveliq" onclick="switchTab('liveliq')">
-      <div class="stat-label">Live Liquidations</div>
-      <div class="stat-value" style="color:var(--neon-yellow);text-shadow:0 0 15px rgba(255,230,0,0.4);font-size:11px;line-height:1.4;">Real-Time Feed</div>
-      <span class="tab-arrow">▼ Live Feed</span>
-    </div>
   </div>
 
   <!-- TIER LIST -->
@@ -555,39 +495,6 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       </div>
       <div class="data-note" style="color:rgba(0,240,255,0.3);">Live data · Variational API · slippage measured at $100k size</div>
     </div>
-  </div>
-
-  <!-- LIQUIDATION HEATMAP -->
-  <div class="cg-section" id="heatmap-section">
-    <div class="cg-heatmap-wrap">
-      <div class="cg-heatmap-title">▲ LIQUIDATION HEATMAP</div>
-      <div class="cg-heatmap-sub">CoinGlass aggregated liquidation levels — price zones with highest liq density</div>
-      <div id="cg-heatmap-area">
-        <div style="padding:60px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading heatmap from CoinGlass...</div>
-      </div>
-      <div class="cg-heatmap-legend">
-        <span>Low</span><div class="cg-legend-grad"></div><span>High Density</span>
-        <span style="margin-left:auto;opacity:0.4;">CoinGlass Liquidation Map API</span>
-      </div>
-    </div>
-    <div class="data-note" style="color:rgba(255,0,170,0.35);">data: <a href="https://www.coinglass.com" target="_blank" rel="noopener" style="color:rgba(255,0,170,0.5);text-decoration:none;">CoinGlass</a></div>
-  </div>
-
-  <!-- LIVE LIQUIDATIONS -->
-  <div class="cg-section" id="liveliq-section">
-    <div class="cg-live-wrap">
-      <div class="cg-live-header">
-        <div class="cg-live-title">▲ LIVE LIQUIDATIONS</div>
-        <div class="cg-live-status">
-          <div class="cg-live-dot off" id="cg-ws-dot"></div>
-          <span id="cg-ws-status" style="color:var(--text-dim);">CONNECTING...</span>
-        </div>
-      </div>
-      <div class="cg-live-feed" id="cg-live-feed">
-        <div style="padding:60px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Connecting to liquidation stream...</div>
-      </div>
-    </div>
-    <div class="data-note" style="color:rgba(255,230,0,0.35);">real-time: <a href="https://www.coinglass.com" target="_blank" rel="noopener" style="color:rgba(255,230,0,0.5);text-decoration:none;">CoinGlass</a> Liquidation Orders</div>
   </div>
 
   <div class="screenshot-modal" id="screenshot-modal">
@@ -991,22 +898,23 @@ function switchTab(tab) {
   const botsSection = document.getElementById('bots-section');
   const tabVarmarkets = document.getElementById('tab-varmarkets');
   const varmarketsSection = document.getElementById('varmarkets-section');
-  const tabHeatmap = document.getElementById('tab-heatmap');
-  const heatmapSection = document.getElementById('heatmap-section');
-  const tabLiveliq = document.getElementById('tab-liveliq');
-  const liveliqSection = document.getElementById('liveliq-section');
 
   // Reset all
-  [tabTierlist, tabArb, tabCalc, tabBots, tabVarmarkets, tabHeatmap, tabLiveliq].forEach(t => { if(t) t.classList.remove('active'); });
+  tabTierlist.classList.remove('active');
+  tabArb.classList.remove('active');
+  if (tabCalc) tabCalc.classList.remove('active');
+  if (tabBots) tabBots.classList.remove('active');
+  if (tabVarmarkets) tabVarmarkets.classList.remove('active');
   tierlist.classList.add('hidden');
-  [arbSection, calcSection, botsSection, varmarketsSection, heatmapSection, liveliqSection].forEach(s => { if(s) s.classList.remove('visible'); });
+  arbSection.classList.remove('visible');
+  if (calcSection) calcSection.classList.remove('visible');
+  if (botsSection) botsSection.classList.remove('visible');
+  if (varmarketsSection) varmarketsSection.classList.remove('visible');
   tabArb.querySelector('.tab-arrow').innerHTML = '&#x25BC; Click to Explore';
   tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25BC; Tier List';
   if (tabCalc) tabCalc.querySelector('.tab-arrow').innerHTML = '&#x25BC; Calculate';
   if (tabBots) tabBots.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore Bots';
   if (tabVarmarkets) tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25BC; Top 30 Pairs';
-  if (tabHeatmap) tabHeatmap.querySelector('.tab-arrow').innerHTML = '&#x25BC; Heatmap';
-  if (tabLiveliq) tabLiveliq.querySelector('.tab-arrow').innerHTML = '&#x25BC; Live Feed';
 
   if (tab === 'arb') {
     tabArb.classList.add('active');
@@ -1024,14 +932,6 @@ function switchTab(tab) {
     if (tabVarmarkets) { tabVarmarkets.classList.add('active'); tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
     if (varmarketsSection) varmarketsSection.classList.add('visible');
     if (!varDataLoaded) fetchVarData();
-  } else if (tab === 'heatmap') {
-    if (tabHeatmap) { tabHeatmap.classList.add('active'); tabHeatmap.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
-    if (heatmapSection) heatmapSection.classList.add('visible');
-    if (!cgHeatmapLoaded) fetchCgHeatmap();
-  } else if (tab === 'liveliq') {
-    if (tabLiveliq) { tabLiveliq.classList.add('active'); tabLiveliq.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
-    if (liveliqSection) liveliqSection.classList.add('visible');
-    if (!cgLiveLiqStarted) startLiveLiquidations();
   } else {
     tabTierlist.classList.add('active');
     tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active';
@@ -2221,298 +2121,6 @@ document.addEventListener('click', e => {
 
 // Init calc with default dex
 document.addEventListener('DOMContentLoaded', () => switchCalcDex('variational'));
-
-// ═══════════════════════════════════════════════════════════════════════════
-// ─── COINGLASS INTEGRATION (via cg-proxy.php + WebSocket) ────────────────
-// ═══════════════════════════════════════════════════════════════════════════
-const CG_API_KEY = '9080570e428444c5a095579940765384';
-// ↓↓↓ REPLACE with your Cloudflare Worker URL after deploying cg-worker.js ↓↓↓
-const CG_PROXY = 'https://cg-proxy.jakhatrader.workers.dev';
-
-async function cgFetch(endpoint, params = {}) {
-  const qs = new URLSearchParams({ endpoint, ...params }).toString();
-  const r = await fetch(CG_PROXY + '?' + qs);
-  if (!r.ok) throw new Error('Proxy HTTP ' + r.status);
-  const j = await r.json();
-  if (j.error) throw new Error(j.error);
-  if (j.code !== undefined && j.code !== '0' && j.code !== 0) throw new Error(j.msg || 'CG error ' + j.code);
-  return j;
-}
-
-// ─── 1. LIQUIDATION HEATMAP ──────────────────────────────────────────────
-let cgHeatmapLoaded = false;
-
-async function fetchCgHeatmap() {
-  const el = document.getElementById('cg-heatmap-area');
-  el.innerHTML = '<div style="padding:60px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading from CoinGlass API...</div>';
-
-  try {
-    // Liquidation Map — returns { data: { "price": [[price, vol, leverage, null]], ... } }
-    const res = await cgFetch('/futures/liquidation/aggregated-map', { symbol: 'BTC' });
-    cgHeatmapLoaded = true;
-    if (res.data) {
-      renderLiqMap(el, res.data);
-    } else {
-      throw new Error('No liquidation data returned');
-    }
-  } catch(e) {
-    cgHeatmapLoaded = true;
-    // Try heatmap model3 as fallback (needs Professional plan)
-    try {
-      const res2 = await cgFetch('/futures/liquidation/heatmap/model3', { symbol: 'BTC', time_type: 'h4' });
-      if (res2.data && res2.data.y && res2.data.liq) {
-        renderHeatmapModel3(el, res2.data);
-        return;
-      }
-    } catch(e2) {}
-
-    el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--neon-pink);letter-spacing:1px;">
-      ${e.message}<br>
-      <span style="opacity:0.4;font-size:10px;display:inline-block;margin-top:6px;">Make sure cg-proxy.php is uploaded next to index.html</span><br>
-      <a href="https://www.coinglass.com/pro/futures/LiquidationHeatMap" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 18px;border-radius:6px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;text-decoration:none;color:var(--neon-pink);border:1px solid rgba(255,0,170,0.3);background:rgba(255,0,170,0.06);transition:all 0.3s;">
-        Open on CoinGlass <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-    </div>`;
-  }
-}
-
-// Render Liquidation Map (horizontal bars per price level)
-function renderLiqMap(container, mapData) {
-  const entries = mapData.data || mapData;
-  if (!entries || typeof entries !== 'object') { container.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:12px;color:var(--text-dim);">No data</div>'; return; }
-
-  const levels = [];
-  for (const [pk, arr] of Object.entries(entries)) {
-    if (!Array.isArray(arr)) continue;
-    let vol = 0;
-    for (const it of arr) vol += (it[1] || 0);
-    if (vol > 0) levels.push({ price: parseFloat(pk), vol });
-  }
-  levels.sort((a, b) => b.price - a.price);
-  if (!levels.length) { container.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:12px;color:var(--text-dim);">Empty liquidation data</div>'; return; }
-
-  container.innerHTML = '<canvas id="heatmap-cvs" style="width:100%;height:420px;display:block;"></canvas>';
-  const canvas = document.getElementById('heatmap-cvs');
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width * dpr; canvas.height = 420 * dpr;
-  ctx.scale(dpr, dpr);
-  const W = rect.width, H = 420;
-
-  const pMin = levels[levels.length - 1].price, pMax = levels[0].price, pR = pMax - pMin || 1;
-  const maxV = Math.max(...levels.map(l => l.vol));
-  const M = 65;
-
-  ctx.fillStyle = '#08081a'; ctx.fillRect(0, 0, W, H);
-
-  for (const lv of levels) {
-    const y = M * 0.3 + (1 - (lv.price - pMin) / pR) * (H - M);
-    const t = lv.vol / maxV;
-    const bW = t * (W - M - 20) * 0.85;
-    let r, g, b;
-    if (t < 0.2) { r = 30 + t * 350 | 0; g = 0; b = 60 + t * 500 | 0; }
-    else if (t < 0.5) { const s = (t - 0.2) / 0.3; r = 100 + s * 155 | 0; g = s * 20 | 0; b = 160 - s * 90 | 0; }
-    else if (t < 0.75) { const s = (t - 0.5) / 0.25; r = 255; g = 20 + s * 100 | 0; b = 70 - s * 70 | 0; }
-    else { const s = (t - 0.75) / 0.25; r = 255; g = 120 + s * 135 | 0; b = s * 40 | 0; }
-
-    ctx.fillStyle = `rgba(${r},${g},${b},${0.35 + t * 0.65})`;
-    ctx.fillRect(M, y - 1.5, bW, 3);
-    if (t > 0.4) {
-      ctx.shadowColor = `rgba(${r},${g},${b},0.7)`; ctx.shadowBlur = 8 + t * 12;
-      ctx.fillRect(M, y - 1, bW * 0.9, 2); ctx.shadowBlur = 0;
-    }
-  }
-
-  // Price labels
-  ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '10px "Share Tech Mono", monospace'; ctx.textAlign = 'right';
-  for (let i = 0; i <= 8; i++) {
-    const f = i / 8, py = M * 0.3 + (1 - f) * (H - M), p = pMin + f * pR;
-    ctx.fillText('$' + p.toLocaleString(undefined, {maximumFractionDigits: 0}), M - 6, py + 4);
-    ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 0.5;
-    ctx.beginPath(); ctx.moveTo(M, py); ctx.lineTo(W - 10, py); ctx.stroke();
-  }
-  ctx.textAlign = 'left';
-  ctx.fillStyle = 'rgba(255,0,170,0.6)'; ctx.font = 'bold 10px "Share Tech Mono", monospace';
-  ctx.fillText('LIQUIDATION MAP · BTC · ' + levels.length + ' LEVELS', M, 14);
-  ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.font = '9px "Share Tech Mono", monospace';
-  ctx.fillText('Bright = high liquidation density', M, H - 4);
-}
-
-// Render Model3 heatmap (if Professional plan — full 2D matrix)
-function renderHeatmapModel3(container, hd) {
-  const yPrices = hd.y, liqData = hd.liq, prices = hd.prices;
-  const numY = yPrices.length, numX = prices ? prices.length : 200;
-  if (!numY) return;
-
-  container.innerHTML = '<canvas id="heatmap-cvs" style="width:100%;height:420px;display:block;"></canvas>';
-  const canvas = document.getElementById('heatmap-cvs');
-  const ctx = canvas.getContext('2d'); const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width * dpr; canvas.height = 420 * dpr; ctx.scale(dpr, dpr);
-  const W = rect.width, H = 420;
-
-  const matrix = Array.from({length: numY}, () => new Float64Array(numX));
-  let maxV = 0;
-  for (const pt of liqData) {
-    const yi = pt[0], xi = pt[1], v = pt[2];
-    if (yi >= 0 && yi < numY && xi >= 0 && xi < numX) { matrix[yi][xi] = v; if (v > maxV) maxV = v; }
-  }
-  if (!maxV) maxV = 1;
-  const cW = W / numX, cH = H / numY;
-
-  for (let yi = 0; yi < numY; yi++) {
-    for (let xi = 0; xi < numX; xi++) {
-      const v = matrix[yi][xi] / maxV;
-      if (v < 0.005) { ctx.fillStyle = '#0a0a1a'; }
-      else {
-        let r, g, b;
-        if (v < 0.15) { r = 20 + v / 0.15 * 60 | 0; g = 0; b = 40 + v / 0.15 * 80 | 0; }
-        else if (v < 0.35) { const t = (v - 0.15) / 0.2; r = 80 + t * 140 | 0; g = 0; b = 120 - t * 50 | 0; }
-        else if (v < 0.6) { const t = (v - 0.35) / 0.25; r = 220 + t * 35 | 0; g = t * 80 | 0; b = 70 - t * 70 | 0; }
-        else { const t = (v - 0.6) / 0.4; r = 255; g = 80 + t * 175 | 0; b = t * 30 | 0; }
-        ctx.fillStyle = `rgb(${r},${g},${b})`;
-      }
-      ctx.fillRect(xi * cW, yi * cH, cW + 0.5, cH + 0.5);
-    }
-  }
-
-  // Price line overlay
-  if (prices && prices.length) {
-    const pMin = yPrices[yPrices.length - 1], pMax = yPrices[0], pR = pMax - pMin || 1;
-    ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5; ctx.beginPath();
-    for (let i = 0; i < prices.length; i++) {
-      const c = parseFloat(prices[i][4]), px = (i / prices.length) * W, py = (1 - (c - pMin) / pR) * H;
-      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-    }
-    ctx.stroke();
-    // Price labels
-    ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.font = '9px "Share Tech Mono", monospace'; ctx.textAlign = 'right';
-    for (let i = 0; i <= 6; i++) { const py = (i / 6) * H, p = pMax - (i / 6) * pR; ctx.fillText('$' + p.toLocaleString(undefined, {maximumFractionDigits: 0}), W - 4, py + 12); }
-    ctx.textAlign = 'left';
-  }
-}
-
-// ─── 2. LIVE LIQUIDATIONS (WebSocket — no CORS!) ─────────────────────────
-let cgLiveLiqStarted = false;
-let cgLiqWs = null;
-let cgLiqCount = 0;
-let cgPingInterval = null;
-
-function startLiveLiquidations() {
-  cgLiveLiqStarted = true;
-  document.getElementById('cg-live-feed').innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:12px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Connecting to CoinGlass WebSocket...</div>';
-  connectLiqWs();
-}
-
-function connectLiqWs() {
-  const dot = document.getElementById('cg-ws-dot');
-  const status = document.getElementById('cg-ws-status');
-  try {
-    if (cgLiqWs) try { cgLiqWs.close(); } catch(e){}
-    if (cgPingInterval) clearInterval(cgPingInterval);
-
-    // CoinGlass WebSocket: wss://open-ws.coinglass.com/ws-api?cg-api-key=KEY
-    cgLiqWs = new WebSocket('wss://open-ws.coinglass.com/ws-api?cg-api-key=' + CG_API_KEY);
-
-    cgLiqWs.onopen = () => {
-      if (dot) dot.classList.remove('off');
-      if (status) { status.textContent = 'CONNECTED'; status.style.color = 'var(--neon-cyan)'; }
-      // Subscribe to live liquidation orders
-      cgLiqWs.send(JSON.stringify({ method: 'subscribe', channels: ['liquidationOrders'] }));
-      // Keep-alive ping every 20s
-      cgPingInterval = setInterval(() => {
-        if (cgLiqWs && cgLiqWs.readyState === WebSocket.OPEN) cgLiqWs.send('ping');
-      }, 20000);
-      const feed = document.getElementById('cg-live-feed');
-      if (feed && cgLiqCount === 0) feed.innerHTML = '<div style="padding:20px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:11px;color:var(--neon-cyan);letter-spacing:2px;opacity:0.5;">⟡ Waiting for liquidation events...</div>';
-      if (status) { status.textContent = 'LIVE'; status.style.color = 'var(--neon-green)'; }
-    };
-
-    cgLiqWs.onmessage = (evt) => {
-      if (evt.data === 'pong') return;
-      try {
-        const msg = JSON.parse(evt.data);
-        if (msg.data) {
-          const items = Array.isArray(msg.data) ? msg.data : [msg.data];
-          if (cgLiqCount === 0) { const f = document.getElementById('cg-live-feed'); if (f) f.innerHTML = ''; }
-          items.forEach(item => addLiqRow(item));
-        }
-      } catch(e) {}
-    };
-
-    cgLiqWs.onerror = () => {
-      if (dot) dot.classList.add('off');
-      if (status) { status.textContent = 'WS ERROR — trying REST...'; status.style.color = 'var(--neon-orange)'; }
-      // Fallback to REST via proxy
-      pollLiqRest();
-    };
-
-    cgLiqWs.onclose = () => {
-      if (cgPingInterval) clearInterval(cgPingInterval);
-      if (dot) dot.classList.add('off');
-      if (status) { status.textContent = 'RECONNECTING...'; status.style.color = 'var(--text-dim)'; }
-      setTimeout(() => { if (currentTab === 'liveliq') connectLiqWs(); }, 5000);
-    };
-  } catch(e) {
-    if (dot) dot.classList.add('off');
-    if (status) { status.textContent = 'FAILED'; status.style.color = 'var(--neon-pink)'; }
-    pollLiqRest();
-  }
-}
-
-// REST fallback via PHP proxy
-async function pollLiqRest() {
-  try {
-    const data = await cgFetch('/futures/liquidation/order', { symbol: 'BTC' });
-    if (data.data && Array.isArray(data.data)) {
-      const feed = document.getElementById('cg-live-feed');
-      if (feed && cgLiqCount === 0) feed.innerHTML = '';
-      data.data.slice(0, 30).forEach(item => addLiqRow(item));
-      const dot = document.getElementById('cg-ws-dot');
-      const st = document.getElementById('cg-ws-status');
-      if (dot) dot.classList.remove('off');
-      if (st) { st.textContent = 'REST MODE'; st.style.color = 'var(--neon-orange)'; }
-    }
-  } catch(e) {
-    const feed = document.getElementById('cg-live-feed');
-    if (feed && cgLiqCount === 0) {
-      feed.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--neon-pink);letter-spacing:1px;">
-        ${e.message}<br><span style="opacity:0.4;font-size:10px;">Check cg-proxy.php is uploaded</span>
-      </div>`;
-    }
-  }
-  if (currentTab === 'liveliq') setTimeout(pollLiqRest, 10000);
-}
-
-function addLiqRow(item) {
-  const feed = document.getElementById('cg-live-feed');
-  if (!feed) return;
-  cgLiqCount++;
-  const side = String(item.side || item.posSide || '').toUpperCase();
-  const isLong = side.includes('LONG') || side === 'BUY' || side === '2' || side === 'L';
-  const sym = (item.symbol || item.coin || 'BTC').replace(/USDT|USD|PERP|-/g, '').toUpperCase();
-  const vol = parseFloat(item.volUsd || item.vol || item.size || item.totalAmount || item.usdValue || 0);
-  const exName = item.exchangeName || item.exchange || item.ex || 'CEX';
-  const price = item.price ? '$' + parseFloat(item.price).toLocaleString(undefined, {maximumFractionDigits: 1}) : '';
-  const ts = item.createTime || item.time || item.timestamp || Date.now();
-  const time = new Date(typeof ts === 'number' && ts > 1e12 ? ts : ts * 1000).toLocaleTimeString();
-  const isBig = vol >= 100000;
-
-  const row = document.createElement('div');
-  row.className = 'cg-liq-row';
-  if (vol >= 500000) row.style.background = 'rgba(255,230,0,0.05)';
-  row.innerHTML = `
-    <div class="cg-liq-side ${isLong ? 'cg-liq-long' : 'cg-liq-short'}">${isLong ? 'LONG' : 'SHORT'}</div>
-    <div class="cg-liq-sym">${sym}</div>
-    <div class="cg-liq-val ${isBig ? 'big' : 'normal'}">$${vol >= 1e6 ? (vol/1e6).toFixed(2)+'M' : vol >= 1e3 ? (vol/1e3).toFixed(1)+'K' : vol.toFixed(0)}</div>
-    ${price ? '<div class="cg-liq-price">' + price + '</div>' : ''}
-    <div class="cg-liq-ex">${exName}</div>
-    <div class="cg-liq-time">${time}</div>
-  `;
-  feed.insertBefore(row, feed.firstChild);
-  while (feed.children.length > 80) feed.removeChild(feed.lastChild);
-}
 
 </script>
 </body>
