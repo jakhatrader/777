@@ -218,6 +218,13 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 }
 .bots-section { display: none; }
 .bots-section.visible { display: block; }
+.liqmap-section { display: none; }
+.liqmap-section.visible { display: block; }
+.stat-item.tab-liqmap { border-color: rgba(255,0,170,0.15); }
+.stat-item.tab-liqmap:hover { border-color: rgba(255,0,170,0.4); box-shadow: 0 0 18px rgba(255,0,170,0.15), inset 0 0 12px rgba(255,0,170,0.04); }
+.stat-item.tab-liqmap.active { border-color: var(--neon-pink); background: rgba(255,0,170,0.08); box-shadow: 0 0 25px rgba(255,0,170,0.3), inset 0 0 20px rgba(255,0,170,0.06); }
+.stat-item.tab-liqmap.active .stat-label { color: var(--neon-pink); }
+.stat-item.tab-liqmap.active .stat-value { color: var(--neon-pink); text-shadow: 0 0 15px rgba(255,0,170,0.5); }
 .bots-wrapper { display: flex; flex-direction: column; gap: 18px; }
 .bot-card { background: var(--bg-card); border: 1px solid rgba(57,255,20,0.15); border-radius: 16px; overflow: hidden; box-shadow: 0 0 30px rgba(57,255,20,0.04), 0 15px 40px rgba(0,0,0,0.4); transition: all 0.3s ease; }
 .bot-card:hover { border-color: rgba(57,255,20,0.35); box-shadow: 0 0 50px rgba(57,255,20,0.08), 0 20px 60px rgba(0,0,0,0.5); transform: translateY(-2px); }
@@ -443,6 +450,11 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       <div class="stat-value" style="color:var(--neon-cyan);text-shadow:0 0 15px rgba(0,240,255,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_varmarkets_value">Top Low Slippage</div>
       <span class="tab-arrow" style="color:var(--neon-cyan);" data-i18n="tab_varmarkets_arrow">▼ Top 30 Pairs</span>
     </div>
+    <div class="stat-item tab-liqmap" id="tab-liqmap" onclick="switchTab('liqmap')" style="cursor:pointer;transition:all 0.3s;">
+      <div class="stat-label" data-i18n="tab_liqmap_label">Liquidation Map</div>
+      <div class="stat-value" style="color:var(--neon-pink);text-shadow:0 0 15px rgba(255,0,170,0.4);font-size:11px;line-height:1.4;" data-i18n="tab_liqmap_value">Heatmap · VAR & NADO</div>
+      <span class="tab-arrow" style="color:var(--neon-pink);" data-i18n="tab_liqmap_arrow">▼ Explore Map</span>
+    </div>
   </div>
 
   <!-- TIER LIST -->
@@ -494,6 +506,50 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
         <div style="padding:40px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Variational markets...</div>
       </div>
       <div class="data-note" style="color:rgba(0,240,255,0.3);">Live data · Variational API · slippage measured at $100k size</div>
+    </div>
+  </div>
+
+  <!-- LIQUIDATION MAP SECTION -->
+  <div class="liqmap-section" id="liqmap-section">
+    <div class="table-wrapper" style="border-color:rgba(255,0,170,0.2);box-shadow:0 0 40px rgba(255,0,170,0.05),0 20px 60px rgba(0,0,0,0.5);">
+      <div style="padding:20px 24px 10px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-pink);letter-spacing:2px;margin-bottom:4px;text-shadow:0 0 12px rgba(255,0,170,0.4);">LIQUIDATION HEATMAP</div>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin:0;letter-spacing:1px;">modeled from live OI · <span style="color:var(--neon-pink);">Variational</span> &amp; <span style="color:var(--neon-green);">Nado</span></p>
+        </div>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;padding-top:4px;" id="liqmap-last-updated"></span>
+      </div>
+      <div style="padding:0 24px 10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <div style="display:flex;gap:4px;">
+          <button class="var-filter-btn active" id="liq-dex-variational" onclick="setLiqDex('variational')">VAR (Omni)</button>
+          <button class="var-filter-btn" id="liq-dex-nado" onclick="setLiqDex('nado')">NADO</button>
+        </div>
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.06);margin:0 4px;"></div>
+        <div style="display:flex;gap:4px;">
+          <button class="var-filter-btn active" id="liq-asset-BTC" onclick="setLiqAsset('BTC')">BTC</button>
+          <button class="var-filter-btn" id="liq-asset-ETH" onclick="setLiqAsset('ETH')">ETH</button>
+          <button class="var-filter-btn" id="liq-asset-SOL" onclick="setLiqAsset('SOL')">SOL</button>
+        </div>
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.06);margin:0 4px;"></div>
+        <div id="liq-live-badge" style="font-family:'Share Tech Mono',monospace;font-size:9px;padding:2px 8px;border-radius:3px;letter-spacing:1px;"></div>
+      </div>
+      <div id="liq-stats-row" style="padding:0 24px 8px;display:flex;gap:20px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px;"></div>
+      <div style="padding:0 4px;position:relative;">
+        <canvas id="liq-canvas" style="width:100%;height:480px;display:block;cursor:crosshair;"></canvas>
+        <div id="liq-tooltip" style="display:none;position:absolute;background:rgba(5,5,15,0.94);border:1px solid rgba(255,0,170,0.35);border-radius:6px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#c8d6e5;pointer-events:none;z-index:10;backdrop-filter:blur(8px);min-width:180px;box-shadow:0 0 20px rgba(255,0,170,0.15);"></div>
+      </div>
+      <div style="padding:8px 24px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;gap:3px;align-items:center;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);">Low</span>
+          <div style="width:120px;height:10px;border-radius:2px;background:linear-gradient(90deg,#000010,#000040,#0000cc,#0066ff,#00ccff,#66ffcc,#ffff00,#ffffff);"></div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);">High</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dim);margin-left:12px;">— Liquidation density</span>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;">Leverage: 2x · 5x · 10x · 25x · 50x · 100x</div>
+      </div>
+    </div>
+    <div class="data-note" style="color:rgba(255,0,170,0.3);">
+      OI &amp; prices from live API · liquidation levels modeled from open interest distribution · <a href="https://muar.app" style="color:rgba(255,0,170,0.5);text-decoration:none;">muar.app</a>
     </div>
   </div>
 
@@ -683,6 +739,9 @@ const TRANSLATIONS = {
     tab_varmarkets_label: 'Variational Markets',
     tab_varmarkets_value: 'Top Low Slippage',
     tab_varmarkets_arrow: '▼ Top 15 Pairs',
+    tab_liqmap_label: 'Liquidation Map',
+    tab_liqmap_value: 'Heatmap · VAR & NADO',
+    tab_liqmap_arrow: '▼ Explore Map',
     arb_scanner_title: '▲ FUNDING ARB SCANNER — 5 PERP DEX',
     arb_scanner_desc: 'Funding rate arbitrage across <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Net APY accounts for <strong style="color:var(--neon-orange);">spread + slippage</strong> on entry &amp; exit — showing what you actually keep after all transaction costs.',
     max_spread_label: 'MAX SPREAD:',
@@ -708,6 +767,9 @@ const TRANSLATIONS = {
     tab_varmarkets_label: 'Рынки Variational',
     tab_varmarkets_value: 'Топ низкий слиппедж',
     tab_varmarkets_arrow: '▼ Топ 15 пар',
+    tab_liqmap_label: 'Карта ликвидаций',
+    tab_liqmap_value: 'Хитмэп · VAR & NADO',
+    tab_liqmap_arrow: '▼ Смотреть',
     arb_scanner_title: '▲ СКАНЕР ФАНДИНГ-АРБ — 5 PERP DEX',
     arb_scanner_desc: 'Арбитраж ставок фандинга между <strong style="color:var(--neon-cyan);">VAR · HL · EXT · PAC · NADO</strong>. Real Net APY учитывает <strong style="color:var(--neon-orange);">спред + слиппедж</strong> на входе и выходе — показывает реальный доход после всех издержек.',
     max_spread_label: 'МАКС СПРЕД:',
@@ -898,23 +960,27 @@ function switchTab(tab) {
   const botsSection = document.getElementById('bots-section');
   const tabVarmarkets = document.getElementById('tab-varmarkets');
   const varmarketsSection = document.getElementById('varmarkets-section');
+  const tabLiqmap = document.getElementById('tab-liqmap');
+  const liqmapSection = document.getElementById('liqmap-section');
 
-  // Reset all
   tabTierlist.classList.remove('active');
   tabArb.classList.remove('active');
   if (tabCalc) tabCalc.classList.remove('active');
   if (tabBots) tabBots.classList.remove('active');
   if (tabVarmarkets) tabVarmarkets.classList.remove('active');
+  if (tabLiqmap) tabLiqmap.classList.remove('active');
   tierlist.classList.add('hidden');
   arbSection.classList.remove('visible');
   if (calcSection) calcSection.classList.remove('visible');
   if (botsSection) botsSection.classList.remove('visible');
   if (varmarketsSection) varmarketsSection.classList.remove('visible');
+  if (liqmapSection) liqmapSection.classList.remove('visible');
   tabArb.querySelector('.tab-arrow').innerHTML = '&#x25BC; Click to Explore';
   tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25BC; Tier List';
   if (tabCalc) tabCalc.querySelector('.tab-arrow').innerHTML = '&#x25BC; Calculate';
   if (tabBots) tabBots.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore Bots';
   if (tabVarmarkets) tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25BC; Top 30 Pairs';
+  if (tabLiqmap) tabLiqmap.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore Map';
 
   if (tab === 'arb') {
     tabArb.classList.add('active');
@@ -932,6 +998,11 @@ function switchTab(tab) {
     if (tabVarmarkets) { tabVarmarkets.classList.add('active'); tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
     if (varmarketsSection) varmarketsSection.classList.add('visible');
     if (!varDataLoaded) fetchVarData();
+  } else if (tab === 'liqmap') {
+    if (tabLiqmap) { tabLiqmap.classList.add('active'); tabLiqmap.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active'; }
+    if (liqmapSection) liqmapSection.classList.add('visible');
+    if (!liqmapInited) initLiqMap();
+    else drawHeatmap();
   } else {
     tabTierlist.classList.add('active');
     tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25B2; Active';
@@ -2121,6 +2192,496 @@ document.addEventListener('click', e => {
 
 // Init calc with default dex
 document.addEventListener('DOMContentLoaded', () => switchCalcDex('variational'));
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// LIQUIDATION HEATMAP ENGINE v2 — Real data from Nado archive + WS streams
+// ═══════════════════════════════════════════════════════════════════════════════
+let liqmapInited = false;
+let liqDex = 'variational';
+let liqAsset = 'BTC';
+let liqApiData = {};
+let liqCandles = [];       // [{t,o,h,l,c,v}, ...] — real or accumulated
+let liqLiquidations = [];  // [{t,price,amount,side}, ...]
+let liqWs = null;
+
+const LIQ_VAR_API = 'https://omni-client-api.prod.ap-northeast-1.variational.io/metadata/stats';
+const LIQ_NADO_GW = 'https://gateway.prod.nado.xyz/v1/query';
+const LIQ_NADO_ARCHIVE = 'https://archive.prod.nado.xyz/v1';
+const LIQ_NADO_WS = 'wss://gateway.prod.nado.xyz/v1/subscribe';
+
+// Nado product IDs (perps): BTC=1, ETH=3, SOL=5 (typical)
+const NADO_PROD_MAP = { BTC: 1, ETH: 3, SOL: 5 };
+
+const LIQ_TIERS = [2, 5, 10, 25, 50, 100];
+const LIQ_DIST  = [0.08, 0.18, 0.28, 0.22, 0.15, 0.09];
+
+const LIQ_FALLBACK = {
+  variational: { BTC:{price:83500,oi:45e6,funding:.0001,vol:120e6}, ETH:{price:1950,oi:18e6,funding:.00008,vol:65e6}, SOL:{price:128,oi:8.5e6,funding:.00015,vol:32e6} },
+  nado: { BTC:{price:83500,oi:28e6,funding:.00012}, ETH:{price:1950,oi:12e6,funding:.00009}, SOL:{price:128,oi:5.5e6,funding:.00018} }
+};
+
+function liqFmt(n) {
+  if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B';
+  if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M';
+  if(n>=1e3) return '$'+(n/1e3).toFixed(0)+'K';
+  return '$'+n.toFixed(0);
+}
+function liqFP(p) {
+  if(!p||isNaN(p)) return '—';
+  return p>=1000?'$'+p.toLocaleString('en-US',{maximumFractionDigits:0}):p>=1?'$'+p.toFixed(2):'$'+p.toFixed(4);
+}
+
+function heatColor(t) {
+  t = Math.max(0, Math.min(1, t));
+  const stops = [[0,0,0,16],[0.15,0,0,120],[0.3,0,60,204],[0.45,0,140,255],[0.6,0,210,255],[0.75,100,255,200],[0.88,255,255,0],[1,255,255,255]];
+  for (let i=0;i<stops.length-1;i++){
+    if(t>=stops[i][0]&&t<=stops[i+1][0]){
+      const f=(t-stops[i][0])/(stops[i+1][0]-stops[i][0]);
+      return [Math.round(stops[i][1]+(stops[i+1][1]-stops[i][1])*f),Math.round(stops[i][2]+(stops[i+1][2]-stops[i][2])*f),Math.round(stops[i][3]+(stops[i+1][3]-stops[i][3])*f)];
+    }
+  }
+  return [255,255,255];
+}
+
+// ─── Fetch Nado historical candlesticks via archive indexer ───
+async function fetchNadoCandles(productId, granularity, limit) {
+  try {
+    const now = Math.floor(Date.now()/1000);
+    const r = await fetch(LIQ_NADO_ARCHIVE, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Accept-Encoding':'gzip'},
+      body: JSON.stringify({ candlesticks: { product_id: productId, granularity: granularity || 3600, max_time: now, limit: limit || 168 } })
+    });
+    if(!r.ok) throw new Error('Archive ' + r.status);
+    const d = await r.json();
+    const candles = (d.candlesticks||d||[]).map(c => ({
+      t: (c.timestamp||c.time||0),
+      o: +(c.open_x18||c.open||0)/1e18,
+      h: +(c.high_x18||c.high||0)/1e18,
+      l: +(c.low_x18||c.low||0)/1e18,
+      c: +(c.close_x18||c.close||0)/1e18,
+      v: +(c.volume||0)/1e18,
+    })).filter(c=>c.c>0).sort((a,b)=>a.t-b.t);
+    return candles;
+  } catch(e) { console.warn('Nado candles fallback:', e.message); return []; }
+}
+
+// ─── Fetch Nado historical liquidations via archive indexer ───
+async function fetchNadoLiqFeed(productId, limit) {
+  try {
+    const r = await fetch(LIQ_NADO_ARCHIVE, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Accept-Encoding':'gzip'},
+      body: JSON.stringify({ liquidation_feed: { product_id: productId, limit: limit || 500 } })
+    });
+    if(!r.ok) throw new Error('Liq feed ' + r.status);
+    const d = await r.json();
+    return (d.liquidation_feed||d.liquidations||d||[]).map(l => ({
+      t: +(l.timestamp||0),
+      price: +(l.price||0)/1e18,
+      amount: Math.abs(+(l.amount||0)/1e18),
+      side: +(l.amount||0) > 0 ? 'long' : 'short',
+      productIds: l.product_ids||[productId],
+    })).filter(l=>l.price>0).sort((a,b)=>a.t-b.t);
+  } catch(e) { console.warn('Nado liq feed fallback:', e.message); return []; }
+}
+
+// ─── Fetch Variational + Nado REST stats (prices, OI, funding) ───
+async function fetchLiqVar() {
+  try {
+    const r = await fetch(LIQ_VAR_API); if(!r.ok) throw 0;
+    const d = await r.json(); const res = {};
+    const map = {BTC:'BTC-USD',ETH:'ETH-USD',SOL:'SOL-USD'};
+    for(const [a,t] of Object.entries(map)){
+      const l=d.listings?.find(x=>x.ticker===t);
+      if(l) res[a]={price:+l.mark_price||0,oi:+l.open_interest||0,funding:+l.funding_rate||0,vol:+l.volume_24h||0,live:true};
+    }
+    liqApiData.variational=Object.keys(res).length?res:LIQ_FALLBACK.variational;
+    liqApiData.variational._live=Object.keys(res).length>0;
+  } catch(e){ liqApiData.variational=LIQ_FALLBACK.variational; liqApiData.variational._live=false; }
+}
+async function fetchLiqNado() {
+  try {
+    const [pR,mR]=await Promise.all([fetch(LIQ_NADO_GW+'?type=all_products'),fetch(LIQ_NADO_GW+'?type=market_prices')]);
+    if(!pR.ok||!mR.ok) throw 0;
+    const prods=await pR.json(), prices=await mR.json(); const res={};
+    const tgt={BTC:['BTC','kBTC','wBTC'],ETH:['ETH','wETH'],SOL:['SOL']};
+    for(const [a,kw] of Object.entries(tgt)){
+      let found=null;
+      const ps=prods?.data?.products||prods?.products||[];
+      for(const p of (Array.isArray(ps)?ps:Object.values(ps))){
+        const s=(p.symbol||p.ticker||'').toUpperCase(),t=(p.product_type||p.type||'').toLowerCase();
+        if(t.includes('perp')&&kw.some(k=>s.includes(k))){found=p;break;}
+      }
+      if(found){
+        const mps=prices?.data?.market_prices||prices?.market_prices||[];
+        const mp=(Array.isArray(mps)?mps:Object.values(mps)).find(m=>m.product_id===found.product_id);
+        const op=mp?+((mp.oracle_price_x18||mp.oracle_price||0))/1e18:0;
+        const oi=+(found.open_interest_x18||found.open_interest||0);
+        res[a]={price:op,oi:oi>1e15?oi/1e18:oi,funding:+(found.funding_rate_x18||found.funding_rate||0)/(oi>1e15?1e18:1),productId:found.product_id,live:true};
+        // Update NADO_PROD_MAP with real IDs
+        NADO_PROD_MAP[a] = found.product_id;
+      }
+    }
+    if(!Object.keys(res).length) throw 0;
+    liqApiData.nado=res; liqApiData.nado._live=true;
+  } catch(e){ liqApiData.nado=LIQ_FALLBACK.nado; liqApiData.nado._live=false; }
+}
+
+// ─── Generate synthetic candles when real ones unavailable (Variational) ───
+function synthCandles(currentPrice, count) {
+  const candles = [];
+  const now = Date.now();
+  let p = currentPrice * (1 + (Math.random()-0.5)*0.06);
+  for(let i=0; i<count; i++){
+    const drift = (currentPrice - p)*0.015;
+    const vol = currentPrice * (0.001 + Math.random()*0.003);
+    p += drift + (Math.random()-0.5)*vol*2;
+    const o=p, h=p+Math.random()*vol, l=p-Math.random()*vol, c=p+drift*0.5;
+    candles.push({t:now-((count-i)*3600000), o, h, l, c:Math.max(l,c)});
+  }
+  candles[candles.length-1].c = currentPrice;
+  return candles;
+}
+
+// ─── Connect Nado WebSocket for live updates ───
+function connectNadoWs(productId) {
+  if(liqWs) { try{liqWs.close();}catch(e){} }
+  try {
+    liqWs = new WebSocket(LIQ_NADO_WS);
+    liqWs.onopen = () => {
+      // Subscribe to 5-minute candlesticks
+      liqWs.send(JSON.stringify({method:'subscribe',stream:{type:'latest_candlestick',product_id:productId,granularity:300},id:1}));
+      // Subscribe to liquidation stream
+      liqWs.send(JSON.stringify({method:'subscribe',stream:{type:'liquidation',product_id:productId},id:2}));
+    };
+    liqWs.onmessage = (msg) => {
+      try {
+        const d = JSON.parse(msg.data);
+        if(d.type==='latest_candlestick' && d.close_x18){
+          const candle = {t:d.timestamp,o:+d.open_x18/1e18,h:+d.high_x18/1e18,l:+d.low_x18/1e18,c:+d.close_x18/1e18,v:+(d.volume||0)/1e18};
+          if(candle.c>0){
+            // Update or append
+            const last = liqCandles[liqCandles.length-1];
+            if(last && Math.abs(last.t - candle.t)<300000) liqCandles[liqCandles.length-1]=candle;
+            else { liqCandles.push(candle); if(liqCandles.length>200) liqCandles.shift(); }
+            if(currentTab==='liqmap') drawHeatmap();
+          }
+        }
+        if(d.type==='liquidation' || d.stream?.type==='liquidation'){
+          const p = d.data||d;
+          const price = +(p.price||0)/1e18;
+          const amount = Math.abs(+(p.amount||0)/1e18);
+          if(price>0){
+            liqLiquidations.push({t:Date.now(),price,amount,side:+(p.amount||0)>0?'long':'short'});
+            if(liqLiquidations.length>1000) liqLiquidations.shift();
+          }
+        }
+      } catch(e){}
+    };
+    liqWs.onerror = ()=>{};
+    liqWs.onclose = ()=>{ setTimeout(()=>{ if(currentTab==='liqmap') connectNadoWs(productId); }, 5000); };
+  } catch(e){}
+}
+
+function setLiqDex(d){
+  liqDex=d;
+  document.querySelectorAll('[id^="liq-dex-"]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('liq-dex-'+d)?.classList.add('active');
+  loadLiqAssetData();
+}
+function setLiqAsset(a){
+  liqAsset=a;
+  document.querySelectorAll('[id^="liq-asset-"]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('liq-asset-'+a)?.classList.add('active');
+  loadLiqAssetData();
+}
+
+async function loadLiqAssetData(){
+  const dd=liqApiData[liqDex]; if(!dd) return;
+  const ad=dd[liqAsset]; if(!ad) return;
+
+  // For Nado — fetch real candles + liquidation history
+  if(liqDex==='nado'){
+    const pid = ad.productId || NADO_PROD_MAP[liqAsset] || 1;
+    const [candles, liqs] = await Promise.all([
+      fetchNadoCandles(pid, 3600, 168),
+      fetchNadoLiqFeed(pid, 500)
+    ]);
+    liqCandles = candles.length > 0 ? candles : synthCandles(ad.price, 168);
+    liqLiquidations = liqs;
+    connectNadoWs(pid);
+  } else {
+    // Variational — no candles API, synth + model
+    liqCandles = synthCandles(ad.price, 168);
+    liqLiquidations = [];
+    if(liqWs) { try{liqWs.close();}catch(e){} liqWs=null; }
+  }
+  drawHeatmap();
+}
+
+function drawHeatmap() {
+  const dd=liqApiData[liqDex]; if(!dd) return;
+  const ad=dd[liqAsset]; if(!ad) return;
+  const isLive = dd._live && ad.live;
+  const hasRealCandles = liqDex==='nado' && liqCandles.length>0 && liqCandles[0].v !== undefined;
+
+  // Badge
+  const badge=document.getElementById('liq-live-badge');
+  if(badge){
+    const realData = isLive && hasRealCandles;
+    badge.style.background=realData?'rgba(57,255,20,0.08)':isLive?'rgba(0,240,255,0.08)':'rgba(255,140,0,0.08)';
+    badge.style.border='1px solid '+(realData?'rgba(57,255,20,0.3)':isLive?'rgba(0,240,255,0.3)':'rgba(255,140,0,0.3)');
+    badge.style.color=realData?'var(--neon-green)':isLive?'var(--neon-cyan)':'var(--neon-orange)';
+    badge.textContent=realData?'● LIVE (Nado Archive + WS)':isLive?'● LIVE API (modeled heatmap)':'○ FALLBACK';
+  }
+
+  // Stats
+  const sr=document.getElementById('liq-stats-row');
+  if(sr){
+    let st=[
+      {l:'PRICE',v:liqFP(ad.price),c:'var(--neon-yellow)'},
+      {l:'OPEN INTEREST',v:liqFmt(ad.oi||0),c:'var(--neon-cyan)'},
+      {l:'FUNDING',v:((ad.funding||0)*100).toFixed(4)+'%',c:(ad.funding||0)>=0?'var(--neon-green)':'var(--neon-pink)'},
+    ];
+    if(ad.vol) st.push({l:'24H VOL',v:liqFmt(ad.vol),c:'var(--neon-purple)'});
+    st.push({l:'CANDLES',v:liqCandles.length+(hasRealCandles?' (real)':' (synth)'),c:hasRealCandles?'var(--neon-green)':'var(--text-dim)'});
+    st.push({l:'LIQS HISTORY',v:liqLiquidations.length+'',c:liqLiquidations.length?'var(--neon-pink)':'var(--text-dim)'});
+    sr.innerHTML=st.map(s=>`<div><div style="font-size:8px;color:var(--text-dim);letter-spacing:1.5px;">${s.l}</div><div style="font-size:13px;font-weight:700;color:${s.c};margin-top:1px;">${s.v}</div></div>`).join('');
+  }
+
+  // Canvas setup
+  const canvas=document.getElementById('liq-canvas'); if(!canvas) return;
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.getBoundingClientRect();
+  canvas.width=rect.width*dpr; canvas.height=rect.height*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  const W=rect.width,H=rect.height;
+  const pad={t:12,r:12,b:30,l:56};
+  const cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+
+  if(!liqCandles.length) return;
+  const currentPrice = ad.price;
+  const oi = ad.oi || 1;
+
+  // Determine price range from candles
+  let pMin=Infinity, pMax=-Infinity;
+  liqCandles.forEach(c=>{ if(c.l<pMin)pMin=c.l; if(c.h>pMax)pMax=c.h; });
+  // Expand range 10% for heatmap visibility
+  const pRange=pMax-pMin;
+  pMin-=pRange*0.1; pMax+=pRange*0.1;
+
+  const priceRows=100;
+  const pStep=(pMax-pMin)/priceRows;
+  const cols=liqCandles.length;
+  const cellW=cw/cols;
+  const cellH=ch/priceRows;
+
+  // Clear
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#000008';
+  ctx.fillRect(0,0,W,H);
+
+  // ─── Build heatmap grid from OI model + real liquidation overlay ───
+  const grid=[]; let maxI=0;
+
+  for(let ci=0;ci<cols;ci++){
+    const candle=liqCandles[ci];
+    const candlePrice = candle.c;
+    // OI scaled by volume if available
+    const oiScale = candle.v ? Math.min(2, candle.v / (oi * 0.001) + 0.5) : 1;
+    const colOI = oi * oiScale * 0.6;
+    const row=[];
+
+    for(let ri=0;ri<priceRows;ri++){
+      const rowPrice=pMin+pStep*ri;
+      let intensity=0;
+
+      LIQ_TIERS.forEach((lev,li)=>{
+        const tierOI=colOI*LIQ_DIST[li];
+        const spread=candlePrice*0.06;
+        for(let e=0;e<10;e++){
+          const entry=candlePrice+(e/10-0.5)*2*spread;
+          const ps=tierOI/(2*10);
+          const lp=entry*(1-(1/lev)*0.995);
+          const sp=entry*(1+(1/lev)*0.995);
+          const sigma=pStep*1.5;
+          intensity+=ps*Math.exp(-Math.pow(rowPrice-lp,2)/(2*sigma*sigma));
+          intensity+=ps*Math.exp(-Math.pow(rowPrice-sp,2)/(2*sigma*sigma));
+        }
+      });
+
+      // Overlay real liquidations that happened near this candle time & price
+      const candleT = candle.t;
+      liqLiquidations.forEach(liq=>{
+        if(Math.abs(liq.t - candleT) < 3600000){ // within 1h
+          const dist = Math.abs(rowPrice - liq.price);
+          if(dist < pStep*3){
+            intensity += liq.amount * liq.price * Math.exp(-dist*dist/(2*pStep*pStep)) * 2;
+          }
+        }
+      });
+
+      row.push(intensity);
+      if(intensity>maxI) maxI=intensity;
+    }
+    grid.push(row);
+  }
+
+  // ─── Render heatmap pixels ───
+  const imgData=ctx.createImageData(Math.ceil(cw),Math.ceil(ch));
+  for(let ci=0;ci<cols;ci++){
+    for(let ri=0;ri<priceRows;ri++){
+      const t=Math.pow(grid[ci][ri]/maxI,0.45);
+      const [rr,gg,bb]=heatColor(t);
+      const px=Math.floor(ci*cellW), py=Math.floor(ch-(ri+1)*cellH);
+      const pw=Math.max(1,Math.ceil(cellW)), ph=Math.max(1,Math.ceil(cellH));
+      for(let dx=0;dx<pw&&px+dx<imgData.width;dx++){
+        for(let dy=0;dy<ph&&py+dy<imgData.height;dy++){
+          const idx=((py+dy)*imgData.width+(px+dx))*4;
+          imgData.data[idx]=Math.min(255,imgData.data[idx]+rr);
+          imgData.data[idx+1]=Math.min(255,imgData.data[idx+1]+gg);
+          imgData.data[idx+2]=Math.min(255,imgData.data[idx+2]+bb);
+          imgData.data[idx+3]=255;
+        }
+      }
+    }
+  }
+  ctx.putImageData(imgData,pad.l,pad.t);
+
+  // Horizontal blur for streaky look
+  const tmp=document.createElement('canvas');
+  tmp.width=canvas.width; tmp.height=canvas.height;
+  const tc=tmp.getContext('2d'); tc.drawImage(canvas,0,0);
+  for(let i=0;i<3;i++){
+    ctx.globalAlpha=0.3;
+    ctx.drawImage(tmp,-2*dpr,0); ctx.drawImage(tmp,2*dpr,0);
+    ctx.globalAlpha=1; tc.clearRect(0,0,tmp.width,tmp.height); tc.drawImage(canvas,0,0);
+  }
+
+  // Mask outside chart
+  ctx.fillStyle='#000008';
+  ctx.fillRect(0,0,pad.l,H); ctx.fillRect(0,0,W,pad.t);
+  ctx.fillRect(0,pad.t+ch,W,pad.b); ctx.fillRect(pad.l+cw,0,pad.r,H);
+
+  // ─── Price line overlay ───
+  ctx.strokeStyle='#ff3366'; ctx.lineWidth=1.5;
+  ctx.shadowColor='rgba(255,51,102,0.5)'; ctx.shadowBlur=4;
+  ctx.beginPath();
+  liqCandles.forEach((c,i)=>{
+    const x=pad.l+i*cellW+cellW/2;
+    const y=pad.t+ch-((c.c-pMin)/(pMax-pMin))*ch;
+    if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke(); ctx.shadowBlur=0;
+
+  // Bright overlay
+  ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=0.5;
+  ctx.beginPath();
+  liqCandles.forEach((c,i)=>{
+    const x=pad.l+i*cellW+cellW/2;
+    const y=pad.t+ch-((c.c-pMin)/(pMax-pMin))*ch;
+    if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // ─── Real liquidation markers ───
+  if(liqLiquidations.length){
+    liqLiquidations.forEach(liq=>{
+      // Find nearest candle
+      let bestIdx=0, bestDist=Infinity;
+      liqCandles.forEach((c,i)=>{ const d=Math.abs(c.t-liq.t); if(d<bestDist){bestDist=d;bestIdx=i;} });
+      const x=pad.l+bestIdx*cellW+cellW/2;
+      const y=pad.t+ch-((liq.price-pMin)/(pMax-pMin))*ch;
+      if(x>=pad.l&&x<=pad.l+cw&&y>=pad.t&&y<=pad.t+ch){
+        const sz=Math.min(6,Math.max(2, liq.amount*liq.price/50000));
+        ctx.fillStyle=liq.side==='long'?'rgba(57,255,20,0.7)':'rgba(255,0,170,0.7)';
+        ctx.beginPath(); ctx.arc(x,y,sz,0,Math.PI*2); ctx.fill();
+      }
+    });
+  }
+
+  // ─── Y axis ───
+  ctx.fillStyle='#5a6a8a'; ctx.font='10px "JetBrains Mono",monospace'; ctx.textAlign='right';
+  for(let i=0;i<=6;i++){
+    const p=pMin+(pMax-pMin)/6*i;
+    const y=pad.t+ch-(i/6)*ch;
+    ctx.fillText(liqFP(p).replace('$',''),pad.l-6,y+3);
+    ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=0.5;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+  }
+
+  // ─── X axis — real timestamps from candles ───
+  ctx.fillStyle='#5a6a8a'; ctx.font='9px "JetBrains Mono",monospace'; ctx.textAlign='center';
+  const tickCount=Math.min(6,cols);
+  for(let i=0;i<tickCount;i++){
+    const ci=Math.floor(i*(cols-1)/(tickCount-1));
+    const x=pad.l+ci*cellW+cellW/2;
+    const t=new Date(liqCandles[ci].t > 1e12 ? liqCandles[ci].t : liqCandles[ci].t*1000);
+    const label=t.toLocaleDateString([],{month:'short',day:'numeric'})+' '+t.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    ctx.fillText(label,x,pad.t+ch+16);
+  }
+
+  // Current price marker
+  const cpY=pad.t+ch-((currentPrice-pMin)/(pMax-pMin))*ch;
+  ctx.fillStyle='rgba(255,230,0,0.12)'; ctx.fillRect(pad.l+cw-60,cpY-8,60,16);
+  ctx.fillStyle='#ffe600'; ctx.font='bold 9px "JetBrains Mono",monospace'; ctx.textAlign='left';
+  ctx.fillText(liqFP(currentPrice),pad.l+cw-56,cpY+3);
+  ctx.beginPath(); ctx.moveTo(pad.l+cw,cpY); ctx.lineTo(pad.l+cw+6,cpY-4); ctx.lineTo(pad.l+cw+6,cpY+4); ctx.closePath(); ctx.fill();
+
+  // Store for tooltip
+  canvas._pMin=pMin; canvas._pMax=pMax; canvas._pad=pad; canvas._cw=cw; canvas._ch=ch; canvas._cols=cols;
+}
+
+function initLiqMap(){
+  liqmapInited=true;
+  const canvas=document.getElementById('liq-canvas');
+  canvas.addEventListener('mousemove',function(e){
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    const pad=canvas._pad, cw=canvas._cw, ch=canvas._ch, cols=canvas._cols;
+    if(!pad||!cols) return;
+    const ci=Math.floor((mx-pad.l)/(cw/cols));
+    const rowNorm=1-(my-pad.t)/ch;
+    const price=canvas._pMin+rowNorm*(canvas._pMax-canvas._pMin);
+    if(ci>=0&&ci<cols&&my>=pad.t&&my<=pad.t+ch){
+      const candle=liqCandles[ci];
+      const t=new Date(candle.t>1e12?candle.t:candle.t*1000);
+      // Count nearby liquidations
+      let nearLiqs=0;
+      liqLiquidations.forEach(l=>{if(Math.abs(l.t-candle.t)<3600000&&Math.abs(l.price-price)<(canvas._pMax-canvas._pMin)*0.02) nearLiqs++;});
+      const tip=document.getElementById('liq-tooltip');
+      tip.style.display='block';
+      tip.style.left=Math.min(mx+16,rect.width-200)+'px';
+      tip.style.top=Math.max(my-90,4)+'px';
+      tip.innerHTML=`
+        <div style="color:#888;font-size:9px;margin-bottom:3px;">${t.toLocaleString()}</div>
+        <div style="color:var(--neon-pink);font-weight:700;font-size:11px;margin-bottom:4px;">Price: ${liqFP(price)}</div>
+        <div style="display:flex;justify-content:space-between;gap:14px;"><span style="color:var(--text-dim);">Candle close:</span><span style="color:#ff3366;">${liqFP(candle.c)}</span></div>
+        ${candle.v?`<div style="display:flex;justify-content:space-between;gap:14px;"><span style="color:var(--text-dim);">Volume:</span><span style="color:var(--neon-cyan);">${liqFmt(candle.v*candle.c)}</span></div>`:''}
+        ${nearLiqs?`<div style="display:flex;justify-content:space-between;gap:14px;margin-top:2px;"><span style="color:var(--text-dim);">Nearby liqs:</span><span style="color:var(--neon-pink);font-weight:700;">${nearLiqs}</span></div>`:''}
+      `;
+    } else {
+      document.getElementById('liq-tooltip').style.display='none';
+    }
+  });
+  canvas.addEventListener('mouseleave',()=>document.getElementById('liq-tooltip').style.display='none');
+  window.addEventListener('resize',()=>{if(currentTab==='liqmap')drawHeatmap();});
+  loadLiqData();
+}
+
+async function loadLiqData(){
+  await Promise.all([fetchLiqVar(),fetchLiqNado()]);
+  document.getElementById('liqmap-last-updated').textContent='Updated '+new Date().toLocaleTimeString();
+  await loadLiqAssetData();
+  // Refresh stats every 30s
+  setInterval(async()=>{
+    await Promise.all([fetchLiqVar(),fetchLiqNado()]);
+    document.getElementById('liqmap-last-updated').textContent='Updated '+new Date().toLocaleTimeString();
+    if(currentTab==='liqmap') drawHeatmap();
+  },30000);
+}
 
 </script>
 </body>
