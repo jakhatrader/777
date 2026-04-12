@@ -451,8 +451,8 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       <table>
         <thead>
           <tr>
-            <th>Tier</th>
-            <th>Protocol</th>
+            <th data-i18n="th_tier">Tier</th>
+            <th data-i18n="th_protocol">Protocol</th>
           </tr>
         </thead>
         <tbody id="dex-table-body"></tbody>
@@ -464,11 +464,11 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
   <div class="arb-section" id="arb-section">
     <div class="table-wrapper" style="border-color: rgba(255,140,0,0.2); box-shadow: 0 0 40px rgba(255,140,0,0.04), 0 20px 60px rgba(0,0,0,0.5);">
       <div class="arb-intro">
-        <p>Discover arbitrage opportunities by comparing funding rates across decentralized exchanges.</p>
-        <p>Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; Min APY: 50%</p>
+        <p data-i18n="arb_intro_p1">Discover arbitrage opportunities by comparing funding rates across decentralized exchanges.</p>
+        <p data-i18n="arb_intro_p2">Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; Min APY: 50%</p>
         <p class="arb-refresh-note" id="arb-last-updated"></p>
       </div>
-      <div class="arb-title">&#x25B2; Top 10 Funding Rate Opportunities</div>
+      <div class="arb-title" data-i18n="arb_title">&#x25B2; Top 10 Funding Rate Opportunities</div>
       <div id="arb-content">
         <div class="arb-loading">Loading funding rate data...</div>
       </div>
@@ -484,16 +484,16 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
     <div class="table-wrapper" style="border-color:rgba(0,240,255,0.2);box-shadow:0 0 40px rgba(0,240,255,0.05),0 20px 60px rgba(0,0,0,0.5);">
       <div style="padding:24px 28px 16px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">
         <div>
-          <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-cyan);letter-spacing:2px;margin-bottom:6px;text-shadow:0 0 12px rgba(0,240,255,0.4);">VARIATIONAL PAIRS</div>
-          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:4px;">Top Low Slippage</div>
-          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;">ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> position size</p>
+          <div style="font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--neon-cyan);letter-spacing:2px;margin-bottom:6px;text-shadow:0 0 12px rgba(0,240,255,0.4);" data-i18n="var_pairs_heading">VARIATIONAL PAIRS</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:1px;margin-bottom:4px;" data-i18n="var_pairs_subheading">Top Low Slippage</div>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);line-height:1.5;margin:0;letter-spacing:1px;" data-i18n="var_pairs_desc">ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> position size</p>
         </div>
         <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;padding-top:4px;" id="var-last-updated"></span>
       </div>
       <div id="var-content" style="padding-bottom:4px;">
-        <div style="padding:40px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Variational markets...</div>
+        <div style="padding:40px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;" data-i18n="var_loading">Loading Variational markets...</div>
       </div>
-      <div class="data-note" style="color:rgba(0,240,255,0.3);">Live data · Variational API · slippage measured at $100k size</div>
+      <div class="data-note" style="color:rgba(0,240,255,0.3);" data-i18n="var_data_note">Live data · Variational API · slippage measured at $100k size</div>
     </div>
   </div>
 
@@ -550,8 +550,8 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
   <div class="calc-section" id="calc-section">
     <div class="calc-wrapper">
       <div class="calc-header">
-        <div class="calc-title">&#x25B2; Perp DEX Airdrop Points Calculator</div>
-        <div class="calc-subtitle">Estimate your potential airdrop rewards. Enter your points to calculate token value.</div>
+        <div class="calc-title" data-i18n="calc_title">&#x25B2; Perp DEX Airdrop Points Calculator</div>
+        <div class="calc-subtitle" data-i18n="calc_subtitle">Estimate your potential airdrop rewards. Enter your points to calculate token value.</div>
       </div>
       <div class="calc-dex-tabs" id="calc-dex-tabs">
         <div class="calc-dex-tab active" onclick="switchCalcDex('variational')">Variational</div>
@@ -564,54 +564,54 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       <div class="calc-body">
         <div class="calc-grid">
           <div class="calc-field">
-            <label class="calc-label">My Points</label>
+            <label class="calc-label" data-i18n="calc_label_points">My Points</label>
             <input class="calc-input" id="calc-points" type="number" placeholder="e.g. 50000" oninput="calcUpdate()">
           </div>
           <div class="calc-field">
-            <label class="calc-label">Total Points Supply <span id="calc-supply-hint">est. total supply</span></label>
+            <label class="calc-label"><span data-i18n="calc_label_supply">Total Points Supply</span> <span id="calc-supply-hint">est. total supply</span></label>
             <input class="calc-input" id="calc-supply" type="number" oninput="calcUpdate()">
           </div>
           <div class="calc-field">
-            <label class="calc-label">Airdrop % of Supply <span>% tokens for community</span></label>
+            <label class="calc-label"><span data-i18n="calc_label_airdrop_pct">Airdrop % of Supply</span> <span data-i18n="calc_label_community">% tokens for community</span></label>
             <input class="calc-input" id="calc-airdrop-pct" type="number" step="0.1" oninput="calcUpdate()">
             <span class="calc-input-hint" id="calc-airdrop-hint"></span>
           </div>
           <div class="calc-field">
-            <label class="calc-label">Expected FDV <span>$B — fully diluted valuation</span></label>
+            <label class="calc-label"><span data-i18n="calc_label_fdv">Expected FDV</span> <span data-i18n="calc_label_fdv_hint">$B — fully diluted valuation</span></label>
             <input class="calc-input" id="calc-fdv" type="number" step="0.1" placeholder="e.g. 1.2" oninput="calcUpdate()">
-            <span class="calc-input-hint">reference: Hyperliquid ~$4B, Lighter ~$2.5B</span>
+            <span class="calc-input-hint" data-i18n="calc_fdv_ref">reference: Hyperliquid ~$4B, Lighter ~$2.5B</span>
           </div>
         </div>
         <div class="calc-result-box" id="calc-result-box">
           <div class="calc-result-main">
             <div>
-              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-bottom:6px;">POTENTIAL AIRDROP VALUE</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-bottom:6px;" data-i18n="calc_potential_label">POTENTIAL AIRDROP VALUE</div>
               <div class="calc-result-value" id="calc-result-value">$0</div>
             </div>
             <div class="calc-tier-badge" id="calc-tier-badge">
               <span class="calc-tier-emoji" id="calc-tier-emoji">🦐</span>
               <div>
-                <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:2px;margin-bottom:2px;">YOUR TIER</div>
+                <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);letter-spacing:2px;margin-bottom:2px;" data-i18n="calc_your_tier">YOUR TIER</div>
                 <div class="calc-tier-name" id="calc-tier-name">SHRIMP</div>
               </div>
             </div>
           </div>
           <div class="calc-breakdown" id="calc-breakdown">
-            <div class="calc-breakdown-item"><div class="calc-breakdown-label">Your Share</div><div class="calc-breakdown-val" id="cb-share">0.000%</div></div>
-            <div class="calc-breakdown-item"><div class="calc-breakdown-label">Airdrop Pool</div><div class="calc-breakdown-val" id="cb-pool">—</div></div>
-            <div class="calc-breakdown-item"><div class="calc-breakdown-label">Per Point</div><div class="calc-breakdown-val" id="cb-ppt">—</div></div>
+            <div class="calc-breakdown-item"><div class="calc-breakdown-label" data-i18n="cb_share">Your Share</div><div class="calc-breakdown-val" id="cb-share">0.000%</div></div>
+            <div class="calc-breakdown-item"><div class="calc-breakdown-label" data-i18n="cb_pool">Airdrop Pool</div><div class="calc-breakdown-val" id="cb-pool">—</div></div>
+            <div class="calc-breakdown-item"><div class="calc-breakdown-label" data-i18n="cb_ppt">Per Point</div><div class="calc-breakdown-val" id="cb-ppt">—</div></div>
           </div>
           <div>
-            <button class="calc-share-btn calc-share-screenshot" onclick="openScreenshot()">📸 Create Screenshot</button>
-            <button class="calc-share-btn calc-share-twitter" onclick="quickTweet()">𝕏 Share on Twitter</button>
+            <button class="calc-share-btn calc-share-screenshot" onclick="openScreenshot()" data-i18n="btn_screenshot">📸 Create Screenshot</button>
+            <button class="calc-share-btn calc-share-twitter" onclick="quickTweet()" data-i18n="btn_tweet">𝕏 Share on Twitter</button>
           </div>
-          <div style="margin-top:16px;font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,255,255,0.18);letter-spacing:1px;">
+          <div style="margin-top:16px;font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,255,255,0.18);letter-spacing:1px;" data-i18n="calc_disclaimer">
             ESTIMATE ONLY • ACTUAL RESULTS MAY VARY
           </div>
         </div>
       </div>
     </div>
-    <div class="data-note">Calculator based on publicly available tokenomics data &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a></div>
+    <div class="data-note" data-i18n="calc_data_note">Calculator based on publicly available tokenomics data &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a></div>
   </div>
 
   <!-- BOTS SECTION -->
@@ -623,15 +623,15 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
         <div class="bot-card-header">
           <div class="bot-name">&#x2B21; Tread FI</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="bot-badge mm">MM Strategy</span>
-            <span class="bot-badge dn">DN Strategy</span>
+            <span class="bot-badge mm" data-i18n="badge_mm">MM Strategy</span>
+            <span class="bot-badge dn" data-i18n="badge_dn">DN Strategy</span>
           </div>
         </div>
         <div class="bot-card-body">
-          <div class="bot-desc">
+          <div class="bot-desc" data-i18n="bot_tread_desc">
             Best bot for <strong class="highlight-cyan">Market Making</strong> and <strong class="highlight-orange">Delta-Neutral</strong> strategies. Provides advanced automated trading with powerful risk management. Currently has <strong>limited perp DEX support</strong> — but the available integrations are top-tier.
           </div>
-          <a href="https://app.tread.fi/referral/39KUWV1L" target="_blank" rel="noopener noreferrer" class="bot-link-btn">
+          <a href="https://app.tread.fi/referral/39KUWV1L" target="_blank" rel="noopener noreferrer" class="bot-link-btn" data-i18n="btn_launch_tread">
             Launch Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
@@ -642,21 +642,21 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
         <div class="bot-card-header">
           <div class="bot-name">&#x2B21; Funding Pro</div>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span class="bot-badge arb">Funding Arbitrage</span>
-            <span class="bot-badge dn">DN Strategy</span>
+            <span class="bot-badge arb" data-i18n="badge_arb">Funding Arbitrage</span>
+            <span class="bot-badge dn" data-i18n="badge_dn">DN Strategy</span>
           </div>
         </div>
         <div class="bot-card-body">
-          <div class="bot-desc">
+          <div class="bot-desc" data-i18n="bot_funding_desc">
             The best <strong class="highlight-yellow">arbitrage funding bot</strong> available. Supports <strong>all perp DEXes</strong> for delta-neutral trading with a primary focus on <strong class="highlight-yellow">funding rate arbitrage</strong>. If you're looking to capture funding spreads across exchanges — this is the one.
           </div>
-          <a href="https://profunding.pro/?ref=MUAR" target="_blank" rel="noopener noreferrer" class="bot-link-btn">
+          <a href="https://profunding.pro/?ref=MUAR" target="_blank" rel="noopener noreferrer" class="bot-link-btn" data-i18n="btn_launch_funding">
             Launch Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
       </div>
 
     </div>
-    <div class="data-note" style="margin-top:20px;">curated by MUAR &bull; always DYOR before using any bot</div>
+    <div class="data-note" style="margin-top:20px;" data-i18n="bots_data_note">curated by MUAR &bull; always DYOR before using any bot</div>
   </div>
 
   <div class="footer">
@@ -691,6 +691,56 @@ const TRANSLATIONS = {
     vtab_arb: '● Real Net APY (funding − spread cost)',
     vtab_spread: 'Low Spread Markets (VAR only)',
     spread_cost_note: '* SPREAD COST = (long leg spread + short leg spread) / hold period — subtracted from funding APY to calculate Real Net APY',
+    th_tier: 'Tier',
+    th_protocol: 'Protocol',
+    arb_intro_p1: 'Discover arbitrage opportunities by comparing funding rates across decentralized exchanges.',
+    arb_intro_p2: 'Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; Min APY: 50%',
+    arb_title: '▲ Top 10 Funding Rate Opportunities',
+    calc_title: '▲ Perp DEX Airdrop Points Calculator',
+    calc_subtitle: 'Estimate your potential airdrop rewards. Enter your points to calculate token value.',
+    calc_label_points: 'My Points',
+    calc_label_supply: 'Total Points Supply',
+    calc_label_airdrop_pct: 'Airdrop % of Supply',
+    calc_label_community: '% tokens for community',
+    calc_label_fdv: 'Expected FDV',
+    calc_label_fdv_hint: '$B — fully diluted valuation',
+    calc_fdv_ref: 'reference: Hyperliquid ~$4B, Lighter ~$2.5B',
+    calc_potential_label: 'POTENTIAL AIRDROP VALUE',
+    calc_your_tier: 'YOUR TIER',
+    cb_share: 'Your Share',
+    cb_pool: 'Airdrop Pool',
+    cb_ppt: 'Per Point',
+    btn_screenshot: '📸 Create Screenshot',
+    btn_tweet: '𝕏 Share on Twitter',
+    calc_disclaimer: 'ESTIMATE ONLY • ACTUAL RESULTS MAY VARY',
+    calc_data_note: 'Calculator based on publicly available tokenomics data &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a>',
+    badge_mm: 'MM Strategy',
+    badge_dn: 'DN Strategy',
+    badge_arb: 'Funding Arbitrage',
+    bot_tread_desc: 'Best bot for <strong class="highlight-cyan">Market Making</strong> and <strong class="highlight-orange">Delta-Neutral</strong> strategies. Provides advanced automated trading with powerful risk management. Currently has <strong>limited perp DEX support</strong> — but the available integrations are top-tier.',
+    btn_launch_tread: 'Launch Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bot_funding_desc: 'The best <strong class="highlight-yellow">arbitrage funding bot</strong> available. Supports <strong>all perp DEXes</strong> for delta-neutral trading with a primary focus on <strong class="highlight-yellow">funding rate arbitrage</strong>. If you\'re looking to capture funding spreads across exchanges — this is the one.',
+    btn_launch_funding: 'Launch Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bots_data_note: 'curated by MUAR &bull; always DYOR before using any bot',
+    var_pairs_heading: 'VARIATIONAL PAIRS',
+    var_pairs_subheading: 'Top Low Slippage',
+    var_pairs_desc: 'ranked by real slippage · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> position size',
+    var_loading: 'Loading Variational markets...',
+    var_data_note: 'Live data · Variational API · slippage measured at $100k size',
+    var_th_market: 'Market', var_th_slip100k: 'Slip @$100k', var_th_slip1m: 'Slip @$1M',
+    var_th_spread: 'Base Spread', var_th_funding: 'Funding (APY)', var_th_volume: '24h Volume',
+    no_arb_msg: 'No real arb above {APY}% APY after spread cost.',
+    no_arb_hint: 'Try increasing MAX SPREAD or lowering MIN REAL APY.',
+    spread_cost_hold: 'spread cost @ {D}d hold',
+    arb_th_coin: 'Coin', arb_th_strategy: 'Strategy', arb_th_funding: 'Funding APY',
+    arb_th_funding_sub: '(long / short leg)', arb_th_gross: 'Gross → Cost',
+    arb_th_gross_sub: '(funding − spread)', arb_th_realnet: 'Real Net APY',
+    arb_th_spread: 'Spread', arb_th_spread_sub: '(L / S leg)', arb_th_trade: 'Trade',
+    old_arb_empty: 'No opportunities above {APY}% APY right now.',
+    old_arb_empty_hint: 'Try again in a few minutes or lower the min APY threshold.',
+    old_arb_symbol: 'Symbol', old_arb_ls_apy: 'Long / Short APY', old_arb_net_apy: 'Net APY',
+    last_updated: 'Last updated: ', updated_at: 'Updated ', opportunities: 'opportunities',
+    btn_trade: 'Trade',
   },
   ru: {
     subtitle: 'личный тир-лист перп DEX от MUAR',
@@ -716,6 +766,56 @@ const TRANSLATIONS = {
     vtab_arb: '● Real Net APY (фандинг − стоимость спреда)',
     vtab_spread: 'Рынки с низким спредом (только VAR)',
     spread_cost_note: '* СТОИМОСТЬ СПРЕДА = (спред лонг-ноги + спред шорт-ноги) / период удержания — вычитается из APY фандинга для расчёта Real Net APY',
+    th_tier: 'Уровень',
+    th_protocol: 'Протокол',
+    arb_intro_p1: 'Находите арбитражные возможности, сравнивая ставки финансирования между децентрализованными биржами.',
+    arb_intro_p2: 'Данные обновляются каждые 5 минут. &bull; Биржи: Extended, Nado, Pacifica, Variational &bull; Мин APY: 50%',
+    arb_title: '▲ Топ-10 возможностей по ставкам финансирования',
+    calc_title: '▲ Калькулятор очков аирдропа Perp DEX',
+    calc_subtitle: 'Оцените потенциальный аирдроп. Введите ваши очки для расчёта стоимости токенов.',
+    calc_label_points: 'Мои очки',
+    calc_label_supply: 'Общее количество очков',
+    calc_label_airdrop_pct: 'Аирдроп % от эмиссии',
+    calc_label_community: '% токенов для сообщества',
+    calc_label_fdv: 'Ожидаемый FDV',
+    calc_label_fdv_hint: '$B — полностью разводнённая оценка',
+    calc_fdv_ref: 'для справки: Hyperliquid ~$4B, Lighter ~$2.5B',
+    calc_potential_label: 'ПОТЕНЦИАЛЬНАЯ СТОИМОСТЬ АИРДРОПА',
+    calc_your_tier: 'ВАШ УРОВЕНЬ',
+    cb_share: 'Ваша доля',
+    cb_pool: 'Пул аирдропа',
+    cb_ppt: 'За очко',
+    btn_screenshot: '📸 Создать скриншот',
+    btn_tweet: '𝕏 Поделиться в Twitter',
+    calc_disclaimer: 'ТОЛЬКО ОЦЕНКА • РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ МОГУТ ОТЛИЧАТЬСЯ',
+    calc_data_note: 'Калькулятор основан на публично доступных данных токеномики &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a>',
+    badge_mm: 'MM Стратегия',
+    badge_dn: 'DN Стратегия',
+    badge_arb: 'Фандинг Арбитраж',
+    bot_tread_desc: 'Лучший бот для <strong class="highlight-cyan">Маркет-мейкинга</strong> и <strong class="highlight-orange">Дельта-нейтральных</strong> стратегий. Обеспечивает продвинутую автоторговлю с мощным управлением рисками. Пока поддерживает <strong>ограниченный набор perp DEX</strong> — но доступные интеграции на высшем уровне.',
+    btn_launch_tread: 'Открыть Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bot_funding_desc: 'Лучший <strong class="highlight-yellow">арбитражный фандинг-бот</strong> на рынке. Поддерживает <strong>все perp DEX</strong> для дельта-нейтральной торговли с упором на <strong class="highlight-yellow">арбитраж ставок финансирования</strong>. Если вы хотите зарабатывать на разнице фандинга — это ваш выбор.',
+    btn_launch_funding: 'Открыть Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bots_data_note: 'подборка от MUAR &bull; всегда проводите собственный анализ перед использованием ботов',
+    var_pairs_heading: 'ПАРЫ VARIATIONAL',
+    var_pairs_subheading: 'Топ — низкий слиппедж',
+    var_pairs_desc: 'отсортировано по реальному слиппеджу · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> позиция',
+    var_loading: 'Загрузка рынков Variational...',
+    var_data_note: 'Данные в реальном времени · Variational API · слиппедж на $100k',
+    var_th_market: 'Рынок', var_th_slip100k: 'Скольж @$100k', var_th_slip1m: 'Скольж @$1M',
+    var_th_spread: 'Базовый спред', var_th_funding: 'Фандинг (APY)', var_th_volume: 'Объём 24ч',
+    no_arb_msg: 'Нет реального арбитража выше {APY}% APY после стоимости спреда.',
+    no_arb_hint: 'Попробуйте увеличить МАКС СПРЕД или снизить МИН REAL APY.',
+    spread_cost_hold: 'стоимость спреда @ {D}д удержания',
+    arb_th_coin: 'Монета', arb_th_strategy: 'Стратегия', arb_th_funding: 'APY фандинга',
+    arb_th_funding_sub: '(лонг / шорт нога)', arb_th_gross: 'Гросс → Стоимость',
+    arb_th_gross_sub: '(фандинг − спред)', arb_th_realnet: 'Реальный Net APY',
+    arb_th_spread: 'Спред', arb_th_spread_sub: '(L / S нога)', arb_th_trade: 'Торговля',
+    old_arb_empty: 'Нет возможностей выше {APY}% APY прямо сейчас.',
+    old_arb_empty_hint: 'Попробуйте через несколько минут или снизьте порог APY.',
+    old_arb_symbol: 'Символ', old_arb_ls_apy: 'APY лонг / шорт', old_arb_net_apy: 'Net APY',
+    last_updated: 'Обновлено: ', updated_at: 'Обновлено ', opportunities: 'возможностей',
+    btn_trade: 'Торговля',
   },
   fr: {
     subtitle: 'mon classement personnel des DEX perpétuels',
@@ -741,6 +841,56 @@ const TRANSLATIONS = {
     vtab_arb: '● Net APY réel (financement − coût spread)',
     vtab_spread: 'Marchés faible spread (VAR uniquement)',
     spread_cost_note: '* COÛT SPREAD = (spread jambe longue + spread jambe courte) / période de détention — soustrait de l\'APY de financement',
+    th_tier: 'Niveau',
+    th_protocol: 'Protocole',
+    arb_intro_p1: 'Découvrez des opportunités d\'arbitrage en comparant les taux de financement entre les exchanges décentralisés.',
+    arb_intro_p2: 'Données actualisées toutes les 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; APY min: 50%',
+    arb_title: '▲ Top 10 opportunités de taux de financement',
+    calc_title: '▲ Calculateur de points airdrop Perp DEX',
+    calc_subtitle: 'Estimez vos récompenses potentielles. Entrez vos points pour calculer la valeur en tokens.',
+    calc_label_points: 'Mes points',
+    calc_label_supply: 'Total des points',
+    calc_label_airdrop_pct: 'Airdrop % de l\'offre',
+    calc_label_community: '% tokens pour la communauté',
+    calc_label_fdv: 'FDV attendu',
+    calc_label_fdv_hint: '$B — valorisation entièrement diluée',
+    calc_fdv_ref: 'référence: Hyperliquid ~$4B, Lighter ~$2.5B',
+    calc_potential_label: 'VALEUR POTENTIELLE DE L\'AIRDROP',
+    calc_your_tier: 'VOTRE NIVEAU',
+    cb_share: 'Votre part',
+    cb_pool: 'Pool d\'airdrop',
+    cb_ppt: 'Par point',
+    btn_screenshot: '📸 Créer une capture',
+    btn_tweet: '𝕏 Partager sur Twitter',
+    calc_disclaimer: 'ESTIMATION SEULEMENT • LES RÉSULTATS RÉELS PEUVENT VARIER',
+    calc_data_note: 'Calculateur basé sur des données tokenomiques publiques &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a>',
+    badge_mm: 'Stratégie MM',
+    badge_dn: 'Stratégie DN',
+    badge_arb: 'Arbitrage de Financement',
+    bot_tread_desc: 'Meilleur bot pour le <strong class="highlight-cyan">Market Making</strong> et les stratégies <strong class="highlight-orange">Delta-Neutre</strong>. Trading automatisé avancé avec gestion des risques. Support <strong>perp DEX limité</strong> — mais les intégrations disponibles sont top.',
+    btn_launch_tread: 'Lancer Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bot_funding_desc: 'Le meilleur <strong class="highlight-yellow">bot d\'arbitrage de financement</strong> disponible. Supporte <strong>tous les perp DEX</strong> pour le trading delta-neutre axé sur l\'<strong class="highlight-yellow">arbitrage de taux de financement</strong>. Le choix idéal pour capturer les spreads.',
+    btn_launch_funding: 'Lancer Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bots_data_note: 'sélection par MUAR &bull; faites toujours vos propres recherches avant d\'utiliser un bot',
+    var_pairs_heading: 'PAIRES VARIATIONAL',
+    var_pairs_subheading: 'Top faible slippage',
+    var_pairs_desc: 'classé par slippage réel · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> taille de position',
+    var_loading: 'Chargement des marchés Variational...',
+    var_data_note: 'Données en direct · API Variational · slippage mesuré à $100k',
+    var_th_market: 'Marché', var_th_slip100k: 'Gliss @$100k', var_th_slip1m: 'Gliss @$1M',
+    var_th_spread: 'Spread de base', var_th_funding: 'Financement (APY)', var_th_volume: 'Volume 24h',
+    no_arb_msg: 'Pas d\'arb réel au-dessus de {APY}% APY après coût spread.',
+    no_arb_hint: 'Essayez d\'augmenter SPREAD MAX ou de baisser APY NET MIN.',
+    spread_cost_hold: 'coût spread @ {D}j de détention',
+    arb_th_coin: 'Crypto', arb_th_strategy: 'Stratégie', arb_th_funding: 'APY Financement',
+    arb_th_funding_sub: '(jambe longue / courte)', arb_th_gross: 'Brut → Coût',
+    arb_th_gross_sub: '(financement − spread)', arb_th_realnet: 'Net APY Réel',
+    arb_th_spread: 'Spread', arb_th_spread_sub: '(jambe L / S)', arb_th_trade: 'Trader',
+    old_arb_empty: 'Pas d\'opportunités au-dessus de {APY}% APY en ce moment.',
+    old_arb_empty_hint: 'Réessayez dans quelques minutes ou abaissez le seuil APY.',
+    old_arb_symbol: 'Symbole', old_arb_ls_apy: 'APY Long / Short', old_arb_net_apy: 'Net APY',
+    last_updated: 'Dernière mise à jour: ', updated_at: 'Mis à jour ', opportunities: 'opportunités',
+    btn_trade: 'Trader',
   },
   pt: {
     subtitle: 'meu tier list pessoal de DEX perpétuos',
@@ -766,6 +916,56 @@ const TRANSLATIONS = {
     vtab_arb: '● APY Real Líquido (funding − custo spread)',
     vtab_spread: 'Mercados spread baixo (apenas VAR)',
     spread_cost_note: '* CUSTO SPREAD = (spread perna longa + spread perna curta) / período de detenção — subtraído do APY de funding',
+    th_tier: 'Nível',
+    th_protocol: 'Protocolo',
+    arb_intro_p1: 'Descubra oportunidades de arbitragem comparando taxas de financiamento entre exchanges descentralizadas.',
+    arb_intro_p2: 'Dados atualizados a cada 5 minutos. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; APY mín: 50%',
+    arb_title: '▲ Top 10 oportunidades de taxa de funding',
+    calc_title: '▲ Calculadora de pontos de airdrop Perp DEX',
+    calc_subtitle: 'Estime suas recompensas potenciais. Insira seus pontos para calcular o valor em tokens.',
+    calc_label_points: 'Meus pontos',
+    calc_label_supply: 'Total de pontos',
+    calc_label_airdrop_pct: 'Airdrop % do fornecimento',
+    calc_label_community: '% tokens para a comunidade',
+    calc_label_fdv: 'FDV esperado',
+    calc_label_fdv_hint: '$B — avaliação totalmente diluída',
+    calc_fdv_ref: 'referência: Hyperliquid ~$4B, Lighter ~$2.5B',
+    calc_potential_label: 'VALOR POTENCIAL DO AIRDROP',
+    calc_your_tier: 'SEU NÍVEL',
+    cb_share: 'Sua parcela',
+    cb_pool: 'Pool de airdrop',
+    cb_ppt: 'Por ponto',
+    btn_screenshot: '📸 Criar captura',
+    btn_tweet: '𝕏 Compartilhar no Twitter',
+    calc_disclaimer: 'APENAS ESTIMATIVA • OS RESULTADOS REAIS PODEM VARIAR',
+    calc_data_note: 'Calculadora baseada em dados de tokenomia públicos &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a>',
+    badge_mm: 'Estratégia MM',
+    badge_dn: 'Estratégia DN',
+    badge_arb: 'Arbitragem de Funding',
+    bot_tread_desc: 'Melhor bot para <strong class="highlight-cyan">Market Making</strong> e estratégias <strong class="highlight-orange">Delta-Neutro</strong>. Trading automatizado avançado com gestão de risco. Suporte <strong>limitado a perp DEX</strong> — mas as integrações disponíveis são de alto nível.',
+    btn_launch_tread: 'Abrir Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bot_funding_desc: 'O melhor <strong class="highlight-yellow">bot de arbitragem de funding</strong> disponível. Suporta <strong>todos os perp DEX</strong> para trading delta-neutro com foco em <strong class="highlight-yellow">arbitragem de taxa de funding</strong>. Ideal para capturar spreads entre exchanges.',
+    btn_launch_funding: 'Abrir Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bots_data_note: 'curado por MUAR &bull; sempre faça sua própria pesquisa antes de usar qualquer bot',
+    var_pairs_heading: 'PARES VARIATIONAL',
+    var_pairs_subheading: 'Top baixo slippage',
+    var_pairs_desc: 'classificado por slippage real · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> tamanho de posição',
+    var_loading: 'Carregando mercados Variational...',
+    var_data_note: 'Dados ao vivo · API Variational · slippage medido em $100k',
+    var_th_market: 'Mercado', var_th_slip100k: 'Slip @$100k', var_th_slip1m: 'Slip @$1M',
+    var_th_spread: 'Spread Base', var_th_funding: 'Funding (APY)', var_th_volume: 'Volume 24h',
+    no_arb_msg: 'Sem arb real acima de {APY}% APY após custo spread.',
+    no_arb_hint: 'Tente aumentar SPREAD MÁX ou diminuir APY REAL MÍN.',
+    spread_cost_hold: 'custo spread @ {D}d retenção',
+    arb_th_coin: 'Moeda', arb_th_strategy: 'Estratégia', arb_th_funding: 'APY Funding',
+    arb_th_funding_sub: '(perna longa / curta)', arb_th_gross: 'Bruto → Custo',
+    arb_th_gross_sub: '(funding − spread)', arb_th_realnet: 'APY Líquido Real',
+    arb_th_spread: 'Spread', arb_th_spread_sub: '(perna L / S)', arb_th_trade: 'Negociar',
+    old_arb_empty: 'Sem oportunidades acima de {APY}% APY agora.',
+    old_arb_empty_hint: 'Tente novamente em alguns minutos ou reduza o limiar de APY.',
+    old_arb_symbol: 'Símbolo', old_arb_ls_apy: 'APY Longo / Curto', old_arb_net_apy: 'APY Líquido',
+    last_updated: 'Última atualização: ', updated_at: 'Atualizado ', opportunities: 'oportunidades',
+    btn_trade: 'Negociar',
   },
   zh: {
     subtitle: '我对永续合约 DEX 的个人分级榜单',
@@ -791,6 +991,56 @@ const TRANSLATIONS = {
     vtab_arb: '● 真实净APY（资金费 − 点差成本）',
     vtab_spread: '低点差市场（仅VAR）',
     spread_cost_note: '* 点差成本 = (多腿点差 + 空腿点差) / 持仓天数 — 从资金费APY中扣除以计算Real Net APY',
+    th_tier: '等级',
+    th_protocol: '协议',
+    arb_intro_p1: '通过比较去中心化交易所的资金费率，发现套利机会。',
+    arb_intro_p2: '数据每5分钟刷新一次。&bull; 交易所: Extended, Nado, Pacifica, Variational &bull; 最低APY: 50%',
+    arb_title: '▲ 资金费率机会TOP 10',
+    calc_title: '▲ Perp DEX 空投积分计算器',
+    calc_subtitle: '估算您的潜在空投奖励。输入您的积分以计算代币价值。',
+    calc_label_points: '我的积分',
+    calc_label_supply: '总积分供应量',
+    calc_label_airdrop_pct: '空投占供应量%',
+    calc_label_community: '% 代币给社区',
+    calc_label_fdv: '预期FDV',
+    calc_label_fdv_hint: '$B — 完全稀释估值',
+    calc_fdv_ref: '参考: Hyperliquid ~$4B, Lighter ~$2.5B',
+    calc_potential_label: '潜在空投价值',
+    calc_your_tier: '您的等级',
+    cb_share: '您的份额',
+    cb_pool: '空投池',
+    cb_ppt: '每积分',
+    btn_screenshot: '📸 创建截图',
+    btn_tweet: '𝕏 分享到Twitter',
+    calc_disclaimer: '仅供估算 • 实际结果可能有所不同',
+    calc_data_note: '计算器基于公开的代币经济学数据 &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a>',
+    badge_mm: 'MM策略',
+    badge_dn: 'DN策略',
+    badge_arb: '资金费套利',
+    bot_tread_desc: '最适合<strong class="highlight-cyan">做市</strong>和<strong class="highlight-orange">Delta中性</strong>策略的机器人。提供高级自动交易和强大的风险管理。目前<strong>perp DEX支持有限</strong> — 但现有集成均为顶级。',
+    btn_launch_tread: '启动 Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bot_funding_desc: '市场上最好的<strong class="highlight-yellow">资金费套利机器人</strong>。支持<strong>所有perp DEX</strong>，专注于<strong class="highlight-yellow">资金费率套利</strong>的Delta中性交易。如果您想捕获交易所间的资金费价差——这就是您的选择。',
+    btn_launch_funding: '启动 Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bots_data_note: '由MUAR精选 &bull; 使用任何机器人前请进行自己的研究',
+    var_pairs_heading: 'VARIATIONAL 交易对',
+    var_pairs_subheading: '最低滑点 Top',
+    var_pairs_desc: '按真实滑点排序 · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> 仓位规模',
+    var_loading: '正在加载 Variational 市场...',
+    var_data_note: '实时数据 · Variational API · 滑点以$100k计算',
+    var_th_market: '市场', var_th_slip100k: '滑点@$100k', var_th_slip1m: '滑点@$1M',
+    var_th_spread: '基础点差', var_th_funding: '资金费(APY)', var_th_volume: '24小时成交量',
+    no_arb_msg: '扣除点差成本后没有超过{APY}% APY的真实套利机会。',
+    no_arb_hint: '尝试增加最大点差或降低最低净APY。',
+    spread_cost_hold: '点差成本 @ 持仓{D}天',
+    arb_th_coin: '币种', arb_th_strategy: '策略', arb_th_funding: '资金费APY',
+    arb_th_funding_sub: '(多腿/空腿)', arb_th_gross: '毛收益→成本',
+    arb_th_gross_sub: '(资金费−点差)', arb_th_realnet: '真实净APY',
+    arb_th_spread: '点差', arb_th_spread_sub: '(多/空腿)', arb_th_trade: '交易',
+    old_arb_empty: '目前没有超过{APY}% APY的机会。',
+    old_arb_empty_hint: '几分钟后再试，或降低最低APY阈值。',
+    old_arb_symbol: '符号', old_arb_ls_apy: '多/空APY', old_arb_net_apy: '净APY',
+    last_updated: '最后更新: ', updated_at: '已更新 ', opportunities: '个机会',
+    btn_trade: '交易',
   },
   ko: {
     subtitle: '퍼페추얼 DEX 개인 티어 리스트',
@@ -816,6 +1066,56 @@ const TRANSLATIONS = {
     vtab_arb: '● 실질 순 APY (펀딩 − 스프레드 비용)',
     vtab_spread: '낮은 스프레드 마켓 (VAR 전용)',
     spread_cost_note: '* 스프레드 비용 = (롱 다리 스프레드 + 숏 다리 스프레드) / 보유 기간 — 펀딩 APY에서 차감하여 Real Net APY 산출',
+    th_tier: '등급',
+    th_protocol: '프로토콜',
+    arb_intro_p1: '탈중앙화 거래소 간 펀딩 레이트를 비교하여 차익거래 기회를 발견하세요.',
+    arb_intro_p2: '데이터는 5분마다 갱신됩니다. &bull; 거래소: Extended, Nado, Pacifica, Variational &bull; 최소 APY: 50%',
+    arb_title: '▲ 펀딩 레이트 기회 TOP 10',
+    calc_title: '▲ Perp DEX 에어드랍 포인트 계산기',
+    calc_subtitle: '잠재적 에어드랍 보상을 추정하세요. 포인트를 입력하여 토큰 가치를 계산하세요.',
+    calc_label_points: '내 포인트',
+    calc_label_supply: '총 포인트 공급량',
+    calc_label_airdrop_pct: '공급량 대비 에어드랍 %',
+    calc_label_community: '커뮤니티용 % 토큰',
+    calc_label_fdv: '예상 FDV',
+    calc_label_fdv_hint: '$B — 완전 희석 가치',
+    calc_fdv_ref: '참고: Hyperliquid ~$4B, Lighter ~$2.5B',
+    calc_potential_label: '잠재적 에어드랍 가치',
+    calc_your_tier: '당신의 등급',
+    cb_share: '당신의 지분',
+    cb_pool: '에어드랍 풀',
+    cb_ppt: '포인트당',
+    btn_screenshot: '📸 스크린샷 만들기',
+    btn_tweet: '𝕏 트위터에 공유',
+    calc_disclaimer: '추정치만 제공 • 실제 결과는 다를 수 있음',
+    calc_data_note: '공개 토큰경제 데이터 기반 계산기 &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a>',
+    badge_mm: 'MM 전략',
+    badge_dn: 'DN 전략',
+    badge_arb: '펀딩 차익거래',
+    bot_tread_desc: '<strong class="highlight-cyan">마켓 메이킹</strong>과 <strong class="highlight-orange">델타 중립</strong> 전략에 최고의 봇. 강력한 리스크 관리로 고급 자동 거래를 제공합니다. 현재 <strong>perp DEX 지원이 제한적</strong> — 하지만 가능한 통합은 최상급입니다.',
+    btn_launch_tread: 'Tread FI 실행 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bot_funding_desc: '시중 최고의 <strong class="highlight-yellow">펀딩 차익거래 봇</strong>. <strong>모든 perp DEX</strong>를 지원하며 <strong class="highlight-yellow">펀딩 레이트 차익거래</strong>에 특화된 델타 중립 거래. 거래소 간 펀딩 스프레드를 포착하려면 이것이 최선입니다.',
+    btn_launch_funding: 'Funding Pro 실행 <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bots_data_note: 'MUAR이 엄선 &bull; 봇 사용 전 항상 자체 조사를 수행하세요',
+    var_pairs_heading: 'VARIATIONAL 페어',
+    var_pairs_subheading: '낮은 슬리피지 Top',
+    var_pairs_desc: '실제 슬리피지 기준 정렬 · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> 포지션 크기',
+    var_loading: 'Variational 마켓 로딩 중...',
+    var_data_note: '실시간 데이터 · Variational API · $100k 기준 슬리피지',
+    var_th_market: '마켓', var_th_slip100k: '슬리피지@$100k', var_th_slip1m: '슬리피지@$1M',
+    var_th_spread: '기본 스프레드', var_th_funding: '펀딩(APY)', var_th_volume: '24시간 거래량',
+    no_arb_msg: '스프레드 비용 후 {APY}% APY 이상의 실제 차익거래가 없습니다.',
+    no_arb_hint: '최대 스프레드를 늘리거나 최소 실질 APY를 낮춰보세요.',
+    spread_cost_hold: '스프레드 비용 @ {D}일 보유',
+    arb_th_coin: '코인', arb_th_strategy: '전략', arb_th_funding: '펀딩 APY',
+    arb_th_funding_sub: '(롱/숏 다리)', arb_th_gross: '총수익→비용',
+    arb_th_gross_sub: '(펀딩−스프레드)', arb_th_realnet: '실질 순 APY',
+    arb_th_spread: '스프레드', arb_th_spread_sub: '(L/S 다리)', arb_th_trade: '거래',
+    old_arb_empty: '현재 {APY}% APY 이상의 기회가 없습니다.',
+    old_arb_empty_hint: '몇 분 후 다시 시도하거나 최소 APY 기준을 낮춰보세요.',
+    old_arb_symbol: '심볼', old_arb_ls_apy: '롱/숏 APY', old_arb_net_apy: '순 APY',
+    last_updated: '마지막 업데이트: ', updated_at: '업데이트됨 ', opportunities: '기회',
+    btn_trade: '거래',
   },
   ar: {
     subtitle: 'قائمتي الشخصية لـ DEX العقود الدائمة',
@@ -841,6 +1141,56 @@ const TRANSLATIONS = {
     vtab_arb: '● صافي APY الحقيقي (تمويل − تكلفة السبريد)',
     vtab_spread: 'أسواق السبريد المنخفض (VAR فقط)',
     spread_cost_note: '* تكلفة السبريد = (سبريد الساق الطويلة + سبريد الساق القصيرة) / فترة الاحتفاظ — يُطرح من APY التمويل',
+    th_tier: 'المستوى',
+    th_protocol: 'البروتوكول',
+    arb_intro_p1: 'اكتشف فرص المراجحة من خلال مقارنة معدلات التمويل عبر البورصات اللامركزية.',
+    arb_intro_p2: 'تُحدَّث البيانات كل 5 دقائق. &bull; البورصات: Extended, Nado, Pacifica, Variational &bull; الحد الأدنى للـ APY: 50%',
+    arb_title: '▲ أفضل 10 فرص لمعدل التمويل',
+    calc_title: '▲ حاسبة نقاط الإيردروب Perp DEX',
+    calc_subtitle: 'قدّر مكافآتك المحتملة من الإيردروب. أدخل نقاطك لحساب قيمة الرموز.',
+    calc_label_points: 'نقاطي',
+    calc_label_supply: 'إجمالي النقاط',
+    calc_label_airdrop_pct: 'نسبة الإيردروب من العرض',
+    calc_label_community: '% رموز للمجتمع',
+    calc_label_fdv: 'FDV المتوقع',
+    calc_label_fdv_hint: '$B — التقييم المخفف بالكامل',
+    calc_fdv_ref: 'مرجع: Hyperliquid ~$4B, Lighter ~$2.5B',
+    calc_potential_label: 'القيمة المحتملة للإيردروب',
+    calc_your_tier: 'مستواك',
+    cb_share: 'حصتك',
+    cb_pool: 'مجمع الإيردروب',
+    cb_ppt: 'لكل نقطة',
+    btn_screenshot: '📸 إنشاء لقطة شاشة',
+    btn_tweet: '𝕏 مشاركة على تويتر',
+    calc_disclaimer: 'تقدير فقط • قد تختلف النتائج الفعلية',
+    calc_data_note: 'الحاسبة مبنية على بيانات التوكينوميكس المتاحة للعموم &bull; <a href="https://muar.app" style="color:rgba(0,240,255,0.5);text-decoration:none;">muar.app</a>',
+    badge_mm: 'استراتيجية MM',
+    badge_dn: 'استراتيجية DN',
+    badge_arb: 'مراجحة التمويل',
+    bot_tread_desc: 'أفضل بوت لاستراتيجيات <strong class="highlight-cyan">صنع السوق</strong> و<strong class="highlight-orange">دلتا المحايدة</strong>. يوفر تداولاً آلياً متقدماً مع إدارة مخاطر قوية. يدعم حالياً <strong>مجموعة محدودة من perp DEX</strong> — لكن التكاملات المتاحة من الدرجة الأولى.',
+    btn_launch_tread: 'فتح Tread FI <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bot_funding_desc: 'أفضل <strong class="highlight-yellow">بوت مراجحة تمويل</strong> متاح. يدعم <strong>جميع perp DEX</strong> للتداول المحايد دلتا مع التركيز على <strong class="highlight-yellow">مراجحة معدل التمويل</strong>. إذا كنت تريد الاستفادة من فروق التمويل — فهذا هو خيارك.',
+    btn_launch_funding: 'فتح Funding Pro <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
+    bots_data_note: 'اختيار بواسطة MUAR &bull; قم دائماً بإجراء بحثك الخاص قبل استخدام أي بوت',
+    var_pairs_heading: 'أزواج VARIATIONAL',
+    var_pairs_subheading: 'أدنى انزلاق سعري',
+    var_pairs_desc: 'مرتبة حسب الانزلاق الحقيقي · <span style="color:var(--neon-cyan);">$100k</span> &amp; <span style="color:var(--neon-cyan);">$1M</span> حجم المركز',
+    var_loading: 'جارٍ تحميل أسواق Variational...',
+    var_data_note: 'بيانات مباشرة · Variational API · الانزلاق يُقاس عند $100k',
+    var_th_market: 'السوق', var_th_slip100k: 'انزلاق@$100k', var_th_slip1m: 'انزلاق@$1M',
+    var_th_spread: 'سبريد الأساس', var_th_funding: 'تمويل(APY)', var_th_volume: 'حجم 24س',
+    no_arb_msg: 'لا توجد مراجحة حقيقية فوق {APY}% APY بعد تكلفة السبريد.',
+    no_arb_hint: 'جرب زيادة أقصى سبريد أو خفض أدنى APY حقيقي.',
+    spread_cost_hold: 'تكلفة السبريد @ {D} يوم احتفاظ',
+    arb_th_coin: 'العملة', arb_th_strategy: 'الاستراتيجية', arb_th_funding: 'APY التمويل',
+    arb_th_funding_sub: '(ساق طويلة/قصيرة)', arb_th_gross: 'إجمالي→تكلفة',
+    arb_th_gross_sub: '(تمويل−سبريد)', arb_th_realnet: 'صافي APY الحقيقي',
+    arb_th_spread: 'السبريد', arb_th_spread_sub: '(L/S ساق)', arb_th_trade: 'تداول',
+    old_arb_empty: 'لا توجد فرص فوق {APY}% APY الآن.',
+    old_arb_empty_hint: 'حاول مرة أخرى بعد دقائق أو قلل الحد الأدنى لـ APY.',
+    old_arb_symbol: 'الرمز', old_arb_ls_apy: 'APY طويل/قصير', old_arb_net_apy: 'صافي APY',
+    last_updated: 'آخر تحديث: ', updated_at: 'تم التحديث ', opportunities: 'فرصة',
+    btn_trade: 'تداول',
   },
 };
 
@@ -868,6 +1218,8 @@ function setLang(lang) {
 
   // Re-render var content if loaded (labels inside rendered tables)
   if (varDataLoaded) renderVarContent();
+  // Re-render tier list (Trade button text)
+  if (typeof DEXES !== 'undefined') render(DEXES);
 }
 
 const DEXES = [
@@ -910,11 +1262,12 @@ function switchTab(tab) {
   if (calcSection) calcSection.classList.remove('visible');
   if (botsSection) botsSection.classList.remove('visible');
   if (varmarketsSection) varmarketsSection.classList.remove('visible');
-  tabArb.querySelector('.tab-arrow').innerHTML = '&#x25BC; Click to Explore';
-  tabTierlist.querySelector('.tab-arrow').innerHTML = '&#x25BC; Tier List';
-  if (tabCalc) tabCalc.querySelector('.tab-arrow').innerHTML = '&#x25BC; Calculate';
-  if (tabBots) tabBots.querySelector('.tab-arrow').innerHTML = '&#x25BC; Explore Bots';
-  if (tabVarmarkets) tabVarmarkets.querySelector('.tab-arrow').innerHTML = '&#x25BC; Top 30 Pairs';
+  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  tabArb.querySelector('.tab-arrow').innerHTML = t.tab_arb_arrow || '&#x25BC; Click to Explore';
+  tabTierlist.querySelector('.tab-arrow').innerHTML = t.tab_tierlist_arrow || '&#x25BC; Tier List';
+  if (tabCalc) tabCalc.querySelector('.tab-arrow').innerHTML = t.tab_calc_arrow || '&#x25BC; Calculate';
+  if (tabBots) tabBots.querySelector('.tab-arrow').innerHTML = t.tab_bots_arrow || '&#x25BC; Explore Bots';
+  if (tabVarmarkets) tabVarmarkets.querySelector('.tab-arrow').innerHTML = t.tab_varmarkets_arrow || '&#x25BC; Top 30 Pairs';
 
   if (tab === 'arb') {
     tabArb.classList.add('active');
@@ -984,8 +1337,9 @@ async function fetchArbData() {
     if (!data || !data.funding_rates) throw new Error('Invalid response');
     arbDataLoaded = true;
     processArbData(data);
+    const _tUpd = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
     document.getElementById('arb-last-updated').textContent =
-      'Last updated: ' + new Date().toLocaleTimeString();
+      (_tUpd.last_updated || 'Last updated: ') + new Date().toLocaleTimeString();
   } catch(e) {
     el.innerHTML = `<div style="padding:30px;text-align:center;">
       <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:rgba(255,80,120,0.8);letter-spacing:1px;margin-bottom:20px;">
@@ -1046,9 +1400,10 @@ function processArbData(data) {
   const top = opps.slice(0, 10);
 
   if (top.length === 0) {
+    const _t4 = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
     el.innerHTML = `<div class="arb-empty">
-      No opportunities above ${MIN_APY}% APY right now.<br>
-      <span style="opacity:0.5;font-size:11px;">Try again in a few minutes or lower the min APY threshold.</span>
+      ${_t4.old_arb_empty ? _t4.old_arb_empty.replace('{APY}', MIN_APY) : 'No opportunities above ' + MIN_APY + '% APY right now.'}<br>
+      <span style="opacity:0.5;font-size:11px;">${_t4.old_arb_empty_hint || 'Try again in a few minutes or lower the min APY threshold.'}</span>
     </div>`;
     return;
   }
@@ -1097,10 +1452,11 @@ function processArbData(data) {
     <td><span class="arb-apy">+${fmt(o.netApy)}</span></td>
   </tr>`).join('');
 
+  const _t5 = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
   el.innerHTML = `<table class="arb-table">
     <thead><tr>
-      <th>#</th><th>Symbol</th><th>Strategy</th>
-      <th>Long / Short APY</th><th>Net APY</th>
+      <th>#</th><th>${_t5.old_arb_symbol||'Symbol'}</th><th>${_t5.arb_th_strategy||'Strategy'}</th>
+      <th>${_t5.old_arb_ls_apy||'Long / Short APY'}</th><th>${_t5.old_arb_net_apy||'Net APY'}</th>
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
@@ -1179,7 +1535,8 @@ const MULTI_EX_CONFIG = {
 
 async function fetchVarData() {
   const el = document.getElementById('var-content');
-  el.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">Loading Variational markets...</div>';
+  const _t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  el.innerHTML = '<div style="padding:40px;text-align:center;font-family:\'Share Tech Mono\',monospace;font-size:13px;color:var(--text-dim);letter-spacing:2px;animation:blink 1.2s infinite;">' + (_t.var_loading || 'Loading Variational markets...') + '</div>';
 
   try {
     const r = await fetch('https://omni-client-api.prod.ap-northeast-1.variational.io/metadata/stats');
@@ -1192,7 +1549,8 @@ async function fetchVarData() {
   varDataLoaded = true;
   const ts = new Date().toLocaleTimeString();
   const el2 = document.getElementById('var-last-updated');
-  if (el2) el2.textContent = `Updated ${ts}`;
+  const _tUpd2 = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  if (el2) el2.textContent = (_tUpd2.updated_at || 'Updated ') + ts;
   renderVarContent();
 }
 
@@ -1433,19 +1791,19 @@ function renderVarSpreadTable(el) {
       <td><span class="${slip100Cls}">${(baseBps/100).toFixed(4)}%</span></td>
       <td><span class="${fundCls}">${fundPct} / ${fundHours}</span><br><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,0.25);">${fundApyStr} APY</span></td>
       <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">${volStr}</td>
-      <td><a class="var-trade-btn" href="https://omni.variational.io/?ref=OMNIMUAR#${m.ticker}" target="_blank" rel="noopener">Trade &#x276F;</a></td>
+      <td><a class="var-trade-btn" href="https://omni.variational.io/?ref=OMNIMUAR#${m.ticker}" target="_blank" rel="noopener">${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).btn_trade||'Trade'} &#x276F;</a></td>
     </tr>`;
   }).join('');
 
   el.innerHTML = `<div style="overflow-x:auto;"><table class="var-table" style="min-width:700px;">
     <thead><tr>
       <th>#</th>
-      <th>Market</th>
-      ${thSort('slippage','Slip @$100k')}
-      ${thSort('slip1m','Slip @$1M')}
-      ${thSort('spread','Base Spread')}
-      ${thSort('funding','Funding (APY)')}
-      <th>24h Volume</th>
+      <th>${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).var_th_market||'Market'}</th>
+      ${thSort('slippage',(TRANSLATIONS[currentLang]||TRANSLATIONS.en).var_th_slip100k||'Slip @$100k')}
+      ${thSort('slip1m',(TRANSLATIONS[currentLang]||TRANSLATIONS.en).var_th_slip1m||'Slip @$1M')}
+      ${thSort('spread',(TRANSLATIONS[currentLang]||TRANSLATIONS.en).var_th_spread||'Base Spread')}
+      ${thSort('funding',(TRANSLATIONS[currentLang]||TRANSLATIONS.en).var_th_funding||'Funding (APY)')}
+      <th>${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).var_th_volume||'24h Volume'}</th>
       <th></th>
     </tr></thead>
     <tbody>${rows}</tbody>
@@ -1541,12 +1899,14 @@ function renderVarArbTable(el) {
   const sorted = Object.values(bestBySym).sort((a, b) => b.realNetApy - a.realNetApy);
 
   const countEl = document.getElementById('var-count');
-  if (countEl) countEl.textContent = sorted.length + ' opportunities';
+  const _tCnt = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  if (countEl) countEl.textContent = sorted.length + ' ' + (_tCnt.opportunities || 'opportunities');
 
   if (sorted.length === 0) {
+    const _t2 = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
     el.innerHTML = `<div style="padding:30px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--text-dim);opacity:0.6;letter-spacing:1px;">
-      No real arb above ${varArbMinApy}% APY after spread cost.<br>
-      <span style="opacity:0.5;font-size:10px;">Try increasing MAX SPREAD or lowering MIN REAL APY.</span>
+      ${_t2.no_arb_msg ? _t2.no_arb_msg.replace('{APY}', varArbMinApy) : 'No real arb above ' + varArbMinApy + '% APY after spread cost.'}<br>
+      <span style="opacity:0.5;font-size:10px;">${_t2.no_arb_hint || 'Try increasing MAX SPREAD or lowering MIN REAL APY.'}</span>
     </div>`;
     return;
   }
@@ -1655,25 +2015,26 @@ function renderVarArbTable(el) {
     </tr>`;
   }).join('');
 
+  const _t3 = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
   el.innerHTML = `
     <div style="padding:8px 16px 6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-bottom:1px solid rgba(255,255,255,0.03);">
       <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);opacity:0.4;letter-spacing:1px;margin-right:2px;">LIVE:</span>
       ${statusPills}
       <span style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,140,0,0.4);margin-left:auto;letter-spacing:1px;">
-        spread cost @ ${varHoldDays}d hold
+        ${_t3.spread_cost_hold ? _t3.spread_cost_hold.replace('{D}', varHoldDays) : 'spread cost @ ' + varHoldDays + 'd hold'}
       </span>
     </div>
     <div style="overflow-x:auto;">
     <table class="var-table" style="min-width:700px;">
       <thead><tr>
         <th>#</th>
-        <th>Coin</th>
-        <th>Strategy</th>
-        <th>Funding APY<br><span style="font-weight:400;font-size:9px;opacity:0.5;">(long / short leg)</span></th>
-        <th>Gross → Cost<br><span style="font-weight:400;font-size:9px;opacity:0.5;">(funding − spread)</span></th>
-        <th>Real Net APY</th>
-        <th>Spread<br><span style="font-weight:400;font-size:9px;opacity:0.5;">(L / S leg)</span></th>
-        <th>Trade</th>
+        <th>${_t3.arb_th_coin||'Coin'}</th>
+        <th>${_t3.arb_th_strategy||'Strategy'}</th>
+        <th>${_t3.arb_th_funding||'Funding APY'}<br><span style="font-weight:400;font-size:9px;opacity:0.5;">${_t3.arb_th_funding_sub||'(long / short leg)'}</span></th>
+        <th>${_t3.arb_th_gross||'Gross → Cost'}<br><span style="font-weight:400;font-size:9px;opacity:0.5;">${_t3.arb_th_gross_sub||'(funding − spread)'}</span></th>
+        <th>${_t3.arb_th_realnet||'Real Net APY'}</th>
+        <th>${_t3.arb_th_spread||'Spread'}<br><span style="font-weight:400;font-size:9px;opacity:0.5;">${_t3.arb_th_spread_sub||'(L / S leg)'}</span></th>
+        <th>${_t3.arb_th_trade||'Trade'}</th>
       </tr></thead>
       <tbody>${rows}</tbody>
     </table>
@@ -1699,7 +2060,7 @@ function render(dexes) {
       <td><div class="dex-cell">
         <img class="dex-icon" src="${d.icon}" alt="${d.name}" onerror="this.src='${fallbackIcon(d.name)}'">
         <div class="dex-name"><a href="${d.ref}" target="_blank" rel="noopener">${d.name}</a></div>
-        <a class="trade-btn" href="${d.ref}" target="_blank" rel="noopener">Trade <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+        <a class="trade-btn" href="${d.ref}" target="_blank" rel="noopener">${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).btn_trade||'Trade'} <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
         ${d.name === 'Variational' ? `<div class="boost-badge dex-cell-full"><span class="boost-badge-line1">⚡ +16% Points Boost</span><span class="boost-badge-line2">✦ Increased Refund Chance</span></div>` : ''}
         ${d.name === 'Trade XYZ' ? `<div class="boost-badge dex-cell-full xyz-hint-wrap" style="margin-top:6px;padding:6px;"><img src="data:image/png;base64,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" alt="HIP-3 → xyz" class="xyz-hint-img"></div>` : ''}
       </div></td>
