@@ -126,8 +126,6 @@ tbody td:nth-child(3) { text-align: right; font-family: 'Share Tech Mono', monos
 .arb-loading { padding: 40px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--text-dim); animation: blink 1.2s infinite; letter-spacing: 2px; }
 .arb-error { padding: 30px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--neon-pink); opacity: 0.7; letter-spacing: 1px; }
 .arb-empty { padding: 40px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text-dim); opacity: 0.6; letter-spacing: 1px; }
-.arb-ex-link { text-decoration: none; transition: opacity 0.2s; }
-.arb-ex-link:hover { opacity: 0.75; }
 .arb-iframe-wrap { position: relative; width: 100%; height: 620px; }
 .arb-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
 
@@ -467,7 +465,7 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
     <div class="table-wrapper" style="border-color: rgba(255,140,0,0.2); box-shadow: 0 0 40px rgba(255,140,0,0.04), 0 20px 60px rgba(0,0,0,0.5);">
       <div class="arb-intro">
         <p data-i18n="arb_intro_p1">Discover arbitrage opportunities by comparing funding rates across decentralized exchanges.</p>
-        <p data-i18n="arb_intro_p2">Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational, <span style="color:#9945ff;">Kraken</span> &bull; Min APY: 50%</p>
+        <p data-i18n="arb_intro_p2">Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; Min APY: 50%</p>
         <p class="arb-refresh-note" id="arb-last-updated"></p>
       </div>
       <div class="arb-title" data-i18n="arb_title">&#x25B2; Top 10 Funding Rate Opportunities</div>
@@ -476,7 +474,7 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       </div>
     </div>
     <div class="data-note" style="color: rgba(255,140,0,0.35);">
-      data sourced from <a href="https://loris.tools" target="_blank" rel="noopener" style="color:rgba(255,140,0,0.6);text-decoration:none;">loris.tools</a> &amp; <a href="https://pro.kraken.com/app/futures" target="_blank" rel="noopener" style="color:rgba(153,69,255,0.7);text-decoration:none;">Kraken Futures API</a>
+      data sourced from <a href="https://loris.tools" target="_blank" rel="noopener" style="color:rgba(255,140,0,0.6);text-decoration:none;">loris.tools</a>
     </div>
   </div>
 
@@ -1296,17 +1294,16 @@ function switchTab(tab) {
 
 // ─── FUNDING ARB DATA ───
 let arbDataLoaded = false;
-const ARB_EXCHANGES = ['extended', 'nado', 'pacifica', 'variational', 'kraken'];
+const ARB_EXCHANGES = ['extended', 'nado', 'pacifica', 'variational'];
 const MIN_APY = 50;
 
 // Funding intervals in hours (how often funding is paid)
-// extended: 4h, nado: 1h, pacifica: 1h, variational: 1h, kraken: 1h
+// extended: 4h, nado: 1h, pacifica: 1h, variational: 1h
 const EXCHANGE_INTERVALS = {
   extended: 4,
   nado: 1,
   pacifica: 1,
   variational: 1,
-  kraken: 1,
   // fallback
   default: 8
 };
@@ -1333,76 +1330,11 @@ async function fetchArbData() {
   const el = document.getElementById('arb-content');
   el.innerHTML = '<div class="arb-loading">Fetching funding rates...</div>';
 
-  // Fetch loris.tools (DEX data) and Kraken in parallel
-  const [lorisResult, krakenResult] = await Promise.allSettled([
-    fetch('https://loris-proxy.jakhatrader.workers.dev/').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
-    fetch('https://futures.kraken.com/derivatives/api/v3/tickers').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-  ]);
-
   try {
-    if (lorisResult.status !== 'fulfilled') throw new Error(lorisResult.reason?.message || 'Loris error');
-    const data = lorisResult.value;
+    const r = await fetch('https://loris-proxy.jakhatrader.workers.dev/');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
     if (!data || !data.funding_rates) throw new Error('Invalid response');
-
-    // Build a unified rates map: { SYM: { exchange_key: raw_value } }
-    // raw_value is in loris format: rate_per_8h * 10000
-    const unifiedRates = {}; // { 'BTC': { 'variational_perp': 25, 'kraken': 18, ... } }
-
-    // Populate from loris
-    const lorisExchanges = Object.keys(data.funding_rates).filter(ex =>
-      ['extended','nado','pacifica','variational'].some(t => ex.toLowerCase().includes(t))
-    );
-    for (const ex of lorisExchanges) {
-      for (const [sym, raw] of Object.entries(data.funding_rates[ex] || {})) {
-        if (raw === undefined || raw === null) continue;
-        if (!unifiedRates[sym]) unifiedRates[sym] = {};
-        unifiedRates[sym][ex] = raw;
-      }
-    }
-
-    // Populate from Kraken
-    let krakenOk = false;
-    if (krakenResult.status === 'fulfilled') {
-      const tickers = krakenResult.value.tickers || [];
-      tickers.forEach(t => {
-        if (!t.symbol || !t.symbol.startsWith('pf_') || t.suspended) return;
-        const rate = parseFloat(t.fundingRate);
-        if (isNaN(rate) || rate === 0) return;
-        let sym = t.symbol.replace(/^pf_/, '').replace(/usd$/, '').replace(/usdt$/, '').toUpperCase();
-        if (sym === 'XBT') sym = 'BTC';
-        if (!sym) return;
-        // Convert per-hour rate → loris format (rate_per_8h * 10000)
-        const raw = rate * 8 * 10000;
-        if (!unifiedRates[sym]) unifiedRates[sym] = {};
-        unifiedRates[sym]['kraken'] = raw;
-        krakenOk = true;
-      });
-    }
-
-    // Build arb opportunities from unified map
-    const opps = [];
-    for (const [sym, exMap] of Object.entries(unifiedRates)) {
-      const pts = Object.entries(exMap)
-        .filter(([, v]) => v !== undefined && v !== null && !isNaN(v))
-        .map(([ex, raw]) => ({ ex, raw, apy: (raw / 10000) / 8 * 24 * 365 * 100 }));
-      if (pts.length < 2) continue;
-      const sorted = [...pts].sort((a, b) => a.raw - b.raw);
-      const longEx  = sorted[0];
-      const shortEx = sorted[sorted.length - 1];
-      if (longEx.ex === shortEx.ex) continue;
-      const spreadRaw = shortEx.raw - longEx.raw;
-      if (spreadRaw <= 0) continue;
-      const netApy = (spreadRaw / 10000) / 8 * 24 * 365 * 100;
-      if (netApy < MIN_APY) continue;
-      opps.push({ sym, longEx: longEx.ex, shortEx: shortEx.ex,
-                  longApy: longEx.apy, shortApy: shortEx.apy, netApy });
-    }
-
-    opps.sort((a, b) => b.netApy - a.netApy);
-    // Store unified rates for processArbData compatibility
-    data._unifiedOpps = opps;
-    data._krakenOk = krakenOk;
-
     arbDataLoaded = true;
     processArbData(data);
     const _tUpd = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
@@ -1425,48 +1357,47 @@ async function fetchArbData() {
 
 function processArbData(data) {
   const el = document.getElementById('arb-content');
+  const rates = data.funding_rates || {};
+  const symbols = data.symbols || [];
 
-  // Use pre-built unified opportunities (includes Kraken) if available
-  let top;
-  if (data._unifiedOpps) {
-    top = data._unifiedOpps.slice(0, 10);
-  } else {
-    // Legacy fallback: loris-only path
-    const rates = data.funding_rates || {};
-    const symbols = data.symbols || [];
-    const ourExchanges = Object.keys(rates).filter(ex =>
-      ARB_EXCHANGES.some(t => ex.toLowerCase().includes(t))
-    );
-    if (ourExchanges.length === 0) {
-      el.innerHTML = '<div class="arb-empty">No data for selected exchanges.</div>';
-      return;
-    }
-    const opps = [];
-    for (const sym of symbols) {
-      const pts = [];
-      for (const ex of ourExchanges) {
-        const raw = rates[ex]?.[sym];
-        if (raw !== undefined && raw !== null) {
-          const rate8h = raw / 10000;
-          const apy = rate8h / 8 * 24 * 365 * 100;
-          pts.push({ ex, raw, apy });
-        }
-      }
-      if (pts.length < 2) continue;
-      const sorted = [...pts].sort((a,b) => a.raw - b.raw);
-      const longEx  = sorted[0];
-      const shortEx = sorted[sorted.length - 1];
-      if (longEx.ex === shortEx.ex) continue;
-      const spreadRaw = shortEx.raw - longEx.raw;
-      if (spreadRaw <= 0) continue;
-      const netApy = (spreadRaw / 10000) / 8 * 24 * 365 * 100;
-      if (netApy < MIN_APY) continue;
-      opps.push({ sym, longEx: longEx.ex, shortEx: shortEx.ex,
-                  longApy: longEx.apy, shortApy: shortEx.apy, netApy });
-    }
-    opps.sort((a,b) => b.netApy - a.netApy);
-    top = opps.slice(0, 10);
+  // Filter only our exchanges
+  const ourExchanges = Object.keys(rates).filter(ex =>
+    ARB_EXCHANGES.some(t => ex.toLowerCase().includes(t))
+  );
+
+  if (ourExchanges.length === 0) {
+    el.innerHTML = '<div class="arb-empty">No data for selected exchanges.</div>';
+    return;
   }
+
+  // Build arb opportunities
+  const opps = [];
+  for (const sym of symbols) {
+    const pts = [];
+    for (const ex of ourExchanges) {
+      const raw = rates[ex]?.[sym];
+      if (raw !== undefined && raw !== null) {
+        // API: value*10000, already normalized to 8h equivalent
+        const rate8h = raw / 10000;
+        const apy = rate8h / 8 * 24 * 365 * 100;
+        pts.push({ ex, raw, apy });
+      }
+    }
+    if (pts.length < 2) continue;
+    const sorted = [...pts].sort((a,b) => a.raw - b.raw);
+    const longEx  = sorted[0];
+    const shortEx = sorted[sorted.length - 1];
+    if (longEx.ex === shortEx.ex) continue;
+    const spreadRaw = shortEx.raw - longEx.raw;
+    if (spreadRaw <= 0) continue;
+    const netApy = (spreadRaw / 10000) / 8 * 24 * 365 * 100;
+    if (netApy < MIN_APY) continue;
+    opps.push({ sym, longEx: longEx.ex, shortEx: shortEx.ex,
+                longApy: longEx.apy, shortApy: shortEx.apy, netApy });
+  }
+
+  opps.sort((a,b) => b.netApy - a.netApy);
+  const top = opps.slice(0, 10);
 
   if (top.length === 0) {
     const _t4 = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
@@ -1482,7 +1413,6 @@ function processArbData(data) {
     'nado':        'https://app.nado.xyz/perpetuals?join=wVjcU3e',
     'pacifica':    'https://app.pacifica.fi/?referral=rektdao',
     'variational': 'https://omni.variational.io/?ref=OMNIMUAR',
-    'kraken':      'https://pro.kraken.com/app/futures',
   };
 
   function exLink(name) {
@@ -1499,22 +1429,8 @@ function processArbData(data) {
     if (abs >= 100)  return apy.toFixed(1) + '%';
     return apy.toFixed(2) + '%';
   }
-  // Kraken gets a purple badge to distinguish it as a CEX
   function exLabel(name) {
-    const key = name.toLowerCase();
-    if (key.includes('kraken')) return `<span style="color:#b866ff;border-color:rgba(184,102,255,0.35);background:rgba(184,102,255,0.08);">${name.toUpperCase()}</span>`;
     return name.toUpperCase();
-  }
-  // Wrap in the badge span — for kraken the inner span overrides colors
-  function exBadgeLong(name) {
-    const key = name.toLowerCase();
-    if (key.includes('kraken')) return `<a href="${exLink(name)}" target="_blank" rel="noopener" class="arb-ex-long arb-ex-link" style="color:#b866ff;border-color:rgba(184,102,255,0.35);background:rgba(184,102,255,0.08);">${name.toUpperCase()}</a>`;
-    return `<a href="${exLink(name)}" target="_blank" rel="noopener" class="arb-ex-long arb-ex-link">${name.toUpperCase()}</a>`;
-  }
-  function exBadgeShort(name) {
-    const key = name.toLowerCase();
-    if (key.includes('kraken')) return `<a href="${exLink(name)}" target="_blank" rel="noopener" class="arb-ex-short arb-ex-link" style="color:#b866ff;border-color:rgba(184,102,255,0.35);background:rgba(184,102,255,0.08);">${name.toUpperCase()}</a>`;
-    return `<a href="${exLink(name)}" target="_blank" rel="noopener" class="arb-ex-short arb-ex-link">${name.toUpperCase()}</a>`;
   }
   const rankCls = i => i===0 ? 'arb-rank gold' : i===1 ? 'arb-rank silver' : i===2 ? 'arb-rank bronze' : 'arb-rank';
 
@@ -1523,9 +1439,9 @@ function processArbData(data) {
     <td><span class="arb-symbol">${o.sym}</span></td>
     <td>
       <div class="arb-exchange-pair">
-        <span>LONG ${exBadgeLong(o.longEx)}</span>
+        <span>LONG <a href="${exLink(o.longEx)}" target="_blank" rel="noopener" class="arb-ex-long arb-ex-link">${exLabel(o.longEx)}</a></span>
         <span class="arb-arrow">&#8644;</span>
-        <span>SHORT ${exBadgeShort(o.shortEx)}</span>
+        <span>SHORT <a href="${exLink(o.shortEx)}" target="_blank" rel="noopener" class="arb-ex-short arb-ex-link">${exLabel(o.shortEx)}</a></span>
       </div>
     </td>
     <td>
@@ -1615,7 +1531,6 @@ const MULTI_EX_CONFIG = {
   extended:     { label: 'Extended',    short: 'EXT',  color: '#a78bfa', tradeUrl: t => `https://app.extended.exchange/perp/${t}-USD`, interval: 3600 },
   pacifica:     { label: 'Pacifica',    short: 'PAC',  color: '#f97316', tradeUrl: t => `https://app.pacifica.fi/?referral=rektdao`, interval: 3600 },
   nado:         { label: 'Nado',        short: 'NADO', color: '#39ff14', tradeUrl: t => `https://app.nado.xyz/perpetuals?join=wVjcU3e`, interval: 3600 },
-  kraken:       { label: 'Kraken',      short: 'KRK',  color: '#9945ff', tradeUrl: t => `https://pro.kraken.com/app/futures/trade/${t}-USD`, interval: 3600 },
 };
 
 async function fetchVarData() {
@@ -1630,16 +1545,6 @@ async function fetchVarData() {
       varRawData = j.listings || [];
     }
   } catch(e) {}
-
-  // Fetch all multi-exchange funding data (for the arb comparison table)
-  // These run in parallel — failures are silently ignored per-exchange
-  await Promise.allSettled([
-    fetchVariationalFunding(),
-    fetchHyperliquidFunding(),
-    fetchExtendedFunding(),
-    fetchPacificaFunding(),
-    fetchKrakenFunding(),
-  ]);
 
   varDataLoaded = true;
   const ts = new Date().toLocaleTimeString();
@@ -1794,39 +1699,6 @@ async function fetchPacificaFunding() {
   }
 }
 
-
-async function fetchKrakenFunding() {
-  multiExStatus.kraken = 'loading';
-  try {
-    // Kraken Futures public endpoint — no API key required
-    // Returns all perpetual (pf_) tickers with fundingRate (per-hour decimal)
-    const r = await fetch('https://futures.kraken.com/derivatives/api/v3/tickers');
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const j = await r.json();
-    const tickers = j.tickers || [];
-    let count = 0;
-    tickers.forEach(t => {
-      // Only perpetuals (pf_ prefix) and skip suspended
-      if (!t.symbol || !t.symbol.startsWith('pf_') || t.suspended) return;
-      const rate = parseFloat(t.fundingRate); // per-hour decimal, e.g. 0.0000125
-      if (isNaN(rate)) return;
-      // Normalise symbol: pf_xbtusd → BTC, pf_ethusd → ETH, etc.
-      let sym = t.symbol
-        .replace(/^pf_/, '')        // remove pf_ prefix
-        .replace(/usd$/, '')        // remove trailing usd
-        .replace(/usdt$/, '')       // remove trailing usdt
-        .toUpperCase();
-      // Kraken uses XBT for Bitcoin — map to BTC for consistency
-      if (sym === 'XBT') sym = 'BTC';
-      if (!sym) return;
-      if (!multiExFunding[sym]) multiExFunding[sym] = {};
-      // fundingRate is per-hour decimal → convert to APY
-      multiExFunding[sym].kraken = varFundingToApy(rate, 3600);
-      count++;
-    });
-    multiExStatus.kraken = count > 0 ? 'ok' : 'error';
-  } catch(e) { multiExStatus.kraken = 'error'; }
-}
 
 function varFundingToApy(rateDecimal, intervalSeconds) {
   // rateDecimal: decimal fraction per interval (e.g. 0.0001 = 0.01% per interval)
