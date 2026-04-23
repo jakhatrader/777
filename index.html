@@ -465,7 +465,7 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
     <div class="table-wrapper" style="border-color: rgba(255,140,0,0.2); box-shadow: 0 0 40px rgba(255,140,0,0.04), 0 20px 60px rgba(0,0,0,0.5);">
       <div class="arb-intro">
         <p data-i18n="arb_intro_p1">Discover arbitrage opportunities by comparing funding rates across decentralized exchanges.</p>
-        <p data-i18n="arb_intro_p2">Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational &bull; Min APY: 50%</p>
+        <p data-i18n="arb_intro_p2">Data refreshes every 5 minutes. &bull; Exchanges: Extended, Nado, Pacifica, Variational, <span style="color:#9945ff;">Kraken</span> &bull; Min APY: 50%</p>
         <p class="arb-refresh-note" id="arb-last-updated"></p>
       </div>
       <div class="arb-title" data-i18n="arb_title">&#x25B2; Top 10 Funding Rate Opportunities</div>
@@ -474,7 +474,7 @@ html[dir="rtl"] tbody td:nth-child(3) { text-align: left; }
       </div>
     </div>
     <div class="data-note" style="color: rgba(255,140,0,0.35);">
-      data sourced from <a href="https://loris.tools" target="_blank" rel="noopener" style="color:rgba(255,140,0,0.6);text-decoration:none;">loris.tools</a>
+      data sourced from <a href="https://loris.tools" target="_blank" rel="noopener" style="color:rgba(255,140,0,0.6);text-decoration:none;">loris.tools</a> &amp; <a href="https://pro.kraken.com/app/futures" target="_blank" rel="noopener" style="color:rgba(153,69,255,0.7);text-decoration:none;">Kraken Futures API</a>
     </div>
   </div>
 
@@ -1294,16 +1294,17 @@ function switchTab(tab) {
 
 // ─── FUNDING ARB DATA ───
 let arbDataLoaded = false;
-const ARB_EXCHANGES = ['extended', 'nado', 'pacifica', 'variational'];
+const ARB_EXCHANGES = ['extended', 'nado', 'pacifica', 'variational', 'kraken'];
 const MIN_APY = 50;
 
 // Funding intervals in hours (how often funding is paid)
-// extended: 4h, nado: 1h, pacifica: 1h, variational: 1h
+// extended: 4h, nado: 1h, pacifica: 1h, variational: 1h, kraken: 1h
 const EXCHANGE_INTERVALS = {
   extended: 4,
   nado: 1,
   pacifica: 1,
   variational: 1,
+  kraken: 1,
   // fallback
   default: 8
 };
@@ -1330,11 +1331,36 @@ async function fetchArbData() {
   const el = document.getElementById('arb-content');
   el.innerHTML = '<div class="arb-loading">Fetching funding rates...</div>';
 
+  // Fetch loris.tools (DEX data) and Kraken in parallel
+  const [lorisResult, krakenResult] = await Promise.allSettled([
+    fetch('https://loris-proxy.jakhatrader.workers.dev/').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+    fetch('https://futures.kraken.com/derivatives/api/v3/tickers').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  ]);
+
   try {
-    const r = await fetch('https://loris-proxy.jakhatrader.workers.dev/');
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const data = await r.json();
+    if (lorisResult.status !== 'fulfilled') throw new Error(lorisResult.reason?.message || 'Loris error');
+    const data = lorisResult.value;
     if (!data || !data.funding_rates) throw new Error('Invalid response');
+
+    // Inject Kraken data into the loris structure so it shows in the same table
+    if (krakenResult.status === 'fulfilled') {
+      const tickers = krakenResult.value.tickers || [];
+      if (!data.funding_rates.kraken) data.funding_rates.kraken = {};
+      tickers.forEach(t => {
+        if (!t.symbol || !t.symbol.startsWith('pf_') || t.suspended) return;
+        const rate = parseFloat(t.fundingRate);
+        if (isNaN(rate)) return;
+        let sym = t.symbol.replace(/^pf_/, '').replace(/usd$/, '').replace(/usdt$/, '').toUpperCase();
+        if (sym === 'XBT') sym = 'BTC';
+        if (!sym) return;
+        // Convert per-hour rate to the same 8h-normalized * 10000 format loris uses
+        // loris format: raw = rate_per_8h * 10000; rate_per_8h = rate_per_hour * 8
+        data.funding_rates.kraken[sym] = Math.round(rate * 8 * 10000);
+        // Also ensure this symbol appears in the symbols list
+        if (!data.symbols.includes(sym)) data.symbols.push(sym);
+      });
+    }
+
     arbDataLoaded = true;
     processArbData(data);
     const _tUpd = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
@@ -1413,6 +1439,7 @@ function processArbData(data) {
     'nado':        'https://app.nado.xyz/perpetuals?join=wVjcU3e',
     'pacifica':    'https://app.pacifica.fi/?referral=rektdao',
     'variational': 'https://omni.variational.io/?ref=OMNIMUAR',
+    'kraken':      'https://pro.kraken.com/app/futures',
   };
 
   function exLink(name) {
@@ -1531,6 +1558,7 @@ const MULTI_EX_CONFIG = {
   extended:     { label: 'Extended',    short: 'EXT',  color: '#a78bfa', tradeUrl: t => `https://app.extended.exchange/perp/${t}-USD`, interval: 3600 },
   pacifica:     { label: 'Pacifica',    short: 'PAC',  color: '#f97316', tradeUrl: t => `https://app.pacifica.fi/?referral=rektdao`, interval: 3600 },
   nado:         { label: 'Nado',        short: 'NADO', color: '#39ff14', tradeUrl: t => `https://app.nado.xyz/perpetuals?join=wVjcU3e`, interval: 3600 },
+  kraken:       { label: 'Kraken',      short: 'KRK',  color: '#9945ff', tradeUrl: t => `https://pro.kraken.com/app/futures/trade/${t}-USD`, interval: 3600 },
 };
 
 async function fetchVarData() {
@@ -1545,6 +1573,16 @@ async function fetchVarData() {
       varRawData = j.listings || [];
     }
   } catch(e) {}
+
+  // Fetch all multi-exchange funding data (for the arb comparison table)
+  // These run in parallel — failures are silently ignored per-exchange
+  await Promise.allSettled([
+    fetchVariationalFunding(),
+    fetchHyperliquidFunding(),
+    fetchExtendedFunding(),
+    fetchPacificaFunding(),
+    fetchKrakenFunding(),
+  ]);
 
   varDataLoaded = true;
   const ts = new Date().toLocaleTimeString();
@@ -1699,6 +1737,39 @@ async function fetchPacificaFunding() {
   }
 }
 
+
+async function fetchKrakenFunding() {
+  multiExStatus.kraken = 'loading';
+  try {
+    // Kraken Futures public endpoint — no API key required
+    // Returns all perpetual (pf_) tickers with fundingRate (per-hour decimal)
+    const r = await fetch('https://futures.kraken.com/derivatives/api/v3/tickers');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    const tickers = j.tickers || [];
+    let count = 0;
+    tickers.forEach(t => {
+      // Only perpetuals (pf_ prefix) and skip suspended
+      if (!t.symbol || !t.symbol.startsWith('pf_') || t.suspended) return;
+      const rate = parseFloat(t.fundingRate); // per-hour decimal, e.g. 0.0000125
+      if (isNaN(rate)) return;
+      // Normalise symbol: pf_xbtusd → BTC, pf_ethusd → ETH, etc.
+      let sym = t.symbol
+        .replace(/^pf_/, '')        // remove pf_ prefix
+        .replace(/usd$/, '')        // remove trailing usd
+        .replace(/usdt$/, '')       // remove trailing usdt
+        .toUpperCase();
+      // Kraken uses XBT for Bitcoin — map to BTC for consistency
+      if (sym === 'XBT') sym = 'BTC';
+      if (!sym) return;
+      if (!multiExFunding[sym]) multiExFunding[sym] = {};
+      // fundingRate is per-hour decimal → convert to APY
+      multiExFunding[sym].kraken = varFundingToApy(rate, 3600);
+      count++;
+    });
+    multiExStatus.kraken = count > 0 ? 'ok' : 'error';
+  } catch(e) { multiExStatus.kraken = 'error'; }
+}
 
 function varFundingToApy(rateDecimal, intervalSeconds) {
   // rateDecimal: decimal fraction per interval (e.g. 0.0001 = 0.01% per interval)
